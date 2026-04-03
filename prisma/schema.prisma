@@ -1,0 +1,300 @@
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL") // Only needed when using a cloud provider that doesn't support the creation of new databases, like Heroku. Learn more: https://pris.ly/d/migrate-shadow
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  key       String
+  name      String   @unique
+  userId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Invitation {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  role      String?  @default("USER")
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  accepted  Boolean  @default(false)
+  userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id                    String       @id @default(cuid())
+  name                  String?
+  email                 String?      @unique
+  emailVerified         DateTime?
+  image                 String?
+  password              String?
+  passwordResetToken    String?      @unique
+  passwordResetTokenExp DateTime?
+  role                  String?      @default("USER")
+  customerId            String?      @unique @map(name: "customer_id")
+  subscriptionId        String?      @unique @map(name: "subscription_id")
+  priceId               String?      @map(name: "price_id")
+  currentPeriodEnd      DateTime?    @map(name: "current_period_end")
+  createdAt             DateTime     @default(now())
+  accounts              Account[]
+  sessions              Session[]
+  apiKeys               ApiKey[]
+  invitation            Invitation[]
+}
+
+model VerificationToken {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model NewsCategory {
+  id        String   @id @default(cuid())
+  name      String
+  name_en   String   @map("name_en")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  news      News[]
+}
+
+model News {
+  id          String        @id @default(cuid())
+  title       String        @db.Text
+  title_en    String        @map("title_en") @db.Text
+  subtitle    String?       @db.Text
+  subtitle_en String?       @map("subtitle_en") @db.Text
+  thumbnail   String?
+  content     String        @db.Text
+  content_en  String        @map("content_en") @db.Text
+  categoryId  String        @map("category_id")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime     @updatedAt @map("updated_at")
+  category    NewsCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Testimonial {
+  id          String   @id @default(cuid())
+  title       String   @db.Text
+  title_en    String   @map("title_en") @db.Text
+  subtitle    String?  @db.Text
+  subtitle_en String?  @map("subtitle_en") @db.Text
+  description String  @db.Text
+  description_en String @map("description_en") @db.Text
+  videoUrl    String?  @map("video_url")
+  imageUrl    String?  @map("image_url")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+}
+
+model Deal {
+  id            String   @id @default(cuid())
+  title         String   @db.Text
+  title_en      String   @map("title_en") @db.Text
+  subtitle      String?  @db.Text
+  subtitle_en   String?  @map("subtitle_en") @db.Text
+  description   String   @db.Text
+  description_en String  @map("description_en") @db.Text
+  status        String   @default("ACTIVE")
+  img_path      String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+}
+
+model Masthead {
+  id            String   @id @default(cuid())
+  title         String   @db.Text
+  title_en      String   @map("title_en") @db.Text
+  subtitle      String?  @db.Text
+  subtitle_en   String?  @map("subtitle_en") @db.Text
+  description   String   @db.Text
+  description_en String  @map("description_en") @db.Text
+  url           String?
+  imageurl      String?
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+}
+
+model Magazine {
+  id        String   @id @default(cuid())
+  title     String   @db.Text
+  title_en  String   @map("title_en") @db.Text
+  image     String?
+  url       String?
+  date      String?
+  number    String?
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model Management {
+  id        String   @id @default(cuid())
+  name      String   @db.Text
+  position  String   @db.Text
+  image     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("managements")
+}
+
+// Product catalog
+model ProductType {
+  id        String   @id @default(cuid())
+  name      String
+  name_en   String   @map("name_en")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("product_types")
+}
+
+model ProductCategory {
+  id        String   @id @default(cuid())
+  name      String
+  name_en   String   @map("name_en")
+  parentId  String?  @map("parent_id")
+  img_path  String?
+  types     String   // e.g. "CAT" - product type name
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  products  Product[]
+
+  @@map("product_categories")
+}
+
+model AttributeValueGroup {
+  id        String   @id @default(cuid())
+  name      String
+  name_en   String   @map("name_en")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  attributeValues AttributeValue[]
+
+  @@map("attribute_value_groups")
+}
+
+model Attribute {
+  id        String   @id @default(cuid())
+  name      String
+  name_en   String   @map("name_en")
+  data_type String   @map("data_type") // INTEGER, DECIMAL, STRING, etc.
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  attributeValues AttributeValue[]
+
+  @@map("attributes")
+}
+
+model Product {
+  id            String    @id @default(cuid())
+  name          String
+  name_en       String    @map("name_en")
+  description   String    @db.Text
+  description_en String   @map("description_en") @db.Text
+  price         Decimal?  @db.Decimal(12, 2)
+  img_path      String?
+  brochure_path String?   @map("brochure_path")
+  model_3d      String?   @map("model_3d") @db.Text
+  video_link    String?   @map("video_link")
+  product_types String?   @map("product_types")
+  product_order Int?      @map("product_order")
+  status        String    @default("ACTIVE")
+  categoryId    String    @map("category_id")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  category      ProductCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  attributeValues AttributeValue[]
+
+  @@map("products")
+}
+
+model AttributeValue {
+  id             String    @id @default(cuid())
+  productId      String    @map("product_id")
+  attributeId    String    @map("attribute_id")
+  groupId        String    @map("group_id")
+  string_value   String?   @map("string_value") @db.Text
+  int_value      Int?
+  datetime_value DateTime? @map("datetime_value")
+  boolean_value  Boolean?  @map("boolean_value")
+  decimal_value  Decimal?  @map("decimal_value") @db.Decimal(12, 4)
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  product        Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  attribute      Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  group          AttributeValueGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, attributeId])
+  @@map("attribute_values")
+}
+
+model Page {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  title         String   @db.Text
+  title_en      String   @map("title_en") @db.Text
+  description   String?  @db.Text
+  description_en String? @map("description_en") @db.Text
+  content      String   @db.Text
+  content_en   String   @map("content_en") @db.Text
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("pages")
+}
+
+model MenuItem {
+  id        String    @id @default(cuid())
+  title     String    @db.Text
+  title_en  String?   @map("title_en") @db.Text
+  path      String    @db.Text
+  linkType  String    @map("link_type") // PAGE = custom page /[slug], CUSTOM = external or internal URL
+  parentId  String?   @map("parent_id")
+  order     Int       @default(0)
+  newTab    Boolean   @default(false) @map("new_tab")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  parent    MenuItem? @relation("MenuItemHierarchy", fields: [parentId], references: [id], onDelete: Cascade)
+  children  MenuItem[] @relation("MenuItemHierarchy")
+
+  @@map("menu_items")
+}

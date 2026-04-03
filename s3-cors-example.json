@@ -1,0 +1,11 @@
+[
+	{
+		"AllowedHeaders": ["*"],
+		"AllowedMethods": ["PUT", "GET", "HEAD"],
+		"AllowedOrigins": [
+			"https://localhost:3000",
+			"https://your-production-domain.com"
+		],
+		"ExposeHeaders": ["ETag"]
+	}
+]
