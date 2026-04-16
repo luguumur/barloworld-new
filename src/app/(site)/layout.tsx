@@ -22,7 +22,7 @@ export default async function RootLayout({
 				<ToastContext />
 				<Providers>
 					<NextTopLoader
-						color='#635BFF'
+						color='#feca34'
 						crawlSpeed={300}
 						showSpinner={false}
 						shadow='none'

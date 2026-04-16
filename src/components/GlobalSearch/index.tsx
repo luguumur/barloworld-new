@@ -4,7 +4,8 @@ import { Hits, InstantSearch } from "react-instantsearch-dom";
 import CustomHits from "./CustomHits";
 import SearchBox from "./CustomSearchBox";
 import EmptyState from "./EmptyState";
-import { integrations } from "../../../integrations.config";
+import DatabaseSearch from "./DatabaseSearch";
+import { integrations, messages } from "../../../integrations.config";
 
 const appID = process.env.NEXT_PUBLIC_ALGOLIA_PROJECT_ID as string;
 const apiKEY = process.env.NEXT_PUBLIC_ALGOLIA_API_KEY as string;
@@ -43,16 +44,16 @@ const GlobalSearchModal = (props: Props) => {
 				<div className='fixed left-0 top-0 z-[99999] flex h-full min-h-screen w-full justify-center bg-[rgba(94,93,93,0.25)] px-4 py-[12vh] backdrop-blur-sm'>
 					<div className='modal-content relative w-full max-w-[600px] overflow-y-auto rounded-xl bg-white shadow-lg dark:bg-black'>
 						<div>
-							<InstantSearch
-								// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-								// @ts-ignore
-								insights={false}
-								searchClient={algoliaClient}
-								indexName={INDEX}
-							>
-								<SearchBox />
-								<EmptyState />
-								{integrations?.isAlgoliaEnabled && (
+							{integrations.isAlgoliaEnabled ? (
+								<InstantSearch
+									// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+									// @ts-ignore
+									insights={false}
+									searchClient={algoliaClient}
+									indexName={INDEX}
+								>
+									<SearchBox />
+									<EmptyState />
 									<Hits
 										hitComponent={(props) => (
 											<CustomHits
@@ -61,8 +62,12 @@ const GlobalSearchModal = (props: Props) => {
 											/>
 										)}
 									/>
-								)}
-							</InstantSearch>
+								</InstantSearch>
+							) : integrations.isDatabaseSearchEnabled ? (
+								<DatabaseSearch setSearchModalOpen={setSearchModalOpen} />
+							) : (
+								<div className='p-8'>{messages.algolia}</div>
+							)}
 						</div>
 					</div>
 				</div>

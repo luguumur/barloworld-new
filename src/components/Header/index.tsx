@@ -8,7 +8,13 @@ import { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
 import ThemeSwitcher from "./ThemeSwitcher";
 import { menuData } from "./menuData";
-type MenuItemPublic = { id: number; title: string; path?: string; newTab?: boolean; submenu?: { id: number; title: string; path: string; newTab?: boolean }[] };
+type MenuItemPublic = {
+	id: number;
+	title: string;
+	path?: string;
+	newTab?: boolean;
+	submenu?: { id: number; title: string; path: string; newTab?: boolean }[];
+};
 import GlobalSearchModal from "../GlobalSearch";
 import Account from "./Account";
 import { useSession } from "next-auth/react";

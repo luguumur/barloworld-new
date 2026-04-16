@@ -1,7 +1,10 @@
 const integrations = {
 	isSanityEnabled: true,
 	isOpenAIEnabled: false,
-	isAlgoliaEnabled: true,
+	/** Set false to search PostgreSQL via /api/search (Prisma) instead of Algolia */
+	isAlgoliaEnabled: false,
+	/** When isAlgoliaEnabled is false, site search uses DATABASE_URL + Prisma */
+	isDatabaseSearchEnabled: true,
 	isMailchimpEnabled: false,
 	isAuthEnabled: true,
 	isPaymentsEnabled: false,
