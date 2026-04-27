@@ -72,9 +72,9 @@ export default function Notifications({ role }: { role: string }) {
 					</h3>
 				</div>
 
-				{count.map((notification) => (
+				{/* {count.map((notification) => (
 					<Notification key={notification} link={link} />
-				))}
+				))} */}
 
 				<div className='mt-5 flex w-full border-t border-stroke py-4 text-center dark:border-stroke-dark'>
 					<Link

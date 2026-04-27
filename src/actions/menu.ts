@@ -27,7 +27,9 @@ export type MenuItemInput = {
 };
 
 /** For public header: get menu tree as Menu[] (compatible with Header) */
-export async function getMenuForPublic(): Promise<
+export async function getMenuForPublic(
+	lang: "mn" | "en" = "en"
+): Promise<
 	{ id: number; title: string; path?: string; newTab?: boolean; submenu?: { id: number; title: string; path: string; newTab?: boolean }[] }[]
 > {
 	try {
@@ -47,13 +49,17 @@ export async function getMenuForPublic(): Promise<
 			if (item.parentId && !byParent.has(item.parentId)) byParent.set(item.parentId, []);
 		}
 		const toMenu = (row: MenuItemRow, idx: number): { id: number; title: string; path?: string; newTab?: boolean; submenu?: { id: number; title: string; path: string; newTab?: boolean }[] } => {
-			const title = (row.title_en ?? row.title).trim() || row.title;
+			const title =
+				(lang === "en" ? row.title_en ?? row.title : row.title).trim() ||
+				row.title;
 			const href = row.linkType === "PAGE" ? `/${row.path.replace(/^\//, "")}` : row.path;
 			const children = (byParent.get(row.id) ?? [])
 				.sort((a, b) => a.order - b.order || a.createdAt.getTime() - b.createdAt.getTime())
 				.map((c, i) => ({
 					id: idx * 1000 + i,
-					title: (c.title_en ?? c.title).trim() || c.title,
+					title:
+						(lang === "en" ? c.title_en ?? c.title : c.title).trim() ||
+						c.title,
 					path: c.linkType === "PAGE" ? `/${c.path.replace(/^\//, "")}` : c.path,
 					newTab: c.newTab,
 				}));

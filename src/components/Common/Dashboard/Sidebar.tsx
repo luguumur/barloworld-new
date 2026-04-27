@@ -53,7 +53,7 @@ export default function Sidebar({
 						src={"/images/logo/belogo.webp"}
 						alt='logo'
 						className='hidden dark:block'
-						width={293}
+						width={193}
 						height={34}
 					/>
 				</Link>

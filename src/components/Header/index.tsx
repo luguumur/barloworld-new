@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Dropdown from "./Dropdown";
-import ThemeSwitcher from "./ThemeSwitcher";
+import LanguageSwitcher from "./LanguageSwitcher";
 import { menuData } from "./menuData";
 type MenuItemPublic = {
 	id: number;
@@ -20,6 +20,7 @@ import Account from "./Account";
 import { useSession } from "next-auth/react";
 import { onScroll } from "@/libs/scrollActive";
 import { usePathname } from "next/navigation";
+import ThemeSwitcher from "./ThemeSwitcher";
 
 const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 	const menuItems = menuProp && menuProp.length > 0 ? menuProp : menuData;
@@ -60,14 +61,11 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 	return (
 		<>
 			<header
-				className={`fixed left-0 top-0 z-999 w-full transition-all duration-300 ease-in-out  ${
-					stickyMenu
-						? "bg-white py-4 shadow dark:bg-dark xl:py-0"
-						: "bg-transparent py-7 xl:py-0"
-				}`}
+				className={`xl:py-0" } left-0 top-0 z-999 w-full bg-transparent transition-all duration-300
+				ease-in-out`}
 			>
-				<div className='relative mx-auto max-w-[1170px] items-center justify-between px-4 sm:px-8 xl:flex xl:px-0'>
-					<div className='flex w-full items-center justify-between xl:w-4/12'>
+				<div className='relative mx-auto max-w-[1170px] items-center justify-between gap-2 px-4 sm:px-8 xl:flex xl:px-0'>
+					<div className='flex w-full items-center justify-between xl:w-2/12'>
 						<Link href='/'>
 							<Image
 								src={logoLight}
@@ -126,13 +124,13 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 					</div>
 
 					<div
-						className={`invisible h-0 w-full items-center justify-between xl:visible xl:flex xl:h-auto xl:w-8/12 ${
+						className={`invisible h-0 w-full items-center justify-between xl:visible xl:flex xl:h-auto xl:w-10/12 ${
 							navbarOpen &&
 							"!visible relative mt-4 !h-auto max-h-[400px] overflow-y-scroll rounded-md bg-white p-7.5 shadow-lg dark:bg-gray-dark"
 						}`}
 					>
 						<nav>
-							<ul className='flex flex-col gap-5 xl:flex-row xl:items-center xl:gap-2.5'>
+							<ul className='flex flex-col gap-5 xl:flex-row  xl:gap-2.5'>
 								{menuItems?.map((item: Menu, key) =>
 									!item?.path && item?.submenu ? (
 										<Dropdown
@@ -203,10 +201,10 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 									</defs>
 								</svg>
 							</button>
-
 							<ThemeSwitcher />
+							<LanguageSwitcher />
 
-							{session?.user ? (
+							{/* {session?.user ? (
 								<Account navbarOpen={navbarOpen} />
 							) : (
 								<>
@@ -223,10 +221,19 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 										Sign Up
 									</Link>
 								</>
-							)}
+							)} */}
 						</div>
 						{/* <!--=== Nav Right End ===--> */}
 					</div>
+				</div>
+				<div className='hidden h-[21px] w-full xl:block '>
+					<div
+						className='h-full w-full'
+						style={{
+							backgroundImage: "url(/images/bg/header-gradient.png)",
+							backgroundRepeat: "repeat-x",
+						}}
+					/>
 				</div>
 			</header>
 

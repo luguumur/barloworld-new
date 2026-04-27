@@ -1,6 +1,8 @@
 import "../styles/globals.css";
 import "../styles/satoshi.css";
+// import "../styles/main.css";
 import { Inter } from "next/font/google";
+import { Noto_Sans_Mongolian } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 
 const inter = Inter({ subsets: ["latin"] });

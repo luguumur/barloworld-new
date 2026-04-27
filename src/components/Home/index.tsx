@@ -10,10 +10,18 @@ import Blog from "./Blog";
 import Newsletter from "./Newsletter";
 
 import { integrations } from "../../../integrations.config";
+import Masthead from "./Masthead";
+import { getMastheadsPublic } from "@/actions/masthead";
+import { cookies } from "next/headers";
 
-const Home = () => {
+const Home = async () => {
+	const cookieStore = await cookies();
+	const langCookie = cookieStore.get("lang")?.value;
+	const language = langCookie === "mn" ? "mn" : "en";
+	const mastheads = await getMastheadsPublic();
 	return (
 		<>
+			<Masthead mastheads={mastheads} language={language} />
 			<Hero />
 			<Features />
 			<FeaturesWithImage />

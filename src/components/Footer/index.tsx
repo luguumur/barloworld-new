@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const Footer = () => {
 	return (
-		<footer className='relative z-1 mt-auto overflow-hidden bg-black py-17.5 lg:py-22.5 xl:py-27.5'>
+		<footer className='relative z-1 mt-auto overflow-hidden bg-[#474d59] py-17.5 lg:py-22.5 xl:py-27.5'>
 			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
 				{/* <!-- footer menu start --> */}
 				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
@@ -18,7 +18,8 @@ const Footer = () => {
 							/>
 						</Link>
 						<p className='mt-5 text-gray-5'>
-							© Your SaaS - Demo SaaS website created using SaaSBold
+							Copyright © {new Date().getFullYear()} Barloworld Mongolia. All
+							Rights Reserved
 						</p>
 
 						<ul className='mt-11 flex items-center gap-2'>

@@ -8,13 +8,17 @@ import Loader from "@/components/Common/PreLoader";
 import FooterWrapper from "@/components/Footer/FooterWrapper";
 import { HeaderWrapper } from "@/components/Header/HeaderWrapper";
 import { getMenuForPublic } from "@/actions/menu";
+import { cookies } from "next/headers";
 
 export default async function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const menu = await getMenuForPublic();
+	const cookieStore = await cookies();
+	const langCookie = cookieStore.get("lang")?.value;
+	const lang = langCookie === "mn" ? "mn" : "en";
+	const menu = await getMenuForPublic(lang);
 	return (
 		<>
 			<Loader />
