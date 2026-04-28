@@ -1,20 +1,7 @@
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
-import { Prisma } from "@prisma/client";
-
-const db = prisma as unknown as {
-	productType: {
-		findMany: (args?: { orderBy?: { createdAt: "asc" } }) => Promise<ProductTypeRow[]>;
-		findUnique: (args: { where: { id: string } }) => Promise<ProductTypeRow | null>;
-		create: (args: { data: { name: string; name_en: string } }) => Promise<ProductTypeRow>;
-		update: (args: {
-			where: { id: string };
-			data: { name: string; name_en: string };
-		}) => Promise<ProductTypeRow>;
-		delete: (args: { where: { id: string } }) => Promise<ProductTypeRow>;
-	};
-};
+import { handleTableMissing } from "@/libs/prismaError";
 
 export type ProductTypeRow = {
 	id: string;
@@ -24,57 +11,37 @@ export type ProductTypeRow = {
 	updatedAt: Date;
 };
 
-function getDelegate() {
-	return db.productType;
-}
-
 export async function getProductTypes(search?: string) {
 	await isAuthorized();
 	try {
-		const list = await getDelegate().findMany({
+		return await prisma.productType.findMany({
 			orderBy: { createdAt: "asc" },
-		});
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(t) =>
-					t.name.toLowerCase().includes(q) ||
-					t.name_en.toLowerCase().includes(q)
-			);
-		}
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ name: { contains: search.trim(), mode: "insensitive" } },
+							{ name_en: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as ProductTypeRow[];
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return [];
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return [];
-		}
-		throw error;
+		return handleTableMissing(error, [] as ProductTypeRow[]);
 	}
 }
 
 export async function getProductTypeById(id: string) {
 	await isAuthorized();
 	try {
-		return await getDelegate().findUnique({ where: { id } });
+		return await prisma.productType.findUnique({ where: { id } }) as ProductTypeRow | null;
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return null;
-		}
-		throw error;
+		return handleTableMissing(error, null);
 	}
 }
 
 export async function createProductType(data: { name: string; name_en: string }) {
 	await isAuthorized();
-	return await getDelegate().create({
+	return prisma.productType.create({
 		data: { name: data.name.trim(), name_en: data.name_en.trim() },
 	});
 }
@@ -84,7 +51,7 @@ export async function updateProductType(
 	data: { name: string; name_en: string }
 ) {
 	await isAuthorized();
-	return await getDelegate().update({
+	return prisma.productType.update({
 		where: { id },
 		data: { name: data.name.trim(), name_en: data.name_en.trim() },
 	});
@@ -92,5 +59,5 @@ export async function updateProductType(
 
 export async function deleteProductType(id: string) {
 	await isAuthorized();
-	return await getDelegate().delete({ where: { id } });
+	return prisma.productType.delete({ where: { id } });
 }

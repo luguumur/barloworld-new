@@ -1,35 +1,7 @@
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
-import { Prisma } from "@prisma/client";
-
-// Use delegate from generated client (ensure npx prisma generate was run)
-const db = prisma as unknown as {
-	deal: {
-		findMany: (args?: {
-			orderBy?: { createdAt: "asc" | "desc" };
-		}) => Promise<DealRow[]>;
-		findUnique: (args: { where: { id: string } }) => Promise<DealRow | null>;
-		create: (args: { data: DealInput }) => Promise<DealRow>;
-		update: (args: {
-			where: { id: string };
-			data: Partial<DealInput>;
-		}) => Promise<DealRow>;
-		delete: (args: { where: { id: string } }) => Promise<DealRow>;
-	};
-};
-
-function getDealDelegate():
-	| {
-			findMany: (args?: { orderBy?: { createdAt: "asc" | "desc" } }) => Promise<DealRow[]>;
-			findUnique: (args: { where: { id: string } }) => Promise<DealRow | null>;
-			create: (args: { data: DealInput }) => Promise<DealRow>;
-			update: (args: { where: { id: string }; data: Partial<DealInput> }) => Promise<DealRow>;
-			delete: (args: { where: { id: string } }) => Promise<DealRow>;
-	  }
-	| undefined {
-	return db.deal;
-}
+import { handleTableMissing } from "@/libs/prismaError";
 
 export type DealRow = {
 	id: string;
@@ -58,64 +30,37 @@ export type DealInput = {
 
 export async function getDealById(id: string) {
 	await isAuthorized();
-	const delegate = getDealDelegate();
-	if (!delegate) return null;
 	try {
-		return await delegate.findUnique({
-			where: { id },
-		});
+		return await prisma.deal.findUnique({ where: { id } }) as DealRow | null;
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return null;
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return null;
-		}
-		throw error;
+		return handleTableMissing(error, null);
 	}
 }
 
 export async function getDeals(search?: string) {
 	await isAuthorized();
-	const delegate = getDealDelegate();
-	if (!delegate) return [];
 	try {
-		const list = await delegate.findMany({
+		return await prisma.deal.findMany({
 			orderBy: { createdAt: "desc" },
-		});
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(d) =>
-					d.title.toLowerCase().includes(q) ||
-					d.title_en.toLowerCase().includes(q) ||
-					(d.subtitle && d.subtitle.toLowerCase().includes(q)) ||
-					(d.subtitle_en && d.subtitle_en.toLowerCase().includes(q))
-			);
-		}
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ title: { contains: search.trim(), mode: "insensitive" } },
+							{ title_en: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as DealRow[];
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return [];
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return [];
-		}
-		throw error;
+		return handleTableMissing(error, [] as DealRow[]);
 	}
 }
 
 export async function createDeal(data: DealInput) {
 	await isAuthorized();
-	const delegate = getDealDelegate();
-	if (!delegate) throw new Error("Prisma client missing Deal model. Run: npx prisma generate and restart the dev server.");
-	return await delegate.create({
+	return prisma.deal.create({
 		data: {
 			title: data.title.trim(),
 			title_en: data.title_en.trim(),
@@ -131,38 +76,22 @@ export async function createDeal(data: DealInput) {
 
 export async function updateDeal(id: string, data: Partial<DealInput>) {
 	await isAuthorized();
-	const delegate = getDealDelegate();
-	if (!delegate) throw new Error("Prisma client missing Deal model. Run: npx prisma generate and restart the dev server.");
-	return await delegate.update({
+	return prisma.deal.update({
 		where: { id },
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && {
-				subtitle: data.subtitle?.trim() ?? null,
-			}),
-			...(data.subtitle_en !== undefined && {
-				subtitle_en: data.subtitle_en?.trim() ?? null,
-			}),
-			...(data.description !== undefined && {
-				description: data.description.trim(),
-			}),
-			...(data.description_en !== undefined && {
-				description_en: data.description_en.trim(),
-			}),
+			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
+			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
+			...(data.description !== undefined && { description: data.description.trim() }),
+			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
 			...(data.status !== undefined && { status: data.status.trim() || "ACTIVE" }),
-			...(data.img_path !== undefined && {
-				img_path: data.img_path?.trim() || null,
-			}),
+			...(data.img_path !== undefined && { img_path: data.img_path?.trim() || null }),
 		},
 	});
 }
 
 export async function deleteDeal(id: string) {
 	await isAuthorized();
-	const delegate = getDealDelegate();
-	if (!delegate) throw new Error("Prisma client missing Deal model. Run: npx prisma generate and restart the dev server.");
-	return await delegate.delete({
-		where: { id },
-	});
+	return prisma.deal.delete({ where: { id } });
 }

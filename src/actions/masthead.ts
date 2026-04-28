@@ -1,43 +1,7 @@
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
-import { Prisma } from "@prisma/client";
-
-const db = prisma as unknown as {
-	masthead: {
-		findMany: (args?: {
-			orderBy?: { createdAt: "asc" | "desc" };
-		}) => Promise<MastheadRow[]>;
-		findUnique: (args: {
-			where: { id: string };
-		}) => Promise<MastheadRow | null>;
-		create: (args: { data: MastheadInput }) => Promise<MastheadRow>;
-		update: (args: {
-			where: { id: string };
-			data: Partial<MastheadInput>;
-		}) => Promise<MastheadRow>;
-		delete: (args: { where: { id: string } }) => Promise<MastheadRow>;
-	};
-};
-
-function getMastheadDelegate():
-	| {
-			findMany: (args?: {
-				orderBy?: { createdAt: "asc" | "desc" };
-			}) => Promise<MastheadRow[]>;
-			findUnique: (args: {
-				where: { id: string };
-			}) => Promise<MastheadRow | null>;
-			create: (args: { data: MastheadInput }) => Promise<MastheadRow>;
-			update: (args: {
-				where: { id: string };
-				data: Partial<MastheadInput>;
-			}) => Promise<MastheadRow>;
-			delete: (args: { where: { id: string } }) => Promise<MastheadRow>;
-	  }
-	| undefined {
-	return db.masthead;
-}
+import { handleTableMissing } from "@/libs/prismaError";
 
 export type MastheadRow = {
 	id: string;
@@ -66,100 +30,58 @@ export type MastheadInput = {
 
 export async function getMastheadById(id: string) {
 	await isAuthorized();
-	const delegate = getMastheadDelegate();
-	if (!delegate) return null;
 	try {
-		return await delegate.findUnique({
-			where: { id },
-		});
+		return await prisma.masthead.findUnique({ where: { id } }) as MastheadRow | null;
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return null;
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return null;
-		}
-		throw error;
+		return handleTableMissing(error, null);
 	}
 }
 
 export async function getMastheads(search?: string) {
 	await isAuthorized();
-	const delegate = getMastheadDelegate();
-	if (!delegate) return [];
 	try {
-		const list = await delegate.findMany({
+		return await prisma.masthead.findMany({
 			orderBy: { createdAt: "desc" },
-		});
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(m) =>
-					m.title.toLowerCase().includes(q) ||
-					m.title_en.toLowerCase().includes(q) ||
-					(m.subtitle && m.subtitle.toLowerCase().includes(q)) ||
-					(m.subtitle_en && m.subtitle_en.toLowerCase().includes(q))
-			);
-		}
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ title: { contains: search.trim(), mode: "insensitive" } },
+							{ title_en: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as MastheadRow[];
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return [];
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return [];
-		}
-		throw error;
+		return handleTableMissing(error, [] as MastheadRow[]);
 	}
 }
 
 /** Public: read mastheads without admin auth */
 export async function getMastheadsPublic(search?: string) {
-	const delegate = getMastheadDelegate();
-	if (!delegate) return [];
 	try {
-		const list = await delegate.findMany({
+		return await prisma.masthead.findMany({
 			orderBy: { createdAt: "desc" },
-		});
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(m) =>
-					m.title.toLowerCase().includes(q) ||
-					m.title_en.toLowerCase().includes(q) ||
-					(m.subtitle && m.subtitle.toLowerCase().includes(q)) ||
-					(m.subtitle_en && m.subtitle_en.toLowerCase().includes(q))
-			);
-		}
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ title: { contains: search.trim(), mode: "insensitive" } },
+							{ title_en: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as MastheadRow[];
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return [];
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return [];
-		}
-		throw error;
+		return handleTableMissing(error, [] as MastheadRow[]);
 	}
 }
 
 export async function createMasthead(data: MastheadInput) {
 	await isAuthorized();
-	const delegate = getMastheadDelegate();
-	if (!delegate)
-		throw new Error(
-			"Prisma client missing Masthead model. Run: npx prisma generate and restart the dev server."
-		);
-	return await delegate.create({
+	return prisma.masthead.create({
 		data: {
 			title: data.title.trim(),
 			title_en: data.title_en.trim(),
@@ -175,44 +97,22 @@ export async function createMasthead(data: MastheadInput) {
 
 export async function updateMasthead(id: string, data: Partial<MastheadInput>) {
 	await isAuthorized();
-	const delegate = getMastheadDelegate();
-	if (!delegate)
-		throw new Error(
-			"Prisma client missing Masthead model. Run: npx prisma generate and restart the dev server."
-		);
-	return await delegate.update({
+	return prisma.masthead.update({
 		where: { id },
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && {
-				subtitle: data.subtitle?.trim() ?? null,
-			}),
-			...(data.subtitle_en !== undefined && {
-				subtitle_en: data.subtitle_en?.trim() ?? null,
-			}),
-			...(data.description !== undefined && {
-				description: data.description.trim(),
-			}),
-			...(data.description_en !== undefined && {
-				description_en: data.description_en.trim(),
-			}),
+			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
+			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
+			...(data.description !== undefined && { description: data.description.trim() }),
+			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
 			...(data.url !== undefined && { url: data.url?.trim() || null }),
-			...(data.imageurl !== undefined && {
-				imageurl: data.imageurl?.trim() || null,
-			}),
+			...(data.imageurl !== undefined && { imageurl: data.imageurl?.trim() || null }),
 		},
 	});
 }
 
 export async function deleteMasthead(id: string) {
 	await isAuthorized();
-	const delegate = getMastheadDelegate();
-	if (!delegate)
-		throw new Error(
-			"Prisma client missing Masthead model. Run: npx prisma generate and restart the dev server."
-		);
-	return await delegate.delete({
-		where: { id },
-	});
+	return prisma.masthead.delete({ where: { id } });
 }

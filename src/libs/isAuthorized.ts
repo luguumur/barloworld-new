@@ -3,5 +3,6 @@ import { getServerSession } from "next-auth";
 
 export const isAuthorized = async () => {
 	const session = await getServerSession(authOptions);
-	return session?.user;
+	if (!session?.user) throw new Error("Unauthorized");
+	return session.user;
 };

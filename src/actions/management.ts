@@ -1,21 +1,7 @@
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
-import { Prisma } from "@prisma/client";
-
-const db = prisma as unknown as {
-	management: {
-		findMany: (args?: unknown) => Promise<ManagementRow[]>;
-		findUnique: (args: { where: { id: string } }) => Promise<ManagementRow | null>;
-		create: (args: { data: ManagementInput }) => Promise<ManagementRow>;
-		update: (args: { where: { id: string }; data: Partial<ManagementInput> }) => Promise<ManagementRow>;
-		delete: (args: { where: { id: string } }) => Promise<ManagementRow>;
-	};
-};
-
-function getDelegate() {
-	return db.management;
-}
+import { handleTableMissing } from "@/libs/prismaError";
 
 export type ManagementRow = {
 	id: string;
@@ -36,46 +22,35 @@ export type ManagementInput = {
 
 export async function getManagementById(id: string) {
 	await isAuthorized();
-	const delegate = getDelegate();
-	if (!delegate) return null;
 	try {
-		return await delegate.findUnique({ where: { id } });
+		return await prisma.management.findUnique({ where: { id } }) as ManagementRow | null;
 	} catch (error) {
-		if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2021") return null;
-		if (error instanceof Error && error.message.includes("does not exist")) return null;
-		throw error;
+		return handleTableMissing(error, null);
 	}
 }
 
 export async function getManagements(search?: string) {
 	await isAuthorized();
-	const delegate = getDelegate();
-	if (!delegate) return [];
 	try {
-		const list = await delegate.findMany({
+		return await prisma.management.findMany({
 			orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-		});
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(m) =>
-					m.name.toLowerCase().includes(q) ||
-					m.position.toLowerCase().includes(q)
-			);
-		}
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ name: { contains: search.trim(), mode: "insensitive" } },
+							{ position: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as ManagementRow[];
 	} catch (error) {
-		if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2021") return [];
-		if (error instanceof Error && error.message.includes("does not exist")) return [];
-		throw error;
+		return handleTableMissing(error, [] as ManagementRow[]);
 	}
 }
 
 export async function createManagement(data: ManagementInput) {
 	await isAuthorized();
-	const delegate = getDelegate();
-	if (!delegate) throw new Error("Prisma client missing Management model. Run: npx prisma generate and restart.");
-	return await delegate.create({
+	return prisma.management.create({
 		data: {
 			name: data.name.trim(),
 			position: data.position.trim(),
@@ -87,9 +62,7 @@ export async function createManagement(data: ManagementInput) {
 
 export async function updateManagement(id: string, data: Partial<ManagementInput>) {
 	await isAuthorized();
-	const delegate = getDelegate();
-	if (!delegate) throw new Error("Prisma client missing Management model. Run: npx prisma generate and restart.");
-	return await delegate.update({
+	return prisma.management.update({
 		where: { id },
 		data: {
 			...(data.name !== undefined && { name: data.name.trim() }),
@@ -102,19 +75,14 @@ export async function updateManagement(id: string, data: Partial<ManagementInput
 
 export async function deleteManagement(id: string) {
 	await isAuthorized();
-	const delegate = getDelegate();
-	if (!delegate) throw new Error("Prisma client missing Management model. Run: npx prisma generate and restart.");
-	return await delegate.delete({ where: { id } });
+	return prisma.management.delete({ where: { id } });
 }
 
 export async function reorderManagements(orderedIds: string[]) {
 	await isAuthorized();
 	await Promise.all(
 		orderedIds.map((id, index) =>
-			prisma.management.update({
-				where: { id },
-				data: { order: index },
-			})
+			prisma.management.update({ where: { id }, data: { order: index } })
 		)
 	);
 }

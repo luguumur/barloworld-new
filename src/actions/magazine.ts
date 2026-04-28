@@ -1,34 +1,7 @@
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
-import { Prisma } from "@prisma/client";
-
-const db = prisma as unknown as {
-	magazine: {
-		findMany: (args?: {
-			orderBy?: { createdAt: "asc" | "desc" };
-		}) => Promise<MagazineRow[]>;
-		findUnique: (args: { where: { id: string } }) => Promise<MagazineRow | null>;
-		create: (args: { data: MagazineInput }) => Promise<MagazineRow>;
-		update: (args: {
-			where: { id: string };
-			data: Partial<MagazineInput>;
-		}) => Promise<MagazineRow>;
-		delete: (args: { where: { id: string } }) => Promise<MagazineRow>;
-	};
-};
-
-function getMagazineDelegate():
-	| {
-			findMany: (args?: { orderBy?: { createdAt: "asc" | "desc" } }) => Promise<MagazineRow[]>;
-			findUnique: (args: { where: { id: string } }) => Promise<MagazineRow | null>;
-			create: (args: { data: MagazineInput }) => Promise<MagazineRow>;
-			update: (args: { where: { id: string }; data: Partial<MagazineInput> }) => Promise<MagazineRow>;
-			delete: (args: { where: { id: string } }) => Promise<MagazineRow>;
-	  }
-	| undefined {
-	return db.magazine;
-}
+import { handleTableMissing } from "@/libs/prismaError";
 
 export type MagazineRow = {
 	id: string;
@@ -53,64 +26,37 @@ export type MagazineInput = {
 
 export async function getMagazineById(id: string) {
 	await isAuthorized();
-	const delegate = getMagazineDelegate();
-	if (!delegate) return null;
 	try {
-		return await delegate.findUnique({
-			where: { id },
-		});
+		return await prisma.magazine.findUnique({ where: { id } }) as MagazineRow | null;
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return null;
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return null;
-		}
-		throw error;
+		return handleTableMissing(error, null);
 	}
 }
 
 export async function getMagazines(search?: string) {
 	await isAuthorized();
-	const delegate = getMagazineDelegate();
-	if (!delegate) return [];
 	try {
-		const list = await delegate.findMany({
+		return await prisma.magazine.findMany({
 			orderBy: { createdAt: "desc" },
-		});
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(m) =>
-					m.title.toLowerCase().includes(q) ||
-					m.title_en.toLowerCase().includes(q) ||
-					(m.number && m.number.toLowerCase().includes(q)) ||
-					(m.date && m.date.toLowerCase().includes(q))
-			);
-		}
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ title: { contains: search.trim(), mode: "insensitive" } },
+							{ title_en: { contains: search.trim(), mode: "insensitive" } },
+							{ number: { contains: search.trim(), mode: "insensitive" } },
+							{ date: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as MagazineRow[];
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return [];
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return [];
-		}
-		throw error;
+		return handleTableMissing(error, [] as MagazineRow[]);
 	}
 }
 
 export async function createMagazine(data: MagazineInput) {
 	await isAuthorized();
-	const delegate = getMagazineDelegate();
-	if (!delegate) throw new Error("Prisma client missing Magazine model. Run: npx prisma generate and restart the dev server.");
-	return await delegate.create({
+	return prisma.magazine.create({
 		data: {
 			title: data.title.trim(),
 			title_en: data.title_en.trim(),
@@ -124,9 +70,7 @@ export async function createMagazine(data: MagazineInput) {
 
 export async function updateMagazine(id: string, data: Partial<MagazineInput>) {
 	await isAuthorized();
-	const delegate = getMagazineDelegate();
-	if (!delegate) throw new Error("Prisma client missing Magazine model. Run: npx prisma generate and restart the dev server.");
-	return await delegate.update({
+	return prisma.magazine.update({
 		where: { id },
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
@@ -141,9 +85,5 @@ export async function updateMagazine(id: string, data: Partial<MagazineInput>) {
 
 export async function deleteMagazine(id: string) {
 	await isAuthorized();
-	const delegate = getMagazineDelegate();
-	if (!delegate) throw new Error("Prisma client missing Magazine model. Run: npx prisma generate and restart the dev server.");
-	return await delegate.delete({
-		where: { id },
-	});
+	return prisma.magazine.delete({ where: { id } });
 }

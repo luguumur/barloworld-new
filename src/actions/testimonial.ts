@@ -1,24 +1,7 @@
 "use server";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
-import { Prisma } from "@prisma/client";
-
-const db = prisma as typeof prisma & {
-	testimonial: {
-		findMany: (args?: {
-			orderBy?: { createdAt: "asc" | "desc" };
-		}) => Promise<TestimonialRow[]>;
-		findUnique: (args: {
-			where: { id: string };
-		}) => Promise<TestimonialRow | null>;
-		create: (args: { data: TestimonialInput }) => Promise<TestimonialRow>;
-		update: (args: {
-			where: { id: string };
-			data: Partial<TestimonialInput>;
-		}) => Promise<TestimonialRow>;
-		delete: (args: { where: { id: string } }) => Promise<TestimonialRow>;
-	};
-};
+import { handleTableMissing } from "@/libs/prismaError";
 
 export type TestimonialRow = {
 	id: string;
@@ -48,61 +31,36 @@ export type TestimonialInput = {
 export async function getTestimonialById(id: string) {
 	await isAuthorized();
 	try {
-		return await db.testimonial.findUnique({
-			where: { id },
-		});
+		return await prisma.testimonial.findUnique({ where: { id } }) as TestimonialRow | null;
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return null;
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return null;
-		}
-		throw error;
+		return handleTableMissing(error, null);
 	}
 }
 
 export async function getTestimonials(search?: string) {
 	await isAuthorized();
-
 	try {
-		const list = await db.testimonial.findMany({
+		return await prisma.testimonial.findMany({
 			orderBy: { createdAt: "desc" },
-		});
-
-		if (search?.trim()) {
-			const q = search.trim().toLowerCase();
-			return list.filter(
-				(t) =>
-					t.title.toLowerCase().includes(q) ||
-					t.title_en.toLowerCase().includes(q) ||
-					(t.subtitle && t.subtitle.toLowerCase().includes(q)) ||
-					(t.subtitle_en && t.subtitle_en.toLowerCase().includes(q))
-			);
-		}
-
-		return list;
+			where: search?.trim()
+				? {
+						OR: [
+							{ title: { contains: search.trim(), mode: "insensitive" } },
+							{ title_en: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle: { contains: search.trim(), mode: "insensitive" } },
+							{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
+						],
+					}
+				: undefined,
+		}) as TestimonialRow[];
 	} catch (error) {
-		if (
-			error instanceof Prisma.PrismaClientKnownRequestError &&
-			error.code === "P2021"
-		) {
-			return [];
-		}
-		if (error instanceof Error && error.message.includes("does not exist")) {
-			return [];
-		}
-		throw error;
+		return handleTableMissing(error, [] as TestimonialRow[]);
 	}
 }
 
 export async function createTestimonial(data: TestimonialInput) {
 	await isAuthorized();
-
-	return await db.testimonial.create({
+	return prisma.testimonial.create({
 		data: {
 			title: data.title.trim(),
 			title_en: data.title_en.trim(),
@@ -118,38 +76,22 @@ export async function createTestimonial(data: TestimonialInput) {
 
 export async function updateTestimonial(id: string, data: Partial<TestimonialInput>) {
 	await isAuthorized();
-
-	return await db.testimonial.update({
+	return prisma.testimonial.update({
 		where: { id },
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && {
-				subtitle: data.subtitle?.trim() ?? null,
-			}),
-			...(data.subtitle_en !== undefined && {
-				subtitle_en: data.subtitle_en?.trim() ?? null,
-			}),
-			...(data.description !== undefined && {
-				description: data.description.trim(),
-			}),
-			...(data.description_en !== undefined && {
-				description_en: data.description_en.trim(),
-			}),
-			...(data.videoUrl !== undefined && {
-				videoUrl: data.videoUrl?.trim() || null,
-			}),
-			...(data.imageUrl !== undefined && {
-				imageUrl: data.imageUrl?.trim() || null,
-			}),
+			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
+			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
+			...(data.description !== undefined && { description: data.description.trim() }),
+			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
+			...(data.videoUrl !== undefined && { videoUrl: data.videoUrl?.trim() || null }),
+			...(data.imageUrl !== undefined && { imageUrl: data.imageUrl?.trim() || null }),
 		},
 	});
 }
 
 export async function deleteTestimonial(id: string) {
 	await isAuthorized();
-
-	return await db.testimonial.delete({
-		where: { id },
-	});
+	return prisma.testimonial.delete({ where: { id } });
 }
