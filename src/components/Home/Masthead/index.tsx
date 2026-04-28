@@ -107,12 +107,12 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 							</div>
 						</div>
 
-						{/* <div className='relative z-20 flex min-h-[min(100svh,720px)] items-end px-5 pb-20 sm:px-8 lg:min-h-[560px] lg:px-12 lg:pb-24 xl:px-16'>
+						<div className='relative z-20 flex min-h-[min(100svh,720px)] items-end px-5 pb-20 sm:px-8 lg:min-h-[560px] lg:px-12 lg:pb-24 xl:px-16'>
 							<div className='w-full max-w-3xl'>
 								<div className='mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary sm:text-sm'>
 									{active?.dateLabel}
 								</div>
-								<h1 className='text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl'>
+								<h1 className='font-satoshi text-3xl font-black leading-tight text-white sm:text-4xl lg:text-5xl'>
 									{active?.title}
 								</h1>
 								<p className='mt-4 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base'>
@@ -120,13 +120,13 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 								</p>
 								<Link
 									href={active?.href || "/"}
-									className='mt-7 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-primary/90 sm:text-base'
+									className='mt-7 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 font-satoshi text-sm font-bold text-black transition hover:bg-primary-dark sm:text-base'
 								>
 									{active?.ctaLabel}
 									<ArrowRightIcon className='h-4 w-4' />
 								</Link>
 							</div>
-						</div> */}
+						</div>
 
 						<div className='pointer-events-none absolute inset-x-0 bottom-0 z-30 flex flex-col items-center gap-4 pb-6 sm:flex-row sm:justify-between sm:px-8 lg:px-12 xl:px-16'>
 							<div

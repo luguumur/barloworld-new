@@ -1,265 +1,174 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+const footerLinks = [
+	{
+		heading: "Equipment",
+		links: [
+			{ label: "New Equipment", href: "/products" },
+			{ label: "Used Equipment", href: "/products" },
+			{ label: "Rental", href: "/products" },
+			{ label: "Work Tools / Attachments", href: "/products" },
+			{ label: "Power Systems", href: "/products" },
+		],
+	},
+	{
+		heading: "Parts & Service",
+		links: [
+			{ label: "Genuine Cat Parts", href: "/products" },
+			{ label: "Shop Services", href: "/support" },
+			{ label: "Field Service", href: "/support" },
+			{ label: "Preventive Maintenance", href: "/support" },
+			{ label: "Equipment Rebuilds", href: "/support" },
+		],
+	},
+	{
+		heading: "Company",
+		links: [
+			{ label: "About Us", href: "/support" },
+			{ label: "Management Team", href: "/support" },
+			{ label: "News & Blog", href: "/blog" },
+			{ label: "Testimonials", href: "/support" },
+			{ label: "Careers", href: "/support" },
+		],
+	},
+	{
+		heading: "Contact",
+		links: [
+			{ label: "Contact Us", href: "/support" },
+			{ label: "Find a Location", href: "/support" },
+			{ label: "Request a Quote", href: "/support" },
+			{ label: "Support", href: "/support" },
+		],
+	},
+];
+
+const socialLinks = [
+	{
+		label: "Facebook",
+		href: "#",
+		icon: (
+			<svg className='h-5 w-5 fill-current' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+				<path d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z' />
+			</svg>
+		),
+	},
+	{
+		label: "LinkedIn",
+		href: "#",
+		icon: (
+			<svg className='h-5 w-5 fill-current' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+				<path d='M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z' />
+			</svg>
+		),
+	},
+	{
+		label: "YouTube",
+		href: "#",
+		icon: (
+			<svg className='h-5 w-5 fill-current' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+				<path d='M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z' />
+			</svg>
+		),
+	},
+];
+
 const Footer = () => {
 	return (
-		<footer className='relative z-1 mt-auto overflow-hidden bg-[#474d59] py-17.5 lg:py-22.5 xl:py-27.5'>
-			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
-				{/* <!-- footer menu start --> */}
-				<div className='flex flex-wrap gap-10 lg:justify-between xl:flex-nowrap xl:gap-20'>
-					<div className='w-full max-w-[275px]'>
+		<footer className='relative overflow-hidden bg-[#0f172a] text-gray-5'>
+			{/* Main footer grid */}
+			<div className='mx-auto max-w-[1170px] px-4 py-14 sm:px-8 xl:px-0'>
+				<div className='grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5 xl:gap-12'>
+					{/* Brand column */}
+					<div className='lg:col-span-1'>
 						<Link href='/'>
 							<Image
 								src='/images/logo/belogo.webp'
-								alt='Logo'
-								width={214}
+								alt='Barloworld Mongolia'
+								width={160}
 								height={40}
+								className='mb-5'
 							/>
 						</Link>
-						<p className='mt-5 text-gray-5'>
-							Copyright © {new Date().getFullYear()} Barloworld Mongolia. All
-							Rights Reserved
+						<p className='mb-5 text-sm leading-relaxed text-gray-5'>
+							Authorized Caterpillar® dealer in Mongolia. Serving mining,
+							construction, and energy sectors nationwide.
 						</p>
-
-						<ul className='mt-11 flex items-center gap-2'>
-							<li>
+						<div className='flex items-center gap-3'>
+							{socialLinks.map((s) => (
 								<a
-									href='#'
-									aria-label='Twitter Social Link'
-									className='flex duration-200 ease-out hover:text-white'
+									key={s.label}
+									href={s.href}
+									aria-label={s.label}
+									className='flex h-8 w-8 items-center justify-center rounded-full bg-white/5 text-gray-5 transition hover:bg-primary hover:text-black'
 								>
-									<svg
-										className='fill-current'
-										width='32'
-										height='32'
-										viewBox='0 0 32 32'
-										fill='none'
-										xmlns='http://www.w3.org/2000/svg'
-									>
-										<path d='M13.063 9L16.558 13.475L20.601 9H23.055L17.696 14.931L24 23H19.062L15.196 18.107L10.771 23H8.316L14.051 16.658L8 9H13.063ZM12.323 10.347H10.866L19.741 21.579H21.101L12.323 10.347Z' />
-									</svg>
+									{s.icon}
 								</a>
-							</li>
-
-							<li>
-								<a
-									href='#'
-									aria-label='Dev Social Link'
-									className='flex duration-200 ease-out hover:text-white'
-								>
-									<svg
-										className='fill-current'
-										width='32'
-										height='32'
-										viewBox='0 0 32 32'
-										fill='none'
-										xmlns='http://www.w3.org/2000/svg'
-									>
-										<path d='M12.29 14.3C12.1722 14.2039 12.026 14.1494 11.874 14.145H11.251V17.872H11.874C12.0261 17.8674 12.1724 17.8125 12.29 17.716C12.3606 17.6615 12.4166 17.5905 12.4533 17.5093C12.4899 17.428 12.5059 17.3389 12.5 17.25V14.762C12.5049 14.6738 12.4884 14.5856 12.4518 14.5052C12.4152 14.4247 12.3597 14.3543 12.29 14.3ZM22.432 8H9.568C8.704 8 8.002 8.7 8 9.564V22.436C8.00106 22.8512 8.16673 23.249 8.46067 23.5422C8.75461 23.8354 9.15283 24 9.568 24H22.432C23.296 24 23.998 23.3 24 22.436V9.564C23.9989 9.14883 23.8333 8.75103 23.5393 8.45784C23.2454 8.16465 22.8472 8 22.432 8ZM13.507 17.257C13.5152 17.4842 13.4758 17.7106 13.3914 17.9216C13.307 18.1327 13.1794 18.3238 13.0168 18.4826C12.8542 18.6415 12.6601 18.7646 12.4471 18.844C12.2342 18.9235 12.0069 18.9575 11.78 18.944H10.123V13.035H11.815C12.0392 13.0265 12.2628 13.0643 12.4718 13.1461C12.6807 13.2279 12.8705 13.352 13.0293 13.5105C13.1882 13.669 13.3125 13.8586 13.3947 14.0674C13.4769 14.2762 13.5151 14.4998 13.507 14.724V17.257ZM17.1 14.09H15.2V15.462H16.363V16.519H15.2V17.89H17.1V18.946H14.883C14.7884 18.9487 14.6943 18.9327 14.6059 18.8989C14.5175 18.8652 14.4367 18.8144 14.3679 18.7493C14.2992 18.6843 14.244 18.6064 14.2054 18.5201C14.1668 18.4337 14.1456 18.3406 14.143 18.246V13.775C14.1382 13.5843 14.2091 13.3994 14.3403 13.2609C14.4715 13.1224 14.6523 13.0415 14.843 13.036H17.1V14.09ZM20.8 18.208C20.329 19.308 19.484 19.088 19.106 18.208L17.734 13.036H18.9L19.958 17.1L21.014 13.038H22.178L20.8 18.208Z' />
-									</svg>
-								</a>
-							</li>
-
-							<li>
-								<a
-									href='#'
-									aria-label='Github Social Link'
-									className='flex duration-200 ease-out hover:text-white'
-								>
-									<svg
-										className='fill-current'
-										width='32'
-										height='32'
-										viewBox='0 0 32 32'
-										fill='none'
-										xmlns='http://www.w3.org/2000/svg'
-									>
-										<path d='M16 8.19995C11.6 8.19995 8 11.8 8 16.2C8 19.7 10.3 22.7 13.5 23.8C13.9 23.9 14 23.6 14 23.4V22C11.8 22.5 11.3 21 11.3 21C10.9 20.1 10.4 19.8 10.4 19.8C9.7 19.3 10.5 19.3 10.5 19.3C11.3 19.4 11.7 20.1 11.7 20.1C12.4 21.4 13.6 21 14 20.8C14.1 20.3 14.3 19.9 14.5 19.7C12.7 19.5 10.9 18.8 10.9 15.7C10.9 14.8 11.2 14.1 11.7 13.6C11.6 13.4 11.3 12.6 11.8 11.5C11.8 11.5 12.5 11.3 14 12.3C14.6 12.1 15.3 12 16 12C16.7 12 17.4 12.1 18 12.3C19.5 11.3 20.2 11.5 20.2 11.5C20.6 12.6 20.4 13.4 20.3 13.6C20.8 14.2 21.1 14.9 21.1 15.7C21.1 18.8 19.2 19.4 17.4 19.6C17.7 20 18 20.5 18 21.2V23.4C18 23.6 18.1 23.9 18.6 23.8C21.8 22.7 24.1 19.7 24.1 16.2C24 11.8 20.4 8.19995 16 8.19995Z' />
-									</svg>
-								</a>
-							</li>
-						</ul>
+							))}
+						</div>
 					</div>
 
-					<div className='flex w-full flex-col justify-between gap-10 sm:w-auto sm:flex-row xl:gap-20'>
-						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
-								Products
-							</h2>
-
-							<ul className='flex flex-col gap-3'>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Features
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Integrations
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Pricing & Plans
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Changelog
-									</a>
-								</li>
+					{/* Link columns */}
+					{footerLinks.map((col) => (
+						<div key={col.heading}>
+							<h3 className='mb-4 font-satoshi text-sm font-bold uppercase tracking-wider text-white'>
+								{col.heading}
+							</h3>
+							<ul className='flex flex-col gap-2.5'>
+								{col.links.map((link) => (
+									<li key={link.label}>
+										<Link
+											href={link.href}
+											className='text-sm transition hover:text-primary'
+										>
+											{link.label}
+										</Link>
+									</li>
+								))}
 							</ul>
 						</div>
+					))}
+				</div>
 
-						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
-								Resources
-							</h2>
-
-							<ul className='flex flex-col gap-3'>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Our Blog
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Heatmaps
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Affiliate Program
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Integrations
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
-								Products
-							</h2>
-
-							<ul className='flex flex-col gap-3'>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Features
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Integrations
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Pricing & Plans
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Changelog
-									</a>
-								</li>
-							</ul>
-						</div>
-
-						<div className='w-full sm:w-auto'>
-							<h2 className='mb-5 font-satoshi text-lg font-bold -tracking-[0.2px] text-white'>
-								Company
-							</h2>
-
-							<ul className='flex flex-col gap-3'>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										About Us
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Our Story
-									</a>
-								</li>
-								<li>
-									<a
-										className='text-gray-5 duration-200 ease-out hover:text-white'
-										href='#'
-									>
-										Work With Us
-									</a>
-								</li>
-							</ul>
-						</div>
+				{/* Contact strip */}
+				<div className='mt-10 flex flex-wrap items-center gap-6 rounded-lg border border-white/5 bg-white/3 px-6 py-4'>
+					<div className='flex items-center gap-2 text-sm'>
+						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='h-4 w-4 shrink-0 text-primary'>
+							<path fillRule='evenodd' d='M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z' clipRule='evenodd' />
+						</svg>
+						<a href='tel:+97677007899' className='hover:text-primary'>+976 7700-7899</a>
+					</div>
+					<div className='flex items-center gap-2 text-sm'>
+						<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='currentColor' className='h-4 w-4 shrink-0 text-primary'>
+							<path d='M3 4a2 2 0 00-2 2v1.161l8.441 4.221a1.25 1.25 0 001.118 0L19 7.162V6a2 2 0 00-2-2H3z' />
+							<path d='M19 8.839l-7.77 3.885a2.75 2.75 0 01-2.46 0L1 8.839V14a2 2 0 002 2h14a2 2 0 002-2V8.839z' />
+						</svg>
+						<a href='mailto:info@barloworld.mn' className='hover:text-primary'>info@barloworld.mn</a>
+					</div>
+					<div className='ml-auto'>
+						<Link
+							href='/support'
+							className='inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2 font-satoshi text-sm font-bold text-black transition hover:bg-primary-dark'
+						>
+							Contact Us
+						</Link>
 					</div>
 				</div>
-				{/* <!-- footer menu end --> */}
 			</div>
 
-			{/* <!-- bg shapes --> */}
-			<div className='hidden sm:block'>
-				<div className='absolute bottom-0 left-0 -z-1'>
-					<Image
-						src='/images/footer/footer-grid-01.svg'
-						alt='grid'
-						width={305}
-						height={305}
-					/>
-				</div>
-				<div className='absolute right-0 top-0 -z-1'>
-					<Image
-						src='/images/footer/footer-grid-02.svg'
-						alt='grid'
-						width={305}
-						height={305}
-					/>
+			{/* Bottom bar */}
+			<div className='border-t border-white/5 py-5'>
+				<div className='mx-auto flex max-w-[1170px] flex-wrap items-center justify-between gap-4 px-4 sm:px-8 xl:px-0'>
+					<p className='text-xs text-gray-6'>
+						© {new Date().getFullYear()} Barloworld Mongolia LLC. All Rights Reserved.
+					</p>
+					<div className='flex items-center gap-4 text-xs text-gray-6'>
+						<Link href='/support' className='hover:text-primary'>Privacy Policy</Link>
+						<span className='text-white/20'>|</span>
+						<Link href='/support' className='hover:text-primary'>Terms & Conditions</Link>
+						<span className='text-white/20'>|</span>
+						<Link href='/support' className='hover:text-primary'>Sitemap</Link>
+					</div>
 				</div>
 			</div>
 		</footer>

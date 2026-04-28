@@ -1,37 +1,46 @@
-import Hero from "./Hero";
-import Features from "./Features";
-import FeaturesWithImage from "./FeaturesWithImage";
-import Counter from "./Counter";
-import CallToAction from "./CallToAction";
-import Testimonials from "./Testimonials";
-import Pricing from "./Pricing";
-import FAQ from "./FAQ";
-import Blog from "./Blog";
-import Newsletter from "./Newsletter";
-
+import { cookies } from "next/headers";
+import { getMastheadsPublic } from "@/actions/masthead";
 import { integrations } from "../../../integrations.config";
 import Masthead from "./Masthead";
-import { getMastheadsPublic } from "@/actions/masthead";
-import { cookies } from "next/headers";
+import EquipmentCategories from "./EquipmentCategories";
+import EquipmentSearch from "./EquipmentSearch";
+import DealsSection from "./DealsSection";
+import CompanyIntro from "./CompanyIntro";
+import TestimonialsSection from "./TestimonialsSection";
+import ContactCTA from "./ContactCTA";
+import Blog from "./Blog";
 
 const Home = async () => {
-	const cookieStore = await cookies();
+	const cookieStore = cookies();
 	const langCookie = cookieStore.get("lang")?.value;
 	const language = langCookie === "mn" ? "mn" : "en";
 	const mastheads = await getMastheadsPublic();
+
 	return (
 		<>
+			{/* 1. Full-width hero carousel */}
 			<Masthead mastheads={mastheads} language={language} />
-			<Hero />
-			<Features />
-			<FeaturesWithImage />
-			<Counter />
-			<CallToAction />
-			<Testimonials />
-			<Pricing />
-			<FAQ />
-			<Newsletter />
+
+			{/* 2. Equipment category quick-links */}
+			<EquipmentCategories />
+
+			{/* 3. Equipment search widget */}
+			<EquipmentSearch />
+
+			{/* 4. Deals & Promotions (from DB) */}
+			<DealsSection lang={language} />
+
+			{/* 5. Company introduction */}
+			<CompanyIntro />
+
+			{/* 6. Customer testimonials (from DB) */}
+			<TestimonialsSection lang={language} />
+
+			{/* 7. Blog (Sanity-powered) */}
 			{integrations?.isSanityEnabled && <Blog />}
+
+			{/* 8. Contact CTA */}
+			<ContactCTA />
 		</>
 	);
 };

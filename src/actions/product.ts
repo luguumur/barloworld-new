@@ -32,7 +32,7 @@ export type ProductRow = {
 	name_en: string;
 	description: string;
 	description_en: string;
-	price: unknown;
+	price: number | null;
 	img_path: string | null;
 	brochure_path: string | null;
 	model_3d: string | null;
@@ -59,7 +59,7 @@ export type ProductRow = {
 	}>;
 };
 
-function parsePrice(v: string | number | null | undefined): unknown {
+function parsePrice(v: string | number | null | undefined): number | null {
 	if (v === null || v === undefined || v === "") return null;
 	if (typeof v === "number") return v;
 	const n = parseFloat(String(v).trim());

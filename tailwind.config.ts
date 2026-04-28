@@ -14,7 +14,8 @@ const config: Config = {
 		fontFamily: {
 			satoshi: ["Roboto Condensed", "sans-serif"],
 			inter: ["Inter", "sans-serif"],
-			sans: ["Satoshi"],
+			noto: ["Noto Sans", "sans-serif"],
+			sans: ["Noto Sans", "sans-serif"],
 		},
 		container: {
 			center: true,

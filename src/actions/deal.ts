@@ -95,3 +95,16 @@ export async function deleteDeal(id: string) {
 	await isAuthorized();
 	return prisma.deal.delete({ where: { id } });
 }
+
+/** Public: active deals for homepage — no auth required */
+export async function getDealsPublic(limit = 6) {
+	try {
+		return await prisma.deal.findMany({
+			where: { status: "ACTIVE" },
+			orderBy: { createdAt: "desc" },
+			take: limit,
+		}) as DealRow[];
+	} catch (error) {
+		return handleTableMissing(error, [] as DealRow[]);
+	}
+}
