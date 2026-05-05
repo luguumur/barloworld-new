@@ -10,7 +10,7 @@ const Support = () => {
 			<Breadcrumbs title={"Support"} pages={["Home", "Support"]} />
 			{/* <!-- ===== Breadcrumb Section End ===== --> */}
 
-			<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+			<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
 				<div className='flex flex-col overflow-hidden rounded-[20px] bg-gray-1 dark:bg-black md:flex-row'>
 					<div className='w-full px-4 py-16 sm:px-7.5 lg:px-10 xl:px-16'>
 						<form>

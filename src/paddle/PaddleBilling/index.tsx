@@ -20,7 +20,7 @@ const Pricing = ({ isBilling }: { isBilling?: boolean }) => {
 					/>
 				)}
 
-				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+				<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
 					<div className='grid grid-cols-1 gap-7.5 md:grid-cols-2 xl:grid-cols-3'>
 						{pricingData &&
 							pricingData.map((price, key) => (

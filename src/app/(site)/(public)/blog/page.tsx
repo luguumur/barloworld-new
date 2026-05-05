@@ -38,7 +38,7 @@ const BlogGrid = async () => {
 
 				<Breadcrumbs title='Blog' pages={["Home", "Blog Grids"]} />
 
-				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+				<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
 					<div
 						className={`${
 							integrations?.isSanityEnabled

@@ -97,7 +97,7 @@ const BlogGrid = async ({ params }: Props) => {
 
 				<Breadcrumbs title={author?.name} pages={["Home", author?.name]} />
 
-				<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+				<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
 					<div className='grid grid-cols-1 gap-x-7.5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3'>
 						{/* Blog Item */}
 						{posts?.length > 0 ? (

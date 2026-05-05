@@ -63,7 +63,7 @@ const Hero = () => {
 			</div>
 
 			{/* <!-- Hero brands --> */}
-			<div className='mx-auto mt-20 w-full max-w-[1170px] px-4 sm:px-8 lg:mt-25 xl:mt-32.5 xl:px-0'>
+			<div className='container mx-auto mt-20 w-full px-4 sm:px-8 lg:mt-25 xl:mt-32.5 xl:px-0'>
 				<h2 className='text-center font-satoshi text-lg font-medium text-black dark:text-white'>
 					Built by the same team behind numerous successful SaaS and digital
 					products

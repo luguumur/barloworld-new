@@ -1,4 +1,3 @@
-import "../styles/main.css";
 import "../styles/globals.css";
 import "../styles/satoshi.css";
 import { Inter } from "next/font/google";

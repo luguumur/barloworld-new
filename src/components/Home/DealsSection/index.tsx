@@ -68,7 +68,7 @@ export default async function DealsSection({
 
 	return (
 		// <section className='bg-gray-1 py-14 dark:bg-dark'>
-		// 	<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+		// 	<div className='mx-auto container px-4 sm:px-8 xl:px-0'>
 		// 		<div className='mb-8 flex items-end justify-between'>
 		// 			<div>
 		// 				<p className='mb-1 text-sm font-semibold uppercase tracking-widest text-primary'>

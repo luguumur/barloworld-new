@@ -30,7 +30,7 @@ export default function EquipmentSearch() {
 
 	return (
 		<section className='bg-[#1e293b] py-10'>
-			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+			<div className='container mx-auto px-4 sm:px-8 xl:px-0'>
 				<p className='mb-4 text-center font-satoshi text-lg font-bold text-white sm:text-xl'>
 					Find the Right Equipment —{" "}
 					<span className='text-primary'>Search Our Inventory</span>

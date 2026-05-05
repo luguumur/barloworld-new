@@ -49,7 +49,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 		return () => {
 			if (timerRef.current) clearInterval(timerRef.current);
 		};
-	}, [paused, count, index]);
+	}, [paused, count]);
 
 	useEffect(() => {
 		setIndex((i) => (count > 0 ? Math.min(i, count - 1) : 0));

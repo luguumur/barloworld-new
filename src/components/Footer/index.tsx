@@ -89,7 +89,7 @@ const Footer = () => {
 	return (
 		<footer className='relative overflow-hidden bg-[#0f172a] text-gray-5'>
 			{/* Main footer grid */}
-			<div className='mx-auto max-w-[1170px] px-4 py-14 sm:px-8 xl:px-0'>
+			<div className='container mx-auto px-4 py-14 sm:px-8 xl:px-0'>
 				<div className='grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-5 xl:gap-12'>
 					{/* Brand column */}
 					<div className='lg:col-span-1'>
@@ -188,7 +188,7 @@ const Footer = () => {
 
 			{/* Bottom bar */}
 			<div className='border-t border-white/5 py-5'>
-				<div className='mx-auto flex max-w-[1170px] flex-wrap items-center justify-between gap-4 px-4 sm:px-8 xl:px-0'>
+				<div className='container mx-auto flex flex-wrap items-center justify-between gap-4 px-4 sm:px-8 xl:px-0'>
 					<p className='text-xs text-gray-6'>
 						© {new Date().getFullYear()} Barloworld Mongolia LLC. All Rights
 						Reserved.

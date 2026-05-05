@@ -2482,7 +2482,7 @@ button {
 	border: none;
 	outline: none;
 }
-/* 
+
 input[type="text"],
 input[type="date"],
 input[type="datetime"],
@@ -2506,7 +2506,7 @@ select {
 
 input[type="search"] {
 	box-sizing: border-box;
-} */
+}
 
 .wpcf7-form input[type="text"]:hover,
 .wpcf7-form input[type="date"]:hover,

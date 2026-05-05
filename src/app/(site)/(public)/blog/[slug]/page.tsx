@@ -128,7 +128,7 @@ const SingleBlog = async ({ params }: Props) => {
 				</div>
 
 				{integrations.isSanityEnabled ? (
-					<div className='mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+					<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
 						<div className='mx-auto mb-12.5 w-full max-w-[770px] text-center'>
 							<div className='mb-5 flex flex-wrap items-center justify-center gap-6'>
 								<Link

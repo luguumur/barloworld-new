@@ -7,11 +7,38 @@ const categories = [
 		href: "/products",
 		bg: "bg-[#1e293b]",
 		icon: (
-			<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-12 w-12'>
+			<svg
+				viewBox='0 0 48 48'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				className='h-12 w-12'
+			>
 				<rect x='4' y='28' width='40' height='12' rx='3' fill='#feca34' />
-				<rect x='8' y='16' width='24' height='14' rx='2' fill='#feca34' opacity='.7' />
-				<circle cx='13' cy='40' r='5' fill='#0f172a' stroke='#feca34' strokeWidth='2' />
-				<circle cx='35' cy='40' r='5' fill='#0f172a' stroke='#feca34' strokeWidth='2' />
+				<rect
+					x='8'
+					y='16'
+					width='24'
+					height='14'
+					rx='2'
+					fill='#feca34'
+					opacity='.7'
+				/>
+				<circle
+					cx='13'
+					cy='40'
+					r='5'
+					fill='#0f172a'
+					stroke='#feca34'
+					strokeWidth='2'
+				/>
+				<circle
+					cx='35'
+					cy='40'
+					r='5'
+					fill='#0f172a'
+					stroke='#feca34'
+					strokeWidth='2'
+				/>
 			</svg>
 		),
 	},
@@ -21,11 +48,48 @@ const categories = [
 		href: "/products",
 		bg: "bg-[#292524]",
 		icon: (
-			<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-12 w-12'>
-				<rect x='4' y='28' width='40' height='12' rx='3' fill='#feca34' opacity='.6' />
-				<rect x='8' y='16' width='24' height='14' rx='2' fill='#feca34' opacity='.4' />
-				<circle cx='13' cy='40' r='5' fill='#0f172a' stroke='#feca34' strokeWidth='2' opacity='.8' />
-				<circle cx='35' cy='40' r='5' fill='#0f172a' stroke='#feca34' strokeWidth='2' opacity='.8' />
+			<svg
+				viewBox='0 0 48 48'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				className='h-12 w-12'
+			>
+				<rect
+					x='4'
+					y='28'
+					width='40'
+					height='12'
+					rx='3'
+					fill='#feca34'
+					opacity='.6'
+				/>
+				<rect
+					x='8'
+					y='16'
+					width='24'
+					height='14'
+					rx='2'
+					fill='#feca34'
+					opacity='.4'
+				/>
+				<circle
+					cx='13'
+					cy='40'
+					r='5'
+					fill='#0f172a'
+					stroke='#feca34'
+					strokeWidth='2'
+					opacity='.8'
+				/>
+				<circle
+					cx='35'
+					cy='40'
+					r='5'
+					fill='#0f172a'
+					stroke='#feca34'
+					strokeWidth='2'
+					opacity='.8'
+				/>
 				<path d='M30 10 L38 10 L35 18 L27 18 Z' fill='#feca34' opacity='.5' />
 			</svg>
 		),
@@ -36,11 +100,38 @@ const categories = [
 		href: "/products",
 		bg: "bg-[#1c1917]",
 		icon: (
-			<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-12 w-12'>
+			<svg
+				viewBox='0 0 48 48'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				className='h-12 w-12'
+			>
 				<rect x='6' y='20' width='36' height='20' rx='3' fill='#feca34' />
-				<rect x='10' y='12' width='20' height='10' rx='2' fill='#feca34' opacity='.6' />
-				<circle cx='14' cy='40' r='4' fill='#0f172a' stroke='#feca34' strokeWidth='2' />
-				<circle cx='34' cy='40' r='4' fill='#0f172a' stroke='#feca34' strokeWidth='2' />
+				<rect
+					x='10'
+					y='12'
+					width='20'
+					height='10'
+					rx='2'
+					fill='#feca34'
+					opacity='.6'
+				/>
+				<circle
+					cx='14'
+					cy='40'
+					r='4'
+					fill='#0f172a'
+					stroke='#feca34'
+					strokeWidth='2'
+				/>
+				<circle
+					cx='34'
+					cy='40'
+					r='4'
+					fill='#0f172a'
+					stroke='#feca34'
+					strokeWidth='2'
+				/>
 				<path d='M32 8 L42 8 L42 20 L32 20 Z' fill='#feca34' opacity='.4' />
 			</svg>
 		),
@@ -51,8 +142,20 @@ const categories = [
 		href: "/products",
 		bg: "bg-[#0f172a]",
 		icon: (
-			<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-12 w-12'>
-				<circle cx='24' cy='24' r='10' stroke='#feca34' strokeWidth='3' fill='none' />
+			<svg
+				viewBox='0 0 48 48'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				className='h-12 w-12'
+			>
+				<circle
+					cx='24'
+					cy='24'
+					r='10'
+					stroke='#feca34'
+					strokeWidth='3'
+					fill='none'
+				/>
 				<circle cx='24' cy='24' r='4' fill='#feca34' />
 				<rect x='22' y='6' width='4' height='8' rx='1' fill='#feca34' />
 				<rect x='22' y='34' width='4' height='8' rx='1' fill='#feca34' />
@@ -67,9 +170,26 @@ const categories = [
 		href: "/support",
 		bg: "bg-[#1e1b4b]",
 		icon: (
-			<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-12 w-12'>
-				<path d='M24 6 C14 6 6 14 6 24 C6 34 14 42 24 42 C34 42 42 34 42 24 C42 14 34 6 24 6Z' stroke='#feca34' strokeWidth='2.5' fill='none' />
-				<path d='M16 28 L20 20 L24 28 L28 16 L32 24' stroke='#feca34' strokeWidth='2.5' strokeLinecap='round' strokeLinejoin='round' fill='none' />
+			<svg
+				viewBox='0 0 48 48'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				className='h-12 w-12'
+			>
+				<path
+					d='M24 6 C14 6 6 14 6 24 C6 34 14 42 24 42 C34 42 42 34 42 24 C42 14 34 6 24 6Z'
+					stroke='#feca34'
+					strokeWidth='2.5'
+					fill='none'
+				/>
+				<path
+					d='M16 28 L20 20 L24 28 L28 16 L32 24'
+					stroke='#feca34'
+					strokeWidth='2.5'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+					fill='none'
+				/>
 			</svg>
 		),
 	},
@@ -79,7 +199,12 @@ const categories = [
 		href: "/products",
 		bg: "bg-[#14532d]",
 		icon: (
-			<svg viewBox='0 0 48 48' fill='none' xmlns='http://www.w3.org/2000/svg' className='h-12 w-12'>
+			<svg
+				viewBox='0 0 48 48'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+				className='h-12 w-12'
+			>
 				<path d='M26 6 L14 26 H24 L22 42 L34 22 H24 L26 6Z' fill='#feca34' />
 			</svg>
 		),
@@ -89,7 +214,7 @@ const categories = [
 export default function EquipmentCategories() {
 	return (
 		<section className='bg-white py-12 dark:bg-dark'>
-			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+			<div className='container mx-auto px-4 sm:px-8 xl:px-0'>
 				<div className='mb-8 flex items-end justify-between'>
 					<div>
 						<p className='mb-1 text-sm font-semibold uppercase tracking-widest text-primary'>

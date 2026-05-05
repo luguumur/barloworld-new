@@ -42,22 +42,26 @@ export default async function ProductsListPage({ params }: Props) {
 					{ label: typeName, href: `/products/${type.id}` },
 					{ label: catName },
 				]}
-				subtitle={`${products.length} model${products.length !== 1 ? "s" : ""} available`}
+				subtitle={`${products.length} model${
+					products.length !== 1 ? "s" : ""
+				} available`}
 			/>
 
-			<div className="mx-auto max-w-[1170px] px-4 py-12 sm:px-8 xl:px-0">
+			<div className='container mx-auto px-4 py-12 sm:px-8 xl:px-0'>
 				{products.length === 0 ? (
-					<div className="flex flex-col items-center justify-center py-24 text-center">
-						<p className="text-gray-5">No models available in this category yet.</p>
+					<div className='flex flex-col items-center justify-center py-24 text-center'>
+						<p className='text-gray-5'>
+							No models available in this category yet.
+						</p>
 						<Link
 							href={`/products/${type.id}`}
-							className="mt-4 text-sm font-semibold text-primary hover:underline"
+							className='mt-4 text-sm font-semibold text-primary hover:underline'
 						>
 							← Back to {typeName}
 						</Link>
 					</div>
 				) : (
-					<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+					<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
 						{products.map((product) => (
 							<ProductCard
 								key={product.id}

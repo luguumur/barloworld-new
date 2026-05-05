@@ -1,4 +1,7 @@
-import { getTestimonialsPublic, type TestimonialRow } from "@/actions/testimonial";
+import {
+	getTestimonialsPublic,
+	type TestimonialRow,
+} from "@/actions/testimonial";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -10,7 +13,13 @@ function resolveImg(path: string | null | undefined): string | null {
 	return base ? `${base}/${raw}` : null;
 }
 
-function TestimonialCard({ t, lang }: { t: TestimonialRow; lang: "mn" | "en" }) {
+function TestimonialCard({
+	t,
+	lang,
+}: {
+	t: TestimonialRow;
+	lang: "mn" | "en";
+}) {
 	const title = lang === "mn" ? t.title : t.title_en;
 	const subtitle = lang === "mn" ? t.subtitle : t.subtitle_en;
 	const description = lang === "mn" ? t.description : t.description_en;
@@ -41,7 +50,13 @@ function TestimonialCard({ t, lang }: { t: TestimonialRow; lang: "mn" | "en" }) 
 			<div className='flex items-center gap-3 border-t border-gray-3 pt-4 dark:border-dark-2'>
 				<div className='relative h-10 w-10 overflow-hidden rounded-full bg-gray-2 dark:bg-dark-2'>
 					{img ? (
-						<Image src={img} alt={title} fill className='object-cover' unoptimized />
+						<Image
+							src={img}
+							alt={title}
+							fill
+							className='object-cover'
+							unoptimized
+						/>
 					) : (
 						<span className='flex h-full w-full items-center justify-center font-satoshi text-sm font-bold text-primary'>
 							{title.charAt(0).toUpperCase()}
@@ -61,14 +76,18 @@ function TestimonialCard({ t, lang }: { t: TestimonialRow; lang: "mn" | "en" }) 
 	);
 }
 
-export default async function TestimonialsSection({ lang = "en" }: { lang?: "mn" | "en" }) {
+export default async function TestimonialsSection({
+	lang = "en",
+}: {
+	lang?: "mn" | "en";
+}) {
 	const testimonials = await getTestimonialsPublic(6);
 
 	if (!testimonials.length) return null;
 
 	return (
 		<section className='bg-gray-1 py-14 dark:bg-dark-2'>
-			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+			<div className='container mx-auto px-4 sm:px-8 xl:px-0'>
 				<div className='mb-8 text-center'>
 					<p className='mb-2 text-sm font-semibold uppercase tracking-widest text-primary'>
 						Үйлчлүүлэгчдийн сэтгэгдэл

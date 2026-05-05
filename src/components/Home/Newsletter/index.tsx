@@ -39,7 +39,7 @@ export default function Newsletter() {
 
 	return (
 		<section className='relative z-10 overflow-hidden bg-[linear-gradient(90deg,#F7E8F3_0%,#E0E0FC_100%)] py-17.5 dark:bg-gradient-to-t dark:from-gray-dark dark:to-gray-dark lg:py-[100px]'>
-			<div className='container mx-auto w-full max-w-[1170px]'>
+			<div className='container container mx-auto w-full'>
 				<div className='mx-auto w-full max-w-[590px]'>
 					<div className='text-center'>
 						<h2 className='mb-5 font-satoshi text-3xl font-bold text-dark dark:text-white sm:text-4xl md:text-heading-2'>

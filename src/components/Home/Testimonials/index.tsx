@@ -10,7 +10,7 @@ const Testimonials = () => {
 				description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent condimentum dictum euismod malesuada lacus, non consequat quam'
 			/>
 
-			<div className='relative z-1 mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+			<div className='container relative z-1 mx-auto w-full px-4 sm:px-8 xl:px-0'>
 				<div className='grid grid-cols-1 gap-7.5 sm:grid-cols-2 lg:grid-cols-3'>
 					{/* <!-- 1st Column --> */}
 					{testimonialData?.map((group, key) => {

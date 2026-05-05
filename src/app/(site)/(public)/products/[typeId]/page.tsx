@@ -46,16 +46,21 @@ export default async function ProductCategoriesPage({ params }: Props) {
 				]}
 			/>
 
-			<div className="mx-auto max-w-[1170px] px-4 py-12 sm:px-8 xl:px-0">
+			<div className='container mx-auto px-4 py-12 sm:px-8 xl:px-0'>
 				{filtered.length === 0 ? (
-					<div className="flex flex-col items-center justify-center py-24 text-center">
-						<p className="text-gray-5">No categories found for this product type.</p>
-						<Link href="/products" className="mt-4 text-sm font-semibold text-primary hover:underline">
+					<div className='flex flex-col items-center justify-center py-24 text-center'>
+						<p className='text-gray-5'>
+							No categories found for this product type.
+						</p>
+						<Link
+							href='/products'
+							className='mt-4 text-sm font-semibold text-primary hover:underline'
+						>
 							← Back to Products
 						</Link>
 					</div>
 				) : (
-					<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
 						{filtered.map((cat) => (
 							<GridCard
 								key={cat.id}

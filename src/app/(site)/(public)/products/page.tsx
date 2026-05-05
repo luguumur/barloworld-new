@@ -615,7 +615,7 @@ export default async function ProductTypesPage() {
 				breadcrumbs={[{ label: "Home", href: "/" }, { label: "Products" }]}
 			/>
 
-			{/* <div className='mx-auto max-w-[1170px] px-4 py-12 sm:px-8 xl:px-0'>
+			{/* <div className='mx-auto container px-4 py-12 sm:px-8 xl:px-0'>
 				{types.length === 0 ? (
 					<div className='flex flex-col items-center justify-center py-24 text-center'>
 						<span className='mb-4 font-satoshi text-6xl font-black text-primary opacity-20'>

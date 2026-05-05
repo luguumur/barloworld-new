@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function CompanyIntro() {
 	return (
 		<section className='bg-white py-16 dark:bg-dark'>
-			<div className='mx-auto max-w-[1170px] px-4 sm:px-8 xl:px-0'>
+			<div className='container mx-auto px-4 sm:px-8 xl:px-0'>
 				<div className='grid grid-cols-1 gap-12 lg:grid-cols-2 lg:items-center'>
 					{/* Text side */}
 					<div>
@@ -27,9 +27,9 @@ export default function CompanyIntro() {
 								our certified technician teams.
 							</p>
 							<p>
-								Our nationwide branch network ensures fast parts delivery, on-site
-								field service, and preventive maintenance programs tailored to
-								your operation.
+								Our nationwide branch network ensures fast parts delivery,
+								on-site field service, and preventive maintenance programs
+								tailored to your operation.
 							</p>
 						</div>
 
@@ -52,10 +52,26 @@ export default function CompanyIntro() {
 					{/* Stats side */}
 					<div className='grid grid-cols-2 gap-6'>
 						{[
-							{ value: "80+", label: "Years of Experience", label_mn: "Жилийн туршлага" },
-							{ value: "19", label: "Branch Locations", label_mn: "Салбар байршил" },
-							{ value: "500+", label: "Cat Products", label_mn: "Cat бүтээгдэхүүн" },
-							{ value: "24/7", label: "Service Support", label_mn: "Үйлчилгээний дэмжлэг" },
+							{
+								value: "80+",
+								label: "Years of Experience",
+								label_mn: "Жилийн туршлага",
+							},
+							{
+								value: "19",
+								label: "Branch Locations",
+								label_mn: "Салбар байршил",
+							},
+							{
+								value: "500+",
+								label: "Cat Products",
+								label_mn: "Cat бүтээгдэхүүн",
+							},
+							{
+								value: "24/7",
+								label: "Service Support",
+								label_mn: "Үйлчилгээний дэмжлэг",
+							},
 						].map((stat) => (
 							<div
 								key={stat.value}

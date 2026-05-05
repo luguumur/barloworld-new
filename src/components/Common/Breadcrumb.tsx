@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function Breadcrumb({ pageTitle }: { pageTitle: string }) {
 	return (
 		<section className='relative z-10 overflow-x-clip pb-[70px] pt-[140px]'>
-			<div className='container mx-auto w-full max-w-[1170px]'>
+			<div className='container container mx-auto w-full'>
 				<div className='text-center'>
 					<h2 className='mb-4.5 font-satoshi text-3xl font-bold tracking-[-1px] text-dark dark:text-white'>
 						{pageTitle}

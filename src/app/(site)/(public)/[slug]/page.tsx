@@ -40,14 +40,14 @@ export default async function CustomPageRoute({ params }: Props) {
 
 	return (
 		<main>
-			<section className="relative z-1 overflow-hidden pb-17.5 pt-35 xl:pb-27.5">
-				<div className="mx-auto w-full max-w-[1170px] px-4 sm:px-8 xl:px-0">
-					<div className="mx-auto w-full max-w-[770px]">
-						<h1 className="mb-6 font-satoshi text-3xl font-bold -tracking-[1.6px] text-black dark:text-white lg:text-heading-4 xl:text-heading-3">
+			<section className='relative z-1 overflow-hidden pb-17.5 pt-35 xl:pb-27.5'>
+				<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
+					<div className='mx-auto w-full max-w-[770px]'>
+						<h1 className='mb-6 font-satoshi text-3xl font-bold -tracking-[1.6px] text-black dark:text-white lg:text-heading-4 xl:text-heading-3'>
 							{title}
 						</h1>
 						<div
-							className="prose dark:prose-invert max-w-none text-black dark:text-gray-5 prose-headings:font-satoshi prose-headings:font-bold prose-p:mb-4 prose-ul:my-4 prose-li:my-1"
+							className='prose dark:prose-invert prose-headings:font-satoshi prose-headings:font-bold prose-p:mb-4 prose-ul:my-4 prose-li:my-1 max-w-none text-black dark:text-gray-5'
 							dangerouslySetInnerHTML={{ __html: content }}
 						/>
 					</div>
