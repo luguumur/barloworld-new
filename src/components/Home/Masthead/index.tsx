@@ -107,7 +107,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 							</div>
 						</div>
 
-						<div className='relative z-20 flex min-h-[min(100svh,720px)] items-end px-5 pb-20 sm:px-8 lg:min-h-[560px] lg:px-12 lg:pb-24 xl:px-16'>
+						{/* <div className='relative z-20 flex min-h-[min(100svh,720px)] items-end px-5 pb-20 sm:px-8 lg:min-h-[560px] lg:px-12 lg:pb-24 xl:px-16'>
 							<div className='w-full max-w-3xl'>
 								<div className='mb-3 text-xs font-semibold uppercase tracking-[0.18em] text-primary sm:text-sm'>
 									{active?.dateLabel}
@@ -126,7 +126,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 									<ArrowRightIcon className='h-4 w-4' />
 								</Link>
 							</div>
-						</div>
+						</div> */}
 
 						<div className='pointer-events-none absolute inset-x-0 bottom-0 z-30 flex flex-col items-center gap-4 pb-6 sm:flex-row sm:justify-between sm:px-8 lg:px-12 xl:px-16'>
 							<div
@@ -170,16 +170,6 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 							</div>
 						</div>
 					</div>
-
-					<div
-						className='relative z-40 h-1.5 w-full shrink-0'
-						style={{
-							backgroundImage: "url(/images/bg/header-gradient.png)",
-							backgroundRepeat: "repeat-x",
-							backgroundSize: "auto 100%",
-						}}
-						aria-hidden
-					/>
 
 					<p className='sr-only' aria-live='polite'>
 						{active ? `Showing: ${active.title}` : ""}

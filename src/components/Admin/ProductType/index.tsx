@@ -3,7 +3,7 @@ import ProductTypeEmptyState from "./ProductTypeEmptyState";
 import ProductTypeListTable from "./ProductTypeListTable";
 import ProductTypeTopbar from "./ProductTypeTopbar";
 
-type Item = { id: string; name: string; name_en: string; createdAt: Date };
+type Item = { id: string; name: string; name_en: string; img_path?: string | null; createdAt: Date };
 
 export default function ProductTypeListContainer({
 	items,

@@ -7,8 +7,15 @@ export type ProductTypeRow = {
 	id: string;
 	name: string;
 	name_en: string;
+	img_path?: string | null;
 	createdAt: Date;
 	updatedAt: Date;
+};
+
+export type ProductTypeInput = {
+	name: string;
+	name_en: string;
+	img_path?: string | null;
 };
 
 export async function getProductTypes(search?: string) {
@@ -39,21 +46,26 @@ export async function getProductTypeById(id: string) {
 	}
 }
 
-export async function createProductType(data: { name: string; name_en: string }) {
+export async function createProductType(data: ProductTypeInput) {
 	await isAuthorized();
 	return prisma.productType.create({
-		data: { name: data.name.trim(), name_en: data.name_en.trim() },
+		data: {
+			name: data.name.trim(),
+			name_en: data.name_en.trim(),
+			img_path: data.img_path ?? null,
+		},
 	});
 }
 
-export async function updateProductType(
-	id: string,
-	data: { name: string; name_en: string }
-) {
+export async function updateProductType(id: string, data: ProductTypeInput) {
 	await isAuthorized();
 	return prisma.productType.update({
 		where: { id },
-		data: { name: data.name.trim(), name_en: data.name_en.trim() },
+		data: {
+			name: data.name.trim(),
+			name_en: data.name_en.trim(),
+			img_path: data.img_path ?? null,
+		},
 	});
 }
 

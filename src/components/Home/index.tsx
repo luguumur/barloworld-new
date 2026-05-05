@@ -22,10 +22,10 @@ const Home = async () => {
 			<Masthead mastheads={mastheads} language={language} />
 
 			{/* 2. Equipment category quick-links */}
-			<EquipmentCategories />
+			{/* <EquipmentCategories /> */}
 
 			{/* 3. Equipment search widget */}
-			<EquipmentSearch />
+			{/* <EquipmentSearch /> */}
 
 			{/* 4. Deals & Promotions (from DB) */}
 			<DealsSection lang={language} />

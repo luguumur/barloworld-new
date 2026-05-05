@@ -197,7 +197,7 @@ h6,
 		font-size: 18px;
 	}
 }
-
+/* 
 ul,
 ol {
 	font-size: 16px;
@@ -206,7 +206,7 @@ ol {
 	padding: 0 0 12px;
 	color: #666;
 	font-family: "Noto Sans", sans-serif;
-}
+} */
 
 #menu-main-navigation ul > li > a {
 	font-family: "Noto Sans", sans-serif;
@@ -226,7 +226,7 @@ ul:last-child,
 ol:last-child {
 	padding: 0;
 }
-
+/* 
 ul,
 ol {
 	width: auto;
@@ -240,12 +240,9 @@ ol li {
 	padding-left: 18px;
 	margin-bottom: 0;
 }
+*/
 
 a {
-	word-break: break-word;
-	color: #1c1c1c;
-	font-weight: 600;
-	text-decoration: none;
 	text-decoration: none;
 }
 
@@ -266,11 +263,11 @@ a:hover {
 	ol {
 		padding-left: 16px;
 	}
-
+	/* 
 	ul li,
 	ol li {
 		padding-left: 20px;
-	}
+	} */
 }
 
 @media (min-width: 1025px) {
@@ -287,10 +284,10 @@ a:hover {
 		padding-left: 20px;
 	}
 
-	ul li,
+	/* ul li,
 	ol li {
 		padding-left: 25px;
-	}
+	} */
 
 	ul li:before {
 		width: 8px;
@@ -308,7 +305,7 @@ a:hover {
 }
 
 .container {
-	max-width: 1140px;
+	max-width: 1366px;
 }
 
 hr {
@@ -2434,7 +2431,7 @@ html.flexbox {
 		right: 73px;
 	}
 }
-
+/* 
 table {
 	border-collapse: collapse;
 	width: 100%;
@@ -2444,7 +2441,7 @@ table th,
 table td {
 	border: 1px solid #ccc;
 	text-align: center;
-}
+} */
 
 .tablepress tfoot th,
 .tablepress thead th {
@@ -2485,7 +2482,7 @@ button {
 	border: none;
 	outline: none;
 }
-
+/* 
 input[type="text"],
 input[type="date"],
 input[type="datetime"],
@@ -2509,7 +2506,7 @@ select {
 
 input[type="search"] {
 	box-sizing: border-box;
-}
+} */
 
 .wpcf7-form input[type="text"]:hover,
 .wpcf7-form input[type="date"]:hover,
@@ -2545,11 +2542,11 @@ input[type="search"] {
 .wpcf7-form textarea.textarea-short {
 	height: 100px;
 }
-
+/* 
 input[type="submit"],
 button[type="submit"] {
 	border: none;
-}
+} */
 
 .form-row {
 	margin-bottom: 1.25em;
@@ -11365,7 +11362,7 @@ h2.h1.hp-mast-heading {
 	}
 }
 
-ul li:before {
+/* ul li:before {
 	content: "";
 	position: absolute;
 	top: 10px;
@@ -11374,7 +11371,7 @@ ul li:before {
 	height: 6px;
 	border-radius: 50%;
 	background-color: #fc0;
-}
+} */
 
 .call-action-bar-section {
 	padding: 35px 0;

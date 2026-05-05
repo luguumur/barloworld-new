@@ -24,7 +24,7 @@ export default async function EditProductTypePage({
 			<ProductTypeForm
 				mode="edit"
 				editId={id}
-				initial={{ name: item.name, name_en: item.name_en }}
+				initial={{ name: item.name, name_en: item.name_en, img_path: item.img_path }}
 			/>
 		</>
 	);

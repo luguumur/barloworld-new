@@ -35,20 +35,20 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 		return () => window.removeEventListener("scroll", onScroll);
 	}, []);
 
-	useEffect(() => {
-		const handleSticky = () => setStickyMenu(window.scrollY > 0);
-		window.addEventListener("scroll", handleSticky);
-		return () => window.removeEventListener("scroll", handleSticky);
-	}, []);
+	// useEffect(() => {
+	// 	const handleSticky = () => setStickyMenu(window.scrollY > 0);
+	// 	window.addEventListener("scroll", handleSticky);
+	// 	return () => window.removeEventListener("scroll", handleSticky);
+	// }, []);
 
 	return (
 		<>
 			{/* ── Utility bar ── */}
-			<div className='bg-[#0f172a] py-2 text-xs text-white/80'>
+			<div className='bg-[#474d59] py-2 text-xs text-white/80'>
 				<div className='mx-auto flex max-w-[1170px] items-center justify-between px-4 sm:px-8 xl:px-0'>
 					<div className='flex items-center gap-5'>
 						<a
-							href='tel:+97677007899'
+							href='tel:+97670187588'
 							className='flex items-center gap-1.5 transition hover:text-primary'
 						>
 							<svg
@@ -63,7 +63,7 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 									clipRule='evenodd'
 								/>
 							</svg>
-							+976 7700-7899
+							+976 7018-7588
 						</a>
 						<a
 							href='mailto:info@barloworld.mn'
@@ -86,7 +86,10 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 							Contact Us
 						</Link>
 						<span className='text-white/20'>|</span>
-						<Link href='/blog' className='hidden transition hover:text-primary sm:block'>
+						<Link
+							href='/blog'
+							className='hidden transition hover:text-primary sm:block'
+						>
 							News & Blog
 						</Link>
 					</div>
@@ -95,9 +98,8 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 
 			{/* ── Main nav ── */}
 			<header
-				className={`left-0 top-0 z-999 w-full bg-white transition-all duration-300 ease-in-out dark:bg-dark ${
-					stickyMenu ? "sticky shadow-sm" : ""
-				}`}
+				className={` left-0 top-0 z-999 w-full bg-white transition-all duration-300 ease-in-out
+				dark:bg-dark`}
 			>
 				<div className='relative mx-auto max-w-[1170px] items-center justify-between gap-2 border-b border-gray-3 px-4 dark:border-dark-2 sm:px-8 xl:flex xl:border-0 xl:px-0'>
 					{/* Logo + hamburger */}
@@ -131,7 +133,9 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 									{[0, 150, 200].map((delay, i) => (
 										<span
 											key={i}
-											style={{ transitionDelay: `${!navbarOpen ? delay : 0}ms` }}
+											style={{
+												transitionDelay: `${!navbarOpen ? delay : 0}ms`,
+											}}
 											className={`relative left-0 top-0 my-1 block h-0.5 rounded-sm bg-dark duration-200 ease-in-out dark:bg-white ${
 												!navbarOpen ? "!w-full" : "w-0"
 											}`}
@@ -173,13 +177,16 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 											setNavbarOpen={setNavbarOpen}
 										/>
 									) : (
-										<li key={key} className={stickyMenu ? "xl:py-4" : "xl:py-5"}>
+										<li
+											key={key}
+											className={stickyMenu ? "xl:py-4" : "xl:py-5"}
+										>
 											<Link
 												onClick={() => setNavbarOpen(false)}
 												href={item?.path ?? ""}
 												target={item?.newTab ? "_blank" : ""}
 												rel={item?.newTab ? "noopener noreferrer" : ""}
-												className={`flex rounded-md px-[14px] py-[5px] font-satoshi text-sm font-semibold transition ${
+												className={`flex rounded-md px-[14px] py-[5px] font-noto text-sm transition ${
 													pathUrl === item?.path
 														? "bg-primary/10 text-primary"
 														: "text-dark hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:text-white"
@@ -217,11 +224,10 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 
 				{/* Yellow gradient accent strip */}
 				<div
-					className='hidden h-[4px] w-full xl:block'
+					className='hidden h-[21px] w-full xl:block'
 					style={{
 						backgroundImage: "url(/images/bg/header-gradient.png)",
 						backgroundRepeat: "repeat-x",
-						backgroundSize: "auto 100%",
 					}}
 					aria-hidden
 				/>
