@@ -31,7 +31,9 @@ function normalizeSlug(s: string): string {
 		.trim()
 		.toLowerCase()
 		.replace(/\s+/g, "-")
-		.replace(/[^a-z0-9-_]/g, "");
+		.replace(/[^a-z0-9-_/]/g, "") // allow / for nested slugs like parts/undercarriage
+		.replace(/\/+/g, "/")          // collapse duplicate slashes
+		.replace(/^\/|\/$/g, "");      // strip leading/trailing slashes
 }
 
 export async function getPageById(id: string) {

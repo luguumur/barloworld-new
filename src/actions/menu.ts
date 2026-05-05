@@ -21,7 +21,7 @@ export type MenuItemInput = {
 	title: string;
 	title_en?: string | null;
 	path: string;
-	linkType: "PAGE" | "CUSTOM";
+	linkType: "PAGE" | "CUSTOM" | "PRODUCT_TYPES";
 	parentId?: string | null;
 	order?: number;
 	newTab?: boolean;
@@ -38,13 +38,18 @@ type PublicMenuItem = {
 /** Public: build nav menu tree (no auth) */
 export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<PublicMenuItem[]> {
 	try {
-		const items = await prisma.menuItem.findMany({
-			orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-		}) as MenuItemRow[];
+		const [items, productTypes] = await Promise.all([
+			prisma.menuItem.findMany({
+				orderBy: [{ order: "asc" }, { createdAt: "asc" }],
+			}),
+			prisma.productType.findMany({ orderBy: { createdAt: "asc" } }),
+		]);
+
+		const menuItems = items as MenuItemRow[];
 
 		const byParent = new Map<string | null, MenuItemRow[]>();
 		byParent.set(null, []);
-		for (const item of items) {
+		for (const item of menuItems) {
 			const list = byParent.get(item.parentId) ?? [];
 			list.push(item);
 			byParent.set(item.parentId, list);
@@ -57,6 +62,20 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 			row.linkType === "PAGE" ? `/${row.path.replace(/^\//, "")}` : row.path;
 
 		const toMenu = (row: MenuItemRow, idx: number): PublicMenuItem => {
+			// PRODUCT_TYPES: auto-generate submenu from DB product types
+			if (row.linkType === "PRODUCT_TYPES") {
+				const submenu = productTypes.map((pt, i) => ({
+					id: idx * 1000 + i + 1,
+					title: lang === "mn" ? pt.name : pt.name_en,
+					path: `/products/${pt.id}`,
+				}));
+				if (submenu.length > 0) {
+					return { id: idx, title: resolveTitle(row), newTab: false, submenu };
+				}
+				return { id: idx, title: resolveTitle(row), path: "/products", newTab: false };
+			}
+
+			// Regular items: use DB children as submenu
 			const children = (byParent.get(row.id) ?? [])
 				.sort((a, b) => a.order - b.order || a.createdAt.getTime() - b.createdAt.getTime())
 				.map((c, i) => ({

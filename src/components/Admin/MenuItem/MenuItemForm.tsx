@@ -10,6 +10,7 @@ import {
 	getMenuRoots,
 	type MenuItemInput,
 } from "@/actions/menu";
+import { getPages, type PageRow } from "@/actions/page";
 import { useRouter } from "next/navigation";
 
 const emptyForm: MenuItemInput = {
@@ -44,10 +45,12 @@ export default function MenuItemForm({
 		newTab: initial.newTab ?? false,
 	});
 	const [roots, setRoots] = useState<{ id: string; title: string; title_en: string | null }[]>([]);
+	const [pages, setPages] = useState<PageRow[]>([]);
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		getMenuRoots().then(setRoots);
+		getPages().then(setPages);
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -55,7 +58,7 @@ export default function MenuItemForm({
 		if (!data.title?.trim()) {
 			return toast.error("Title is required!");
 		}
-		if (!data.path?.trim()) {
+		if (data.linkType !== "PRODUCT_TYPES" && !data.path?.trim()) {
 			return toast.error("Path / URL is required!");
 		}
 		setLoading(true);
@@ -118,29 +121,59 @@ export default function MenuItemForm({
 					<select
 						value={data.linkType}
 						onChange={(e) =>
-							setData((p) => ({ ...p, linkType: e.target.value as "PAGE" | "CUSTOM" }))
+							setData((p) => ({
+								...p,
+								linkType: e.target.value as "PAGE" | "CUSTOM" | "PRODUCT_TYPES",
+								path: e.target.value === "PRODUCT_TYPES" ? "products" : p.path,
+							}))
 						}
 						className="w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white"
 					>
-						<option value="PAGE">Custom Page (/[slug])</option>
+						<option value="PAGE">Custom Page (/slug or /parent/child)</option>
 						<option value="CUSTOM">Custom URL</option>
+						<option value="PRODUCT_TYPES">Products (auto from DB)</option>
 					</select>
 				</div>
-				<InputGroup
-					label={data.linkType === "PAGE" ? "Page slug" : "URL"}
-					type="text"
-					name="path"
-					value={data.path}
-					placeholder={data.linkType === "PAGE" ? "about-us" : "https://..."}
-					required
-					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						setData((p) => ({ ...p, path: e.target.value }))
-					}
-				/>
-				{data.linkType === "PAGE" && (
-					<p className="-mt-2 text-sm text-body/70 dark:text-gray-5">
-						Links to /{data.path.trim() || "…"} (CustomPageRoute)
+
+				{data.linkType === "PRODUCT_TYPES" ? (
+					<p className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-dark dark:text-white">
+						Submenu will be automatically populated with all Product Types from the database, each linking to <strong>/products/[id]</strong>.
 					</p>
+				) : data.linkType === "PAGE" ? (
+					<div>
+						<label className="mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white">
+							Page
+						</label>
+						<select
+							value={data.path}
+							onChange={(e) => setData((p) => ({ ...p, path: e.target.value }))}
+							className="w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						>
+							<option value="">— Select a page —</option>
+							{pages.map((pg) => (
+								<option key={pg.id} value={pg.slug}>
+									{pg.title_en || pg.title} ({pg.slug})
+								</option>
+							))}
+						</select>
+						{data.path && (
+							<p className="mt-1.5 text-sm text-body/70 dark:text-gray-5">
+								→ /{data.path}
+							</p>
+						)}
+					</div>
+				) : (
+					<InputGroup
+						label="URL"
+						type="text"
+						name="path"
+						value={data.path}
+						placeholder="https://..."
+						required
+						handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+							setData((p) => ({ ...p, path: e.target.value }))
+						}
+					/>
 				)}
 				<div>
 					<label className="mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white">
