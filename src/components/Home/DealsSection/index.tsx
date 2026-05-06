@@ -109,6 +109,9 @@ export default async function DealsSection({
 					height='938'
 					src='https://thompsonmachinery.com/content/uploads/2021/11/home-deals-graphics-image.png'
 					className='img-responsive'
+					loading='lazy'
+					decoding='async'
+					fetchPriority='low'
 				/>
 			</div>
 			<div className='home-deals-content-wrapper'>

@@ -1,5 +1,4 @@
 // import "../../styles/satoshi.css"; // Replaced with Roboto Condensed
-import "react-quill/dist/quill.snow.css";
 import "../../styles/globals.css";
 import { Providers } from "./providers";
 import ToastContext from "../context/ToastContext";

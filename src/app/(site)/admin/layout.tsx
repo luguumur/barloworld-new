@@ -1,4 +1,5 @@
 "use client";
+import "react-quill/dist/quill.snow.css";
 import { useState } from "react";
 import Sidebar from "@/components/Common/Dashboard/Sidebar";
 import Header from "@/components/Common/Dashboard/Header";

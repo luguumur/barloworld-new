@@ -19,7 +19,7 @@ const Dropdown = ({
 	const isActive = item.submenu?.some((s) => s.path === pathname);
 
 	return (
-		<li className='group relative xl:py-5'>
+		<li className='group relative z-[9999] xl:py-5'>
 			{/* ── Trigger ── */}
 
 			<button
@@ -84,7 +84,9 @@ const Dropdown = ({
 				</ul>
 			</div>
 			{/* ── Desktop panel (CSS group-hover via .dropdown class) ── */}
-			<ul className={`dropdown ${stickyMenu ? "xl:translate-y-6" : ""}`}>
+			<ul
+				className={`dropdown z-[9999] ${stickyMenu ? "xl:translate-y-6" : ""}`}
+			>
 				{/* Yellow accent bar */}
 				<li
 					className='mb-1.5 h-0.5 w-full rounded-full bg-primary'
