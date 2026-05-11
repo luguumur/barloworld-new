@@ -1,6 +1,6 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import { getPageBySlug, getAllPageSlugs } from "@/actions/page";
+import { getPageBySlug } from "@/actions/page";
 import { Metadata } from "next";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
 
@@ -26,11 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 	};
 }
 
-export async function generateStaticParams() {
-	const slugs = await getAllPageSlugs();
-	// Split each slug on "/" so Next.js gets e.g. ["parts","undercarriage"]
-	return slugs.map((slug) => ({ slug: slug.split("/") }));
-}
+export const dynamic = "force-dynamic";
 
 export default async function CustomPageRoute({ params }: Props) {
 	const { slug } = await getParams(params);

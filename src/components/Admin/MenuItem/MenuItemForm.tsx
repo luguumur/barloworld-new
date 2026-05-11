@@ -44,7 +44,9 @@ export default function MenuItemForm({
 		order: initial.order ?? 0,
 		newTab: initial.newTab ?? false,
 	});
-	const [roots, setRoots] = useState<{ id: string; title: string; title_en: string | null }[]>([]);
+	const [roots, setRoots] = useState<
+		{ id: string; title: string; title_en: string | null }[]
+	>([]);
 	const [pages, setPages] = useState<PageRow[]>([]);
 	const [loading, setLoading] = useState(false);
 
@@ -80,42 +82,42 @@ export default function MenuItemForm({
 	};
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6 flex items-center gap-3">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6 flex items-center gap-3'>
 				<Link
-					href="/admin/menu"
-					className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary"
+					href='/admin/menu'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
 				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Menu Item" : "Add Menu Item"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+			<form onSubmit={handleSubmit} className='flex flex-col space-y-4'>
 				<InputGroup
-					label="Title"
-					type="text"
-					name="title"
+					label='Title'
+					type='text'
+					name='title'
 					value={data.title}
-					placeholder="Menu label"
+					placeholder='Menu label'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, title: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Title (EN) – optional"
-					type="text"
-					name="title_en"
+					label='Title (EN) – optional'
+					type='text'
+					name='title_en'
 					value={data.title_en ?? ""}
-					placeholder="Menu label (English)"
+					placeholder='Menu label (English)'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, title_en: e.target.value }))
 					}
 				/>
 				<div>
-					<label className="mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Link type
 					</label>
 					<select
@@ -127,29 +129,30 @@ export default function MenuItemForm({
 								path: e.target.value === "PRODUCT_TYPES" ? "products" : p.path,
 							}))
 						}
-						className="w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						className='w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 					>
-						<option value="PAGE">Custom Page (/slug or /parent/child)</option>
-						<option value="CUSTOM">Custom URL</option>
-						<option value="PRODUCT_TYPES">Products (auto from DB)</option>
+						<option value='PAGE'>Custom Page (/slug or /parent/child)</option>
+						<option value='CUSTOM'>Custom URL</option>
+						<option value='PRODUCT_TYPES'>Products (auto from DB)</option>
 					</select>
 				</div>
 
 				{data.linkType === "PRODUCT_TYPES" ? (
-					<p className="rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-dark dark:text-white">
-						Submenu will be automatically populated with all Product Types from the database, each linking to <strong>/products/[id]</strong>.
+					<p className='rounded-lg border border-primary/30 bg-primary/5 px-4 py-3 text-sm text-dark dark:text-white'>
+						Submenu will be automatically populated with all Product Types from
+						the database, each linking to <strong>/products/[id]</strong>.
 					</p>
 				) : data.linkType === "PAGE" ? (
 					<div>
-						<label className="mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white">
+						<label className='mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 							Page
 						</label>
 						<select
 							value={data.path}
 							onChange={(e) => setData((p) => ({ ...p, path: e.target.value }))}
-							className="w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+							className='w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 						>
-							<option value="">— Select a page —</option>
+							<option value=''>— Select a page —</option>
 							{pages.map((pg) => (
 								<option key={pg.id} value={pg.slug}>
 									{pg.title_en || pg.title} ({pg.slug})
@@ -157,18 +160,18 @@ export default function MenuItemForm({
 							))}
 						</select>
 						{data.path && (
-							<p className="mt-1.5 text-sm text-body/70 dark:text-gray-5">
+							<p className='mt-1.5 text-sm text-body/70 dark:text-gray-5'>
 								→ /{data.path}
 							</p>
 						)}
 					</div>
 				) : (
 					<InputGroup
-						label="URL"
-						type="text"
-						name="path"
+						label='URL'
+						type='text'
+						name='path'
 						value={data.path}
-						placeholder="https://..."
+						placeholder='https://...'
 						required
 						handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 							setData((p) => ({ ...p, path: e.target.value }))
@@ -176,7 +179,7 @@ export default function MenuItemForm({
 					/>
 				)}
 				<div>
-					<label className="mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2.5 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Parent (optional)
 					</label>
 					<select
@@ -184,51 +187,59 @@ export default function MenuItemForm({
 						onChange={(e) =>
 							setData((p) => ({ ...p, parentId: e.target.value || null }))
 						}
-						className="w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						className='w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 					>
-						<option value="">— Top level —</option>
-						{roots.filter((r) => r.id !== editId).map((r) => (
-							<option key={r.id} value={r.id}>
-								{r.title_en ?? r.title}
-							</option>
-						))}
+						<option value=''>— Top level —</option>
+						{roots
+							.filter((r) => r.id !== editId)
+							.map((r) => (
+								<option key={r.id} value={r.id}>
+									{r.title_en ?? r.title}
+								</option>
+							))}
 					</select>
 				</div>
 				<InputGroup
-					label="Order"
-					type="number"
-					name="order"
+					label='Order'
+					type='number'
+					name='order'
 					value={String(data.order)}
-					placeholder="0"
+					placeholder='0'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, order: parseInt(e.target.value, 10) || 0 }))
 					}
 				/>
-				<label className="flex cursor-pointer items-center gap-2">
+				<label className='flex cursor-pointer items-center gap-2'>
 					<input
-						type="checkbox"
+						type='checkbox'
 						checked={data.newTab}
-						onChange={(e) => setData((p) => ({ ...p, newTab: e.target.checked }))}
-						className="rounded border-stroke text-primary focus:ring-primary dark:border-stroke-dark"
+						onChange={(e) =>
+							setData((p) => ({ ...p, newTab: e.target.checked }))
+						}
+						className='rounded border-stroke text-primary focus:ring-primary dark:border-stroke-dark'
 					/>
-					<span className="font-satoshi text-sm text-dark dark:text-white">Open in new tab</span>
+					<span className='font-satoshi text-sm text-dark dark:text-white'>
+						Open in new tab
+					</span>
 				</label>
-				<div className="flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
+				<div className='flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
 					<Link
-						href="/admin/menu"
-						className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+						href='/admin/menu'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
 					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70'
 					>
 						{loading ? (
 							<>
-								<Loader style="border-white" />
-								<span className="ml-2">{mode === "edit" ? "Updating..." : "Creating..."}</span>
+								<Loader style='border-white' />
+								<span className='ml-2'>
+									{mode === "edit" ? "Updating..." : "Creating..."}
+								</span>
 							</>
 						) : mode === "edit" ? (
 							"Update"

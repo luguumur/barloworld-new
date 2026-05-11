@@ -27,7 +27,7 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 	const [searchModalOpen, setSearchModalOpen] = useState(false);
 	const [navbarOpen, setNavbarOpen] = useState(false);
 	const pathUrl = usePathname();
-
+	// console.log(menuItems, "menu items in header");
 	useEffect(() => {
 		if (window.location.pathname === "/") {
 			window.addEventListener("scroll", onScroll);
@@ -166,7 +166,7 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 
 							{/* Nav + actions */}
 							<div
-								className={`invisible h-0 w-full items-center justify-between overflow-hidden xl:visible xl:flex xl:h-auto  ${
+								className={`invisible h-0 w-full items-center justify-between overflow-hidden xl:visible xl:flex xl:h-auto xl:overflow-visible ${
 									navbarOpen
 										? "!visible !h-auto max-h-[400px] overflow-y-auto rounded-b-lg bg-white pb-6 pt-2 shadow-lg dark:bg-dark"
 										: ""
@@ -175,7 +175,7 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 								<nav>
 									<ul className='flex flex-col gap-1 xl:flex-row xl:gap-0.5'>
 										{menuItems?.map((item: Menu, key) =>
-											!item?.path && item?.submenu ? (
+											item?.submenu ? (
 												<Dropdown
 													stickyMenu={stickyMenu}
 													item={item}

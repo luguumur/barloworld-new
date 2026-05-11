@@ -69,10 +69,13 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 					title: lang === "mn" ? pt.name : pt.name_en,
 					path: `/products/${pt.id}`,
 				}));
-				if (submenu.length > 0) {
-					return { id: idx, title: resolveTitle(row), newTab: false, submenu };
-				}
-				return { id: idx, title: resolveTitle(row), path: "/products", newTab: false };
+				return {
+					id: idx,
+					title: resolveTitle(row),
+					path: "/products",
+					newTab: false,
+					submenu: submenu.length > 0 ? submenu : undefined,
+				};
 			}
 
 			// Regular items: use DB children as submenu
@@ -85,7 +88,13 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 					newTab: c.newTab,
 				}));
 			if (children.length > 0) {
-				return { id: idx, title: resolveTitle(row), newTab: row.newTab, submenu: children };
+				return {
+					id: idx,
+					title: resolveTitle(row),
+					path: resolveHref(row),
+					newTab: row.newTab,
+					submenu: children,
+				};
 			}
 			return { id: idx, title: resolveTitle(row), path: resolveHref(row), newTab: row.newTab };
 		};
