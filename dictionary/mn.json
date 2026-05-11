@@ -1,0 +1,19 @@
+{
+	"header": {
+		"features": "Fonctionnalités",
+		"pricing": "Tarifs",
+		"blog": "Blog",
+		"pages": "Pages",
+		"blogDetails": "Détails du blog",
+		"signIn": "Connexion",
+		"signUp": "Inscription",
+		"errors": "Erreurs 404",
+		"support": "Support",
+		"buyNow": "Acheter maintenant ↗",
+		"account_menu": {
+			"account_settings": "Paramètres du compte",
+			"dashboard": "Tableau de bord",
+			"logOut": "Déconnexion"
+		}
+	}
+}

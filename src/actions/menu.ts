@@ -36,7 +36,9 @@ type PublicMenuItem = {
 };
 
 /** Public: build nav menu tree (no auth) */
-export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<PublicMenuItem[]> {
+export async function getMenuForPublic(
+	lang: "mn" | "en" = "en"
+): Promise<PublicMenuItem[]> {
 	try {
 		const [items, productTypes] = await Promise.all([
 			prisma.menuItem.findMany({
@@ -56,7 +58,8 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 		}
 
 		const resolveTitle = (row: MenuItemRow) =>
-			(lang === "en" ? row.title_en ?? row.title : row.title).trim() || row.title;
+			(lang === "en" ? row.title_en ?? row.title : row.title).trim() ||
+			row.title;
 
 		const resolveHref = (row: MenuItemRow) =>
 			row.linkType === "PAGE" ? `/${row.path.replace(/^\//, "")}` : row.path;
@@ -80,7 +83,10 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 
 			// Regular items: use DB children as submenu
 			const children = (byParent.get(row.id) ?? [])
-				.sort((a, b) => a.order - b.order || a.createdAt.getTime() - b.createdAt.getTime())
+				.sort(
+					(a, b) =>
+						a.order - b.order || a.createdAt.getTime() - b.createdAt.getTime()
+				)
 				.map((c, i) => ({
 					id: idx * 1000 + i,
 					title: resolveTitle(c),
@@ -96,11 +102,17 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 					submenu: children,
 				};
 			}
-			return { id: idx, title: resolveTitle(row), path: resolveHref(row), newTab: row.newTab };
+			return {
+				id: idx,
+				title: resolveTitle(row),
+				path: resolveHref(row),
+				newTab: row.newTab,
+			};
 		};
 
 		const roots = (byParent.get(null) ?? []).sort(
-			(a, b) => a.order - b.order || a.createdAt.getTime() - b.createdAt.getTime()
+			(a, b) =>
+				a.order - b.order || a.createdAt.getTime() - b.createdAt.getTime()
 		);
 		return roots.map((r, i) => toMenu(r, i));
 	} catch (error) {
@@ -112,9 +124,9 @@ export async function getMenuForPublic(lang: "mn" | "en" = "en"): Promise<Public
 export async function getMenuItems() {
 	await isAuthorized();
 	try {
-		return await prisma.menuItem.findMany({
+		return (await prisma.menuItem.findMany({
 			orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-		}) as MenuItemRow[];
+		})) as MenuItemRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as MenuItemRow[]);
 	}
@@ -137,7 +149,9 @@ export async function getMenuRoots() {
 export async function getMenuItemById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.menuItem.findUnique({ where: { id } }) as MenuItemRow | null;
+		return (await prisma.menuItem.findUnique({
+			where: { id },
+		})) as MenuItemRow | null;
 	} catch {
 		return null;
 	}
@@ -164,10 +178,14 @@ export async function updateMenuItem(id: string, data: Partial<MenuItemInput>) {
 		where: { id },
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
-			...(data.title_en !== undefined && { title_en: data.title_en?.trim() ?? null }),
+			...(data.title_en !== undefined && {
+				title_en: data.title_en?.trim() ?? null,
+			}),
 			...(data.path !== undefined && { path: data.path.trim() }),
 			...(data.linkType !== undefined && { linkType: data.linkType }),
-			...(data.parentId !== undefined && { parentId: data.parentId?.trim() || null }),
+			...(data.parentId !== undefined && {
+				parentId: data.parentId?.trim() || null,
+			}),
 			...(data.order !== undefined && { order: data.order }),
 			...(data.newTab !== undefined && { newTab: data.newTab }),
 		} as Prisma.MenuItemUpdateInput,

@@ -9,6 +9,7 @@ import CompanyIntro from "./CompanyIntro";
 import TestimonialsSection from "./TestimonialsSection";
 import ContactCTA from "./ContactCTA";
 import Blog from "./Blog";
+import About from "./About";
 
 const Home = async () => {
 	const cookieStore = cookies();
@@ -29,6 +30,9 @@ const Home = async () => {
 
 			{/* 4. Deals & Promotions (from DB) */}
 			<DealsSection lang={language} />
+
+			{/* 5. About */}
+			<About />
 
 			{/* 5. Company introduction */}
 			<CompanyIntro />
