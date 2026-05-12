@@ -32,7 +32,7 @@ export default async function DealsSection({
 						<a
 							href='/deals-specials/'
 							target='_self'
-							className='home-deals-header__link hidden-xs-down'
+							className='home-deals-header__link hidden-xs-down font-bold text-black dark:text-gray-200'
 						>
 							VIEW ALL DEALS &amp; SPECIALS{" "}
 							<span className='icon-chevron-right'></span>

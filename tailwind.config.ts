@@ -66,7 +66,7 @@ const config: Config = {
 				current: "currentColor",
 				transparent: "transparent",
 				white: "#FFFFFF",
-				black: "#0f172a",
+				black: "#1e1e1e",
 				body: "#64748b",
 				stroke: {
 					DEFAULT: "#e2e8f0",
@@ -78,7 +78,7 @@ const config: Config = {
 					2: "#ededed",
 				},
 				dark: {
-					DEFAULT: "#0f172a",
+					DEFAULT: "#1e1e1e",
 					2: "#334155",
 					3: "#475569",
 					4: "#64748b",

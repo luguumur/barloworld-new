@@ -107,3 +107,15 @@ export async function deleteNews(id: string) {
 	await isAuthorized();
 	return prisma.news.delete({ where: { id } });
 }
+
+export async function getNewsPublic(limit = 6) {
+	try {
+		return await prisma.news.findMany({
+			orderBy: { createdAt: "desc" },
+			take: limit,
+			include: { category: true },
+		}) as NewsRow[];
+	} catch (error) {
+		return handleTableMissing(error, [] as NewsRow[]);
+	}
+}

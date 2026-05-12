@@ -2,24 +2,10 @@ import { useTranslations } from "next-intl";
 import Image from "next/legacy/image";
 
 const About = () => {
-	const homet = useTranslations("Home");
+	const homet = useTranslations("HomeData");
 	return (
-		<section className='home-about'>
-			<div className='home-about-graphics-right hidden-xs-down'>
-				<Image
-					priority
-					src={
-						"https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics1-497x283.webp"
-					}
-					className='img-responsive entered'
-					loading={"eager"}
-					width={497}
-					height={283}
-					layout='intrinsic'
-					alt='graphics1'
-				/>
-			</div>
-			<div className='home-about-graphics-left hidden-sm-down'>
+		<section className='home-about image-button'>
+			<div className='image-button-graphics-right hidden-xs-down'>
 				<Image
 					priority
 					src={
@@ -33,13 +19,27 @@ const About = () => {
 					alt='graphics2'
 				/>
 			</div>
+			<div className='image-button-graphics-left hidden-sm-down'>
+				<Image
+					priority
+					src={
+						"https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics1-497x283.webp"
+					}
+					className='img-responsive entered'
+					loading={"eager"}
+					width={497}
+					height={283}
+					layout='intrinsic'
+					alt='graphics1'
+				/>
+			</div>
 			<div className='container'>
-				<div className='row'>
-					<div className='col-md-6'>
+				<div className='flex flex-col md:flex-row md:items-start'>
+					<div className='w-full md:w-1/2'>
 						<div className='home-about-left-panel'>
 							<div className='home-about-image'>
 								<Image
-									src='https://d3leeb4r1qy96s.cloudfront.net/assets/img/HOME_Parts.webp'
+									src='https://d3leeb4r1qy96s.cloudfront.net/assets/img/HOME_Parts.jpg'
 									width={643}
 									height={364}
 									className='lazyloaded'
@@ -106,10 +106,10 @@ const About = () => {
 							</div>
 						</div>
 					</div>
-					<div className='col-md-6'>
-						<div className='home-about-right-panel min-h-[200px]'>
-							<h2 className='min-h-[32px]'>{homet("welcome")}</h2>
-							<p className='min-h-[96px]'>{homet("description")}</p>
+					<div className='w-full md:w-1/2'>
+						<div className='home-about-right-panel'>
+							<h2>{homet("welcome")}</h2>
+							<p>{homet("description")}</p>
 							<p>
 								<a
 									className='btn btn-primary mb-4 inline-block min-w-[120px]'

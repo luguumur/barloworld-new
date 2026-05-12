@@ -195,7 +195,7 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 														className={`flex rounded-md px-[14px] py-[5px] font-noto text-sm font-medium transition ${
 															pathUrl === item?.path
 																? "bg-primary/10 text-primary"
-																: "text-[#2c2c2c] hover:bg-primary/5 hover:text-primary dark:text-gray-5 dark:hover:text-white"
+																: "text-black hover:bg-primary/5 hover:text-primary dark:text-gray-4 dark:hover:text-white"
 														}`}
 													>
 														{item?.title}

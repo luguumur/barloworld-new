@@ -1,30 +1,31 @@
-import Link from "next/link";
+import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export default function ContactCTA() {
+	const home = useTranslations("HomeData");
 	return (
-		<section className='bg-[#1e293b] py-16'>
-			<div className='container mx-auto px-4 text-center sm:px-8 xl:px-0'>
-				<h2 className='mb-3 font-satoshi text-3xl font-black -tracking-[0.5px] text-white sm:text-4xl'>
-					Ready to Get Started?
-				</h2>
-				<p className='mx-auto mb-8 max-w-xl text-base text-white/70'>
-					Talk to our equipment specialists about your project needs.
-					We&rsquo;ll help you find the right machine, service plan, or rental
-					solution.
-				</p>
-				<div className='flex flex-wrap items-center justify-center gap-4'>
-					<Link
-						href='/support'
-						className='inline-flex items-center gap-2 rounded-lg bg-primary px-8 py-3.5 font-satoshi font-bold text-black transition hover:bg-primary-dark'
-					>
-						CONTACT US
-					</Link>
-					<Link
-						href='/products'
-						className='inline-flex items-center gap-2 rounded-lg border border-white/30 px-8 py-3.5 font-satoshi font-bold text-white transition hover:border-primary hover:text-primary'
-					>
-						VIEW INVENTORY
-					</Link>
+		<section className='cta'>
+			<div className='cta-banner'>
+				<Image
+					priority
+					src='https://d3leeb4r1qy96s.cloudfront.net/assets/img/cta-banner-image.jpg'
+					fill
+					alt='cta-banner'
+					loading='eager'
+					style={{ objectFit: "cover" }}
+				/>
+			</div>
+			<div className='cta-overlay'>
+				<div className='container'>
+					<div className='text-white'>
+						<h2>{home("wearehere")}</h2>
+						<p>{home("do_you_need_equipment")}</p>
+						<p>
+							<a className='btn btn-primary' href='/contact-us/'>
+								{home("contact")}
+							</a>
+						</p>
+					</div>
 				</div>
 			</div>
 		</section>

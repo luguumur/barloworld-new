@@ -38,7 +38,7 @@ const Dropdown = ({
 		${
 			isActive
 				? "text-primary"
-				: "text-[#2c2c2c] hover:text-primary dark:text-gray-5 dark:hover:text-white"
+				: "text-black hover:text-primary dark:text-gray-4 dark:hover:text-white"
 		}`;
 
 	return (

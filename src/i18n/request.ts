@@ -1,3 +1,5 @@
+import { getRequestConfig } from "next-intl/server";
+
 export const SUPPORTED_LOCALES = [
 	{
 		name: "English",
@@ -9,7 +11,16 @@ export const SUPPORTED_LOCALES = [
 	},
 ];
 
-import { getRequestConfig } from "next-intl/server";
+/** Use only static import paths — webpack/turbopack cannot resolve template-literal JSON imports. */
+async function loadMessages(locale: string) {
+	switch (locale) {
+		case "mn":
+			return (await import("../../dictionary/mn.json")).default;
+		case "en":
+		default:
+			return (await import("../../dictionary/en.json")).default;
+	}
+}
 
 export default getRequestConfig(async () => {
 	// Static for now, we'll change this later
@@ -17,6 +28,6 @@ export default getRequestConfig(async () => {
 
 	return {
 		locale,
-		messages: (await import(`../../dictionary/${locale}.json`)).default,
+		messages: await loadMessages(locale),
 	};
 });
