@@ -57,6 +57,7 @@ export type ProductRow = {
 		attribute: { id: string; name: string; name_en: string; data_type: string };
 		group: { id: string; name: string; name_en: string };
 	}>;
+	images?: Array<{ id: string; path: string; createdAt: Date }>;
 };
 
 function parsePrice(v: string | number | null | undefined): number | null {
@@ -100,6 +101,7 @@ export async function getProductById(id: string) {
 			include: {
 				category: true,
 				attributeValues: { include: { attribute: true, group: true } },
+				images: { orderBy: { createdAt: "asc" } },
 			},
 		}) as unknown as ProductRow | null;
 	} catch (error) {

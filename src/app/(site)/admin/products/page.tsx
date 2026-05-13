@@ -21,7 +21,9 @@ export default async function ProductsPage({
 	const search =
 		typeof searchParams.search === "string" ? searchParams.search : undefined;
 	const categoryId =
-		typeof searchParams.category === "string" ? searchParams.category : undefined;
+		typeof searchParams.category === "string"
+			? searchParams.category
+			: undefined;
 	const productTypes =
 		typeof searchParams.type === "string" ? searchParams.type : undefined;
 	const [products, categories, productTypesList] = await Promise.all([
@@ -43,10 +45,10 @@ export default async function ProductsPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Products" />
+			<Breadcrumb pageTitle='Products' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}

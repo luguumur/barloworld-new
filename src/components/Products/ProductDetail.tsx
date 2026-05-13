@@ -124,20 +124,26 @@ export default function ProductDetail({
 	categoryProducts = [],
 }: Props) {
 	const t = useTranslations("MenuData");
+	const allImages = [
+		...(product.img_path
+			? [resolveImageUrl(product.img_path, "") as string]
+			: []),
+		...(product.images ?? []).map(
+			(img) => resolveImageUrl(img.path, "") as string
+		),
+	].filter(Boolean);
+
 	const [mediaTab, setMediaTab] = useState<MediaTab>("image");
-	const [mainImage, setMainImage] = useState({
-		preview:
-			"https://s7d2.scene7.com/is/image/Caterpillar/CM20230404-5ed1c-534f4?wid=700&hei=467&op_sharpen=1&qlt=100",
-		full: "https://s7d2.scene7.com/is/image/Caterpillar/CM20230404-5ed1c-534f4",
-	});
+	const [mainImage, setMainImage] = useState(allImages[0] ?? "");
 	const [activeThumbIndex, setActiveThumbIndex] = useState(0);
 	const [detailTab, setDetailTab] = useState<DetailTab>("specs");
 
 	const name = lang === "mn" ? product.name : product.name_en;
 	const description =
 		lang === "mn" ? product.description : product.description_en;
-	const img = resolveImageUrl(product.img_path, null);
 	const brochureUrl = resolveImageUrl(product.brochure_path, null);
+
+	const spinUrl = product.model_3d ? product.model_3d : null;
 
 	const grouped = product.attributeValues?.reduce<
 		Record<string, { groupName: string; attrs: typeof product.attributeValues }>
@@ -185,35 +191,32 @@ export default function ProductDetail({
 							<a
 								className='js-image-popup'
 								id='image-viewer'
-								href={mainImage.full}
+								href={mainImage}
 								style={{ display: mediaTab === "image" ? "block" : "none" }}
 							>
 								<img
-									src={resolveImageUrl(product.img_path, "")}
+									src={mainImage}
 									alt={name}
 									className='img-responsive entered lazyloaded'
 								/>
 							</a>
-							<div
-								className='vpt-viewer'
-								id='vpt-viewer'
-								style={{ display: mediaTab === "vpt" ? "block" : "none" }}
-							>
-								<div id='spinset-exterior'>
-									<iframe
-										loading='lazy'
-										src={
-											mediaTab === "vpt"
-												? "https://s7d2.scene7.com/s7viewers/html5/genericSpinMobile.html?serverUrl=https://s7d2.scene7.com/is/image/&config=Caterpillar/Catdotcom%20Spin%20Sets&contentRoot=https://s7d2.scene7.com/skins/&asset=Caterpillar/725%20%2805%29%20AT%20%2D%20Exterior"
-												: "about:blank"
-										}
-										scrolling='no'
-										width='600px'
-										height='450px'
-										style={{ width: "100%" }}
-									/>
+							{spinUrl && (
+								<div
+									className='vpt-viewer'
+									id='vpt-viewer'
+									style={{ display: mediaTab === "vpt" ? "block" : "none" }}
+								>
+									<div id='spinset-exterior'>
+										<iframe
+											loading='lazy'
+											src={mediaTab === "vpt" ? spinUrl : "about:blank"}
+											width='100%'
+											height='450px'
+											style={{ width: "100%", border: "none" }}
+										/>
+									</div>
 								</div>
-							</div>
+							)}
 						</div>
 					</div>
 					<div className='tabs tabs--small media-tabs push-xxs--top flush-xs--top js-media-tabs'>
@@ -235,23 +238,25 @@ export default function ProductDetail({
 									<span className='icon-camera'></span>
 								</a>
 							</li>
-							<li
-								className={`tab-link-main${
-									mediaTab === "vpt" ? " active" : ""
-								}`}
-							>
-								<a
-									href='#product-360s'
-									title='360° Views'
-									data-type='vpt'
-									onClick={(e) => {
-										e.preventDefault();
-										setMediaTab("vpt");
-									}}
+							{spinUrl && (
+								<li
+									className={`tab-link-main${
+										mediaTab === "vpt" ? " active" : ""
+									}`}
 								>
-									<span className='icon-360'></span>
-								</a>
-							</li>
+									<a
+										href='#product-360s'
+										title='360° Views'
+										data-type='vpt'
+										onClick={(e) => {
+											e.preventDefault();
+											setMediaTab("vpt");
+										}}
+									>
+										<span className='icon-360'></span>
+									</a>
+								</li>
+							)}
 						</ul>
 						<div className='tabs__content'>
 							<div
@@ -273,13 +278,7 @@ export default function ProductDetail({
 											}}
 											role='listbox'
 										>
-											{[
-												{ thumb: "CM20230404-5ed1c-534f4", idx: 0 },
-												{ thumb: "CM20220901-10d5d-8cd06", idx: 1 },
-												{ thumb: "CM20220901-2c9bc-ba5fc", idx: 2 },
-												{ thumb: "CM20220901-b12bf-f1dfd", idx: 3 },
-												{ thumb: "CM20220901-3c7b5-dd1b4", idx: 4 },
-											].map(({ thumb, idx }) => (
+											{allImages.map((src, idx) => (
 												<li
 													key={idx}
 													className={`media-tabs-thumbnail product-detail__thumbnail slick-slide slick-active${
@@ -292,15 +291,12 @@ export default function ProductDetail({
 													aria-hidden='false'
 													onClick={() => {
 														setActiveThumbIndex(idx);
-														setMainImage({
-															preview: `https://s7d2.scene7.com/is/image/Caterpillar/${thumb}?wid=700&hei=467&op_sharpen=1&qlt=100`,
-															full: `https://s7d2.scene7.com/is/image/Caterpillar/${thumb}`,
-														});
+														setMainImage(src);
 													}}
 													style={{ cursor: "pointer" }}
 												>
 													<img
-														src={`https://s7d2.scene7.com/is/image/Caterpillar/${thumb}?wid=100&hei=60&op_sharpen=1&qlt=100`}
+														src={src}
 														alt=''
 														className='img-responsive entered lazyloaded'
 													/>

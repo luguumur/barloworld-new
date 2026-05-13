@@ -13,6 +13,11 @@ import {
 	type ProductInput,
 	type AttributeValueInput,
 } from "@/actions/product";
+import {
+	addProductImage,
+	deleteProductImage,
+	type ProductImageRow,
+} from "@/actions/productImage";
 import { useRouter } from "next/navigation";
 
 type CategoryOption = { id: string; name: string; name_en: string; types: string };
@@ -58,6 +63,7 @@ type ProductFormProps = {
 	productTypes?: TypeOption[];
 	attributeGroups?: GroupOption[];
 	attributes?: AttributeOption[];
+	initialImages?: ProductImageRow[];
 };
 
 export default function ProductForm({
@@ -68,8 +74,11 @@ export default function ProductForm({
 	productTypes = [],
 	attributeGroups = [],
 	attributes = [],
+	initialImages = [],
 }: ProductFormProps) {
 	const router = useRouter();
+	const [images, setImages] = useState<ProductImageRow[]>(initialImages);
+	const [imageUploading, setImageUploading] = useState(false);
 	const [data, setData] = useState<ProductInput>({
 		name: initial.name ?? "",
 		name_en: initial.name_en ?? "",
@@ -160,6 +169,41 @@ export default function ProductForm({
 			next.splice(index, 1);
 			return { ...p, attributeValues: next };
 		});
+	};
+
+	const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+		const f = e.target.files?.[0];
+		if (!f || !editId) return;
+		setImageUploading(true);
+		try {
+			const ext = f.name.split(".").pop()?.toLowerCase() || "jpg";
+			const result = await getSignedURL(f.type, f.size, "product", `${Date.now()}.${ext}`);
+			if (result.failure) { toast.error(result.failure); return; }
+			const res = await fetch(result.success!.url, {
+				method: "PUT",
+				headers: { "Content-Type": f.type || "application/octet-stream" },
+				body: f,
+			});
+			if (!res.ok) { toast.error("Image upload failed"); return; }
+			const row = await addProductImage(editId, result.success!.key);
+			setImages((prev) => [...prev, row]);
+			toast.success("Image added");
+		} catch {
+			toast.error("Upload failed");
+		} finally {
+			setImageUploading(false);
+			e.target.value = "";
+		}
+	};
+
+	const handleDeleteImage = async (id: string) => {
+		try {
+			await deleteProductImage(id);
+			setImages((prev) => prev.filter((img) => img.id !== id));
+			toast.success("Image removed");
+		} catch {
+			toast.error("Delete failed");
+		}
 	};
 
 	const handleSubmit = async (e: React.FormEvent) => {
@@ -363,6 +407,51 @@ export default function ProductForm({
 						<p className="text-sm text-body/70">PNG, JPG. Max 2MB.</p>
 					</div>
 				</div>
+				{mode === "edit" && (
+					<div className="border-t border-stroke pt-6 dark:border-stroke-dark">
+						<div className="mb-3 flex items-center justify-between">
+							<h2 className="font-satoshi text-base font-semibold text-dark dark:text-white">
+								Additional Images
+							</h2>
+							<label className={`cursor-pointer rounded-lg border border-stroke bg-gray-1 px-3 py-2 text-sm dark:border-stroke-dark dark:bg-white/5 dark:text-white${imageUploading ? " opacity-50 pointer-events-none" : ""}`}>
+								{imageUploading ? "Uploading…" : "+ Add image"}
+								<input
+									type="file"
+									className="sr-only"
+									accept="image/png,image/jpeg,image/jpg"
+									onChange={handleAddImage}
+									disabled={imageUploading}
+								/>
+							</label>
+						</div>
+						{images.length === 0 ? (
+							<p className="text-sm text-body/70">No additional images yet.</p>
+						) : (
+							<div className="flex flex-wrap gap-3">
+								{images.map((img) => (
+									<div key={img.id} className="group relative h-28 w-36 overflow-hidden rounded-lg border border-stroke dark:border-stroke-dark">
+										<Image
+											src={productImageSrc(img.path) ?? ""}
+											alt=""
+											fill
+											className="object-cover"
+											sizes="144px"
+											unoptimized
+										/>
+										<button
+											type="button"
+											onClick={() => handleDeleteImage(img.id)}
+											className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-red text-white opacity-0 transition-opacity group-hover:opacity-100"
+											aria-label="Delete image"
+										>
+											×
+										</button>
+									</div>
+								))}
+							</div>
+						)}
+					</div>
+				)}
 				<InputGroup
 					label="Brochure path (optional)"
 					type="text"

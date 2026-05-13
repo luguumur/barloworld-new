@@ -1,6 +1,7 @@
 import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
 import ProductForm from "@/components/Admin/Product/ProductForm";
 import { getProductById } from "@/actions/product";
+import { getProductImages } from "@/actions/productImage";
 import { getProductCategories } from "@/actions/productCategory";
 import { getProductTypes } from "@/actions/productType";
 import { getAttributeValueGroups } from "@/actions/attributeValueGroup";
@@ -21,13 +22,14 @@ export default async function EditProductPage({
 	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
-	const [product, categories, productTypes, attributeGroups, attributes] =
+	const [product, categories, productTypes, attributeGroups, attributes, images] =
 		await Promise.all([
 			getProductById(id),
 			getProductCategories(),
 			getProductTypes(),
 			getAttributeValueGroups(),
 			getAttributes(),
+			getProductImages(id),
 		]);
 	if (!product) notFound();
 
@@ -82,18 +84,20 @@ export default async function EditProductPage({
 				value: av.string_value ?? "",
 			})) ?? [],
 	};
+	console.log("Initial product data:", initial);
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Product" />
+			<Breadcrumb pageTitle='Edit Product' />
 			<ProductForm
-				mode="edit"
+				mode='edit'
 				editId={id}
 				initial={initial}
 				categories={categoryOptions}
 				productTypes={typeOptions}
 				attributeGroups={groupOptions}
 				attributes={attributeOptions}
+				initialImages={images}
 			/>
 		</>
 	);

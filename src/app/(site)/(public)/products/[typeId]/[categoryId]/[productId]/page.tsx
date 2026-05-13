@@ -49,7 +49,11 @@ export default async function ProductDetailPage({ params }: Props) {
 					{ label: productName },
 				]}
 			/>
-			<ProductDetail product={product} lang={lang} categoryProducts={categoryProducts} />
+			<ProductDetail
+				product={product}
+				lang={lang}
+				categoryProducts={categoryProducts}
+			/>
 		</>
 	);
 }

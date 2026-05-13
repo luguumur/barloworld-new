@@ -12,6 +12,7 @@ export async function getProductsPublic(opts?: {
 			include: {
 				category: true,
 				attributeValues: { include: { attribute: true, group: true } },
+				images: { orderBy: { createdAt: "asc" } },
 			},
 			where: {
 				status: "ACTIVE",
@@ -31,6 +32,7 @@ export async function getProductByIdPublic(id: string): Promise<ProductRow | nul
 			include: {
 				category: true,
 				attributeValues: { include: { attribute: true, group: true } },
+				images: { orderBy: { createdAt: "asc" } },
 			},
 		})) as unknown as ProductRow | null;
 	} catch (error) {
