@@ -18,6 +18,7 @@ import {
 	Bars3Icon,
 	SparklesIcon,
 	CommandLineIcon,
+	LanguageIcon,
 } from "@heroicons/react/24/outline";
 
 const adminIconClass = "h-5 w-5 shrink-0";
@@ -310,6 +311,12 @@ export const adminSidebarData: Sidebar[] = [
 		title: "Menu",
 		path: "/admin/menu",
 		icon: <Bars3Icon className={adminIconClass} aria-hidden />,
+	},
+	{
+		id: 19,
+		title: "Translations",
+		path: "/admin/translations",
+		icon: <LanguageIcon className={adminIconClass} aria-hidden />,
 	},
 	{
 		id: 3,
