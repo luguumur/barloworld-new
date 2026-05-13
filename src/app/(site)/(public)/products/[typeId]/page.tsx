@@ -1,10 +1,11 @@
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductTypeByIdPublic } from "@/lib/productTypePublic";
 import { getProductCategoriesPublic } from "@/lib/productCategoryPublic";
 import GridCard from "@/components/Products/GridCard";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
+import PageSidebar from "@/components/Common/PageSidebar";
+import { resolveImageUrl } from "@/libs/resolveImageUrl";
 
 export const revalidate = 0;
 
@@ -34,44 +35,33 @@ export default async function ProductCategoriesPage({ params }: Props) {
 			c.types?.toLowerCase() === type.name_en?.toLowerCase()
 	);
 
+	const imageCards = filtered.map((cat) => ({
+		key: cat.id,
+		href: `/products/${type.id}/${cat.id}`,
+		image: resolveImageUrl(cat.img_path, null),
+		alt: lang === "mn" ? cat.name : cat.name_en,
+		title: lang === "mn" ? cat.name : cat.name_en,
+	}));
+
 	return (
 		<>
 			<ProductPageHeader
 				title={typeName}
-				backgroundImage={type.img_path}
+				// backgroundImage={type.img_path}
 				breadcrumbs={[
 					{ label: "Home", href: "/" },
 					{ label: "Products", href: "/products" },
 					{ label: typeName },
 				]}
 			/>
-
-			<div className='container mx-auto px-4 py-12 sm:px-8 xl:px-0'>
-				{filtered.length === 0 ? (
-					<div className='flex flex-col items-center justify-center py-24 text-center'>
-						<p className='text-gray-5'>
-							No categories found for this product type.
-						</p>
-						<Link
-							href='/products'
-							className='mt-4 text-sm font-semibold text-primary hover:underline'
-						>
-							← Back to Products
-						</Link>
-					</div>
-				) : (
-					<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3'>
-						{filtered.map((cat) => (
-							<GridCard
-								key={cat.id}
-								href={`/products/${type.id}/${cat.id}`}
-								name={lang === "mn" ? cat.name : cat.name_en}
-								imgPath={cat.img_path}
-							/>
-						))}
-					</div>
-				)}
-			</div>
+			<article className='page-body container'>
+				<div className='row'>
+					<PageSidebar />
+					<main className='page-content col-md-9'>
+						<GridCard cards={imageCards} />
+					</main>
+				</div>
+			</article>
 		</>
 	);
 }

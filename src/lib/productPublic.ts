@@ -9,7 +9,10 @@ export async function getProductsPublic(opts?: {
 	try {
 		return (await prisma.product.findMany({
 			orderBy: [{ product_order: "asc" }, { createdAt: "desc" }],
-			include: { category: true },
+			include: {
+				category: true,
+				attributeValues: { include: { attribute: true, group: true } },
+			},
 			where: {
 				status: "ACTIVE",
 				...(opts?.categoryId?.trim() && { categoryId: opts.categoryId.trim() }),

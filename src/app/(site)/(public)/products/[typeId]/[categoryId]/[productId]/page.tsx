@@ -8,11 +8,15 @@ import ProductPageHeader from "@/components/Products/ProductPageHeader";
 
 export const revalidate = 0;
 
-type Props = { params: { typeId: string; categoryId: string; productId: string } };
+type Props = {
+	params: { typeId: string; categoryId: string; productId: string };
+};
 
 export async function generateMetadata({ params }: Props) {
 	const product = await getProductByIdPublic(params.productId);
-	return { title: product ? `${product.name_en} | Barloworld Mongolia` : "Product" };
+	return {
+		title: product ? `${product.name_en} | Barloworld Mongolia` : "Product",
+	};
 }
 
 export default async function ProductDetailPage({ params }: Props) {
@@ -35,7 +39,7 @@ export default async function ProductDetailPage({ params }: Props) {
 		<>
 			<ProductPageHeader
 				title={productName}
-				backgroundImage={product.img_path}
+				// backgroundImage={product.img_path}
 				breadcrumbs={[
 					{ label: "Home", href: "/" },
 					{ label: "Products", href: "/products" },

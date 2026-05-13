@@ -1,13 +1,11 @@
 import { cookies } from "next/headers";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductTypeByIdPublic } from "@/lib/productTypePublic";
 import { getProductCategoryByIdPublic } from "@/lib/productCategoryPublic";
 import { getProductsPublic } from "@/lib/productPublic";
 import ProductCard from "@/components/Products/ProductCard";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
-
-export const revalidate = 0;
+import PageSidebar from "@/components/Common/PageSidebar";
 
 type Props = { params: { typeId: string; categoryId: string } };
 
@@ -35,7 +33,7 @@ export default async function ProductsListPage({ params }: Props) {
 		<>
 			<ProductPageHeader
 				title={catName}
-				backgroundImage={category.img_path}
+				// backgroundImage={category.img_path}
 				breadcrumbs={[
 					{ label: "Home", href: "/" },
 					{ label: "Products", href: "/products" },
@@ -46,8 +44,23 @@ export default async function ProductsListPage({ params }: Props) {
 					products.length !== 1 ? "s" : ""
 				} available`}
 			/>
+			<article className='page-body container'>
+				<div className='row'>
+					<PageSidebar />
+					<main className='page-content col-md-9'>
+						{products.map((product) => (
+							<ProductCard
+								key={product.id}
+								product={product}
+								href={`/products/${type.id}/${category.id}/${product.id}`}
+								lang={lang}
+							/>
+						))}
+					</main>
+				</div>
+			</article>
 
-			<div className='container mx-auto px-4 py-12 sm:px-8 xl:px-0'>
+			{/* <div className='container mx-auto px-4 py-12 sm:px-8 xl:px-0'>
 				{products.length === 0 ? (
 					<div className='flex flex-col items-center justify-center py-24 text-center'>
 						<p className='text-gray-5'>
@@ -72,7 +85,7 @@ export default async function ProductsListPage({ params }: Props) {
 						))}
 					</div>
 				)}
-			</div>
+			</div> */}
 		</>
 	);
 }

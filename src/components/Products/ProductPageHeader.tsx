@@ -20,7 +20,7 @@ export default function ProductPageHeader({
 	return (
 		<header className='masthead text--center clearfix'>
 			<div className='masthead-background'>
-				<h1>{title}</h1>
+				<h1 className='text-6xl font-bold text-white'>{title}</h1>
 				<div className='masthead-dark-overlay'>
 					<img
 						width={589}

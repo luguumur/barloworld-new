@@ -16,6 +16,7 @@ type Props = {
 };
 
 export default function ProductDetail({ product, lang = "en" }: Props) {
+	console.log(product);
 	const name = lang === "mn" ? product.name : product.name_en;
 	const description =
 		lang === "mn" ? product.description : product.description_en;
