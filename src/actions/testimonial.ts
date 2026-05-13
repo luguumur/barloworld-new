@@ -113,12 +113,12 @@ export async function deleteTestimonial(id: string) {
 	return prisma.testimonial.delete({ where: { id } });
 }
 
-/** Public: testimonials for homepage — no auth required */
+/** Public: testimonials — no auth required. Pass limit=0 for all. */
 export async function getTestimonialsPublic(limit = 6) {
 	try {
 		return (await prisma.testimonial.findMany({
 			orderBy: { createdAt: "desc" },
-			take: limit,
+			...(limit > 0 ? { take: limit } : {}),
 		})) as TestimonialRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as TestimonialRow[]);

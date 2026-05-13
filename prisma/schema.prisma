@@ -323,6 +323,34 @@ model Translation {
   @@map("translations")
 }
 
+model Team {
+  id        String   @id @default(cuid())
+  name      String   @db.Text
+  name_en   String   @map("name_en") @db.Text
+  pos       String   @db.Text
+  pos_en    String   @map("pos_en") @db.Text
+  image     String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("teams")
+}
+
+model ContactRequest {
+  id          String   @id @default(cuid())
+  name        String
+  subject     String?
+  phoneNumber String   @map("phone_number")
+  email       String
+  message     String?  @db.Text
+  status      String   @default("NEW")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("contact_requests")
+}
+
 model QuoteRequest {
   id           String   @id @default(cuid())
   firstName    String   @map("first_name")

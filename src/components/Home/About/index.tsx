@@ -37,10 +37,10 @@ const About = () => {
 				<div className='flex flex-col md:flex-row md:items-start'>
 					<div className='w-full md:w-1/2'>
 						<div className='home-about-left-panel'>
-							<div className='home-about-image'>
+							<div className='home-about-image overflow-hidden'>
 								<Image
 									src='https://d3leeb4r1qy96s.cloudfront.net/assets/img/HOME_Parts.jpg'
-									width={643}
+									width={700}
 									height={364}
 									className='lazyloaded'
 									alt='Barloworld Mongolia'

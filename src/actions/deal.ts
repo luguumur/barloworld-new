@@ -37,6 +37,17 @@ export async function getDealById(id: string) {
 	}
 }
 
+/** Public — no auth required */
+export async function getDealByIdPublic(id: string) {
+	try {
+		return (await prisma.deal.findUnique({
+			where: { id, status: "ACTIVE" },
+		})) as DealRow | null;
+	} catch (error) {
+		return handleTableMissing(error, null);
+	}
+}
+
 export async function getDeals(search?: string) {
 	await isAuthorized();
 	try {
@@ -108,13 +119,13 @@ export async function deleteDeal(id: string) {
 	return prisma.deal.delete({ where: { id } });
 }
 
-/** Public: active deals for homepage — no auth required */
+/** Public: active deals — no auth required. Pass limit=0 for all. */
 export async function getDealsPublic(limit = 6) {
 	try {
 		return (await prisma.deal.findMany({
 			where: { status: "ACTIVE" },
 			orderBy: { createdAt: "desc" },
-			take: limit,
+			...(limit > 0 ? { take: limit } : {}),
 		})) as DealRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as DealRow[]);

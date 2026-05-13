@@ -21,7 +21,7 @@ export default function ContactCTA() {
 						<h2>{home("wearehere")}</h2>
 						<p>{home("do_you_need_equipment")}</p>
 						<p>
-							<a className='btn btn-primary' href='/contact-us/'>
+							<a className='btn btn-primary' href='/support/'>
 								{home("contact")}
 							</a>
 						</p>
