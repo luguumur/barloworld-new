@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { getProductTypeByIdPublic } from "@/lib/productTypePublic";
 import { getProductCategoryByIdPublic } from "@/lib/productCategoryPublic";
-import { getProductByIdPublic } from "@/lib/productPublic";
+import { getProductByIdPublic, getProductsPublic } from "@/lib/productPublic";
 import ProductDetail from "@/components/Products/ProductDetail";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
 
@@ -23,10 +23,11 @@ export default async function ProductDetailPage({ params }: Props) {
 	const cookieStore = cookies();
 	const lang = cookieStore.get("lang")?.value === "mn" ? "mn" : "en";
 
-	const [type, category, product] = await Promise.all([
+	const [type, category, product, categoryProducts] = await Promise.all([
 		getProductTypeByIdPublic(params.typeId),
 		getProductCategoryByIdPublic(params.categoryId),
 		getProductByIdPublic(params.productId),
+		getProductsPublic({ categoryId: params.categoryId }),
 	]);
 
 	if (!type || !category || !product) notFound();
@@ -48,7 +49,7 @@ export default async function ProductDetailPage({ params }: Props) {
 					{ label: productName },
 				]}
 			/>
-			<ProductDetail product={product} lang={lang} />
+			<ProductDetail product={product} lang={lang} categoryProducts={categoryProducts} />
 		</>
 	);
 }

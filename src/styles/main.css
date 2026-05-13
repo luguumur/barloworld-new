@@ -7401,16 +7401,43 @@ img.mfp-img {
 	text-transform: uppercase;
 }
 
-.tab-link {
+.tab-link a {
+	background: #f2f2f2;
+	padding: 10px 20px;
 	display: block;
 	position: relative;
+	font-weight: 700;
+	text-transform: uppercase;
 	z-index: 1;
+}
+
+.tab-link-main a {
+	background: #f2f2f2;
+	display: block;
+	position: relative;
+	font-weight: 700;
+	text-transform: uppercase;
+	z-index: 1;
+}
+.tab-link.active a {
+	background: #ddd;
+	color: #272727;
+}
+
+.tab-link-main.active a {
+	background: #ddd;
+	color: #272727;
 }
 
 .tab-link span {
 	color: #787878;
 	display: block;
 	padding: 10px 20px;
+}
+
+.tab-link-main span {
+	color: #787878;
+	display: block;
 }
 
 .tab-link::before,
@@ -7420,6 +7447,9 @@ img.mfp-img {
 }
 
 .tabs--small .tab-link span {
+	padding: 5px 20px;
+}
+.tabs--small .tab-link-main a {
 	padding: 5px 20px;
 }
 
@@ -7441,13 +7471,42 @@ img.mfp-img {
 	border-color: #ddd transparent transparent transparent;
 }
 
+.tab-link-main.active:after {
+	content: "";
+	width: 0;
+	height: 0;
+	border-style: solid;
+	border-width: 10px 20px 0 20px;
+	border-color: #ddd transparent transparent transparent;
+	position: absolute;
+	bottom: -9px;
+	margin-left: -20px;
+	left: 50%;
+	transition: all 0.3s ease;
+}
+
+.tab-link-main.active:after {
+	border-color: #ddd transparent transparent transparent;
+}
+
 .tab-link.active span {
+	background: #ddd;
+	color: #272727;
+}
+
+.tab-link-main.active span {
 	background: #ddd;
 	color: #272727;
 }
 
 .tabs__nav .tab-link {
 	padding: 0;
+}
+.tab-link,
+.tab-link-main {
+	display: block;
+	position: relative;
+	z-index: 1;
 }
 
 .tabs__content {
@@ -7471,7 +7530,8 @@ img.mfp-img {
 }
 
 @media (min-width: 600px) {
-	.tab-link {
+	.tab-link,
+	.tab-link-main {
 		display: inline-block;
 	}
 
@@ -7480,17 +7540,7 @@ img.mfp-img {
 	}
 
 	.tab-link:after {
-		content: "";
-		width: 0;
-		height: 0;
-		border-style: solid;
-		border-width: 10px 20px 0 20px;
-		border-color: #fff transparent transparent transparent;
-		position: absolute;
-		bottom: -10px;
-		margin-left: -20px;
-		left: 50%;
-		transition: all 0.3s ease;
+		display: none;
 	}
 }
 
@@ -12560,4 +12610,8 @@ input::placeholder {
 .dark .testimonial-author,
 .dark .testimonial-author-dash {
 	color: #94a3b8;
+}
+.active {
+	background: initial;
+	color: initial;
 }
