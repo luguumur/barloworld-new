@@ -1,22 +1,30 @@
 import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
-import React from "react";
 import { Metadata } from "next";
-import Notification from "@/components/Common/Notification";
+import NotificationListContainer from "@/components/Admin/Notification";
+import { getNotifications } from "@/actions/notification";
+
+export const revalidate = 0;
 
 export const metadata: Metadata = {
 	title: `Notifications - ${process.env.SITE_NAME}`,
-	description: `Notifications Description`,
+	description: `Notifications`,
 };
 
-const NotificationPage = () => {
-	const data = [1, 2, 3, 4, 5, 6, 7];
+export default async function NotificationPage({
+	searchParams,
+}: {
+	searchParams: Promise<{ search?: string }>;
+}) {
+	const { search } = await searchParams;
+	const notifications = await getNotifications(search);
 
 	return (
 		<>
 			<Breadcrumb pageTitle='Notifications' />
-			{data?.map((data) => <Notification key={data} />)}
+			<NotificationListContainer
+				notifications={notifications}
+				initialSearch={search ?? ""}
+			/>
 		</>
 	);
-};
-
-export default NotificationPage;
+}

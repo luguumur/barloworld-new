@@ -1,9 +1,39 @@
 import Link from "next/link";
 
-export default function Notification({ link }: any) {
+function timeAgo(date: Date): string {
+	const seconds = Math.floor((Date.now() - new Date(date).getTime()) / 1000);
+	if (seconds < 60) return `${seconds}s ago`;
+	const minutes = Math.floor(seconds / 60);
+	if (minutes < 60) return `${minutes}m ago`;
+	const hours = Math.floor(minutes / 60);
+	if (hours < 24) return `${hours}h ago`;
+	const days = Math.floor(hours / 24);
+	return `${days}d ago`;
+}
+
+type Props = {
+	link: string;
+	title: string;
+	message: string;
+	isRead: boolean;
+	createdAt: Date;
+};
+
+export default function NotificationItem({
+	link,
+	title,
+	message,
+	isRead,
+	createdAt,
+}: Props) {
 	return (
-		<div className='mb-3 flex cursor-pointer gap-5 rounded-md bg-white px-2 py-2 hover:bg-gray dark:bg-gray-dark dark:hover:bg-dark '>
-			<div className='hidden h-10.5 w-10.5 items-center justify-center rounded-full bg-primary text-white md:flex'>
+		<Link
+			href={link}
+			className={`mb-3 flex cursor-pointer gap-3 rounded-md px-2 py-2 hover:bg-gray dark:hover:bg-dark ${
+				isRead ? "bg-white dark:bg-gray-dark" : "bg-primary/5 dark:bg-primary/10"
+			}`}
+		>
+			<div className='hidden h-10.5 w-10.5 shrink-0 items-center justify-center rounded-full bg-primary text-white md:flex'>
 				<svg
 					width='18'
 					height='18'
@@ -21,14 +51,22 @@ export default function Notification({ link }: any) {
 					/>
 				</svg>
 			</div>
-			<Link href={link} className=''>
-				<h5 className='font-satoshi text-lg text-dark dark:text-white'>
-					You just download latest version 2.20...
-				</h5>
-				<span className='text-sm font-medium text-body dark:text-gray-4'>
-					5 min ago
+			<div className='flex-1 overflow-hidden'>
+				<p
+					className={`line-clamp-1 font-satoshi text-sm text-dark dark:text-white ${!isRead ? "font-semibold" : ""}`}
+				>
+					{title}
+				</p>
+				<p className='line-clamp-1 text-xs text-body dark:text-gray-4'>
+					{message}
+				</p>
+				<span className='text-xs font-medium text-body dark:text-gray-4' suppressHydrationWarning>
+					{timeAgo(createdAt)}
 				</span>
-			</Link>
-		</div>
+			</div>
+			{!isRead && (
+				<span className='mt-1 h-2 w-2 shrink-0 rounded-full bg-primary' />
+			)}
+		</Link>
 	);
 }

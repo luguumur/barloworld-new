@@ -358,7 +358,7 @@ export default function ProductDetail({
 						</div>
 						<div className='col-xs-6 col-md-5'>
 							<a
-								href='https://thompsonmachinery.com/contact-us/request-a-quote/?machine=725 Articulated Truck'
+								href={`/quote?equipment=${encodeURIComponent(lang === "mn" ? product.name : product.name_en)}`}
 								className='btn btn-primary btn-block'
 							>
 								Request a Quote

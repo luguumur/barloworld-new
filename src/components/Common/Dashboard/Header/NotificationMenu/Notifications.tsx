@@ -1,36 +1,52 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
-import Notification from "./NotificationItem";
+import { useState, useEffect, useRef, useCallback } from "react";
+import NotificationItem from "./NotificationItem";
 import Link from "next/link";
+import { getUnreadCount, getRecentNotifications } from "@/actions/notification";
+import type { NotificationRow } from "@/actions/notification";
+
 export default function Notifications({ role }: { role: string }) {
 	const [showNotification, setShowNotification] = useState(false);
-	const [showDot, setShowDot] = useState(true);
+	const [unreadCount, setUnreadCount] = useState(0);
+	const [items, setItems] = useState<NotificationRow[]>([]);
+
+	const isAdmin = role?.toLowerCase() === "admin";
+	const link = isAdmin ? "/admin/notifications" : "/admin/notifications";
+
+	const fetchData = useCallback(async () => {
+		if (!isAdmin) return;
+		try {
+			const [count, recent] = await Promise.all([
+				getUnreadCount(),
+				getRecentNotifications(5),
+			]);
+			setUnreadCount(count ?? 0);
+			setItems(recent ?? []);
+		} catch {
+			// silently ignore — user may not have a session yet
+		}
+	}, [isAdmin]);
+
+	useEffect(() => {
+		fetchData();
+	}, [fetchData]);
 
 	const handleShowNotification = () => {
-		setShowNotification(!showNotification);
-		setShowDot(false);
+		setShowNotification((prev) => !prev);
+		if (!showNotification) fetchData();
 	};
 
-	// ===== click outside of modal =====
+	// click outside to close
 	const divRef = useRef<HTMLDivElement | null>(null);
 	useEffect(() => {
-		if (typeof window !== "undefined") {
-			const handleClickOutside = (event: MouseEvent) => {
-				if (divRef.current && !divRef.current.contains(event.target as Node)) {
-					setShowNotification(false);
-				}
-			};
-
-			document.addEventListener("mousedown", handleClickOutside);
-			return () => {
-				document.removeEventListener("mousedown", handleClickOutside);
-			};
-		}
-	});
-
-	const count = [1, 2, 3];
-	const link =
-		role === "admin" ? "/admin/notifications" : "/user/notifications";
+		const handleClickOutside = (event: MouseEvent) => {
+			if (divRef.current && !divRef.current.contains(event.target as Node)) {
+				setShowNotification(false);
+			}
+		};
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, []);
 
 	return (
 		<div className='relative' ref={divRef}>
@@ -39,11 +55,15 @@ export default function Notifications({ role }: { role: string }) {
 				onClick={handleShowNotification}
 				className='relative hidden aspect-square w-12 cursor-pointer items-center justify-center rounded-full border border-stroke bg-gray-2 text-dark hover:bg-gray-3 dark:border-stroke-dark dark:bg-gray-dark dark:text-white xsm:flex'
 			>
-				<span
-					className={`absolute right-[13px] top-3 aspect-square w-2.5 rounded-full border-2 border-gray-2  bg-red-light dark:border-stroke-dark ${
-						!showDot ? "hidden" : ""
-					}`}
-				></span>
+				{unreadCount > 0 && (
+					<span className='absolute right-[13px] top-3 flex h-2.5 w-2.5 items-center justify-center rounded-full border-2 border-gray-2 bg-red-light dark:border-stroke-dark'>
+						{unreadCount > 9 && (
+							<span className='absolute -right-2 -top-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-light text-[9px] text-white'>
+								9+
+							</span>
+						)}
+					</span>
+				)}
 				<svg
 					width='20'
 					height='20'
@@ -64,23 +84,45 @@ export default function Notifications({ role }: { role: string }) {
 			<div
 				className={`${
 					showNotification ? "block" : "hidden"
-				} absolute left-0 right-0 top-12 z-99999 mx-auto w-[250px] rounded-md bg-white px-4 shadow-md dark:bg-gray-dark dark:shadow-[0px_1px_4px_1px_rgba(255,200,255,0.08)] md:left-auto md:top-17.5 md:w-[400px]`}
+				} absolute left-0 right-0 top-12 z-99999 mx-auto w-[280px] rounded-md bg-white px-4 shadow-md dark:bg-gray-dark dark:shadow-[0px_1px_4px_1px_rgba(255,200,255,0.08)] md:left-auto md:top-17.5 md:w-[400px]`}
 			>
 				<div className='mb-4'>
-					<h3 className='text-md border-b border-stroke p-4 text-dark dark:border-stroke-dark dark:text-white'>
-						Notifications
-					</h3>
+					<div className='flex items-center justify-between border-b border-stroke p-4 dark:border-stroke-dark'>
+						<h3 className='text-md font-medium text-dark dark:text-white'>
+							Notifications
+						</h3>
+						{unreadCount > 0 && (
+							<span className='rounded-full bg-red-light px-2 py-0.5 text-xs text-white'>
+								{unreadCount} new
+							</span>
+						)}
+					</div>
 				</div>
 
-				{/* {count.map((notification) => (
-					<Notification key={notification} link={link} />
-				))} */}
+				<div className='max-h-[320px] overflow-y-auto'>
+					{items.length > 0 ? (
+						items.map((n) => (
+							<NotificationItem
+								key={n.id}
+								link={link}
+								title={n.title}
+								message={n.message}
+								isRead={n.isRead}
+								createdAt={n.createdAt}
+							/>
+						))
+					) : (
+						<p className='py-6 text-center text-sm text-body dark:text-gray-5'>
+							No notifications
+						</p>
+					)}
+				</div>
 
-				<div className='mt-5 flex w-full border-t border-stroke py-4 text-center dark:border-stroke-dark'>
+				<div className='mt-2 flex w-full border-t border-stroke py-4 text-center dark:border-stroke-dark'>
 					<Link
 						href={link}
 						onClick={() => setShowNotification(false)}
-						className='text-md w-full rounded-md border border-stroke bg-gray py-3  text-dark hover:bg-gray/40 dark:border-stroke-dark dark:bg-slate-700 dark:text-white'
+						className='text-md w-full rounded-md border border-stroke bg-gray py-3 text-dark hover:bg-gray/40 dark:border-stroke-dark dark:bg-slate-700 dark:text-white'
 					>
 						See All Notifications
 					</Link>

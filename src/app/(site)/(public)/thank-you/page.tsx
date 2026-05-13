@@ -83,23 +83,14 @@ const ThankYouPage = () => {
 				Thank you
 			</h2>
 			<p className='px-20'>
-				Go to account if you already logged in, If not login with the email
-				you&apos;ve purchased with
+				thank you for contacting us. We will get back to you as soon as
+				possible. If you have any urgent questions, please feel free to contact
+				us at{" "}
 			</p>
 
 			<div className='mt-10'>
-				<Link
-					href='/user/billing'
-					className='rounded-md bg-primary px-10 py-3 text-white'
-				>
-					Account
-				</Link>
-
-				<Link
-					href='/auth/forgot-password'
-					className='ml-5 rounded-md bg-dark px-10 py-3 text-white dark:bg-white dark:text-dark'
-				>
-					Login
+				<Link href='/' className='rounded-md bg-primary px-10 py-3 text-white'>
+					Home
 				</Link>
 			</div>
 		</section>

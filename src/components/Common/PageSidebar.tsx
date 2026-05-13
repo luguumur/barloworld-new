@@ -9,17 +9,17 @@ type Props = {
 
 const quickLinksPrimary: QuickLink[] = [
 	{
-		href: "https://thompsonmachinery.com/new/",
+		href: "/products",
 		icon: "https://thompsonmachinery.com/content/uploads/2016/12/icon-equipment.png",
 		label: "Find equipment",
 	},
 	{
-		href: "https://thompsonmachinery.com/contact-us/locations/",
+		href: "/locations",
 		icon: "https://thompsonmachinery.com/content/uploads/2016/12/icon-location.png",
 		label: "Find location",
 	},
 	{
-		href: "https://thompsonmachinery.com/contact-us/find-a-rep/",
+		href: "/find-a-rep",
 		icon: "https://thompsonmachinery.com/content/uploads/2016/12/icon-call.png",
 		label: "Find a rep",
 	},
@@ -27,17 +27,17 @@ const quickLinksPrimary: QuickLink[] = [
 
 const quickLinksSecondary: QuickLink[] = [
 	{
-		href: "https://thompsonmachinery.com/operator-training/",
+		href: "/operator-training",
 		icon: "https://thompsonmachinery.com/content/uploads/2016/12/icon-safety.png",
 		label: "Safety & training",
 	},
 	{
-		href: "https://thompsonmachinery.com/service/",
+		href: "/service",
 		icon: "https://thompsonmachinery.com/content/uploads/2016/12/icon-service.png",
 		label: "Service & maintenance",
 	},
 	{
-		href: "https://thompsonmachinery.com/thompson-careers/",
+		href: "/careers",
 		icon: "https://thompsonmachinery.com/content/uploads/2016/12/icon-career.png",
 		label: "Careers",
 	},
