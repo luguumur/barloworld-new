@@ -39,18 +39,14 @@ export default function NewsListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<NewsTopbar
 					initialSearch={initialSearch}
 					initialCategoryId={initialCategoryId}
 					categories={categories}
 				/>
 			</div>
-			{news?.length ? (
-				<NewsListTable news={news} />
-			) : (
-				<NewsEmptyState />
-			)}
+			{news?.length ? <NewsListTable news={news} /> : <NewsEmptyState />}
 		</>
 	);
 }

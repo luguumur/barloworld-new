@@ -48,7 +48,7 @@ export default function NotificationListTable({
 							<tr
 								key={n.id}
 								onClick={() => setSelected(n)}
-								className={`cursor-pointer border-b border-stroke last-of-type:border-b-0 transition-colors hover:bg-gray-1 dark:border-stroke-dark dark:hover:bg-white/5 ${
+								className={`cursor-pointer border-b border-stroke transition-colors last-of-type:border-b-0 hover:bg-gray-1 dark:border-stroke-dark dark:hover:bg-white/5 ${
 									!n.isRead ? "bg-primary/5 dark:bg-primary/10" : ""
 								}`}
 							>
@@ -58,7 +58,7 @@ export default function NotificationListTable({
 									)}
 								</td>
 								<td className='p-4 text-left'>
-									<p className='font-medium text-dark dark:text-white line-clamp-1'>
+									<p className='line-clamp-1 font-medium text-dark dark:text-white'>
 										{n.title}
 									</p>
 									<p className='mt-0.5 line-clamp-2 text-sm text-body dark:text-gray-5'>
@@ -100,7 +100,7 @@ export default function NotificationListTable({
 				</table>
 			</div>
 
-				<NotificationDetailDrawer
+			<NotificationDetailDrawer
 				notification={selected}
 				onClose={() => setSelected(null)}
 			/>

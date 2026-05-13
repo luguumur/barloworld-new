@@ -43,7 +43,7 @@ export async function createNotificationPublic(data: NotificationInput) {
 export async function getNotifications(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.notification.findMany({
+		return (await prisma.notification.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -55,7 +55,7 @@ export async function getNotifications(search?: string) {
 						],
 					}
 				: undefined,
-		}) as NotificationRow[];
+		})) as NotificationRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as NotificationRow[]);
 	}
@@ -73,10 +73,10 @@ export async function getUnreadCount() {
 export async function getRecentNotifications(limit = 5) {
 	await isAuthorized();
 	try {
-		return await prisma.notification.findMany({
+		return (await prisma.notification.findMany({
 			orderBy: { createdAt: "desc" },
 			take: limit,
-		}) as NotificationRow[];
+		})) as NotificationRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as NotificationRow[]);
 	}

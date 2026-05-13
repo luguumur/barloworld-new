@@ -30,7 +30,9 @@ export default function NotificationItem({
 		<Link
 			href={link}
 			className={`mb-3 flex cursor-pointer gap-3 rounded-md px-2 py-2 hover:bg-gray dark:hover:bg-dark ${
-				isRead ? "bg-white dark:bg-gray-dark" : "bg-primary/5 dark:bg-primary/10"
+				isRead
+					? "bg-white dark:bg-gray-dark"
+					: "bg-primary/5 dark:bg-primary/10"
 			}`}
 		>
 			<div className='hidden h-10.5 w-10.5 shrink-0 items-center justify-center rounded-full bg-primary text-white md:flex'>
@@ -53,14 +55,19 @@ export default function NotificationItem({
 			</div>
 			<div className='flex-1 overflow-hidden'>
 				<p
-					className={`line-clamp-1 font-satoshi text-sm text-dark dark:text-white ${!isRead ? "font-semibold" : ""}`}
+					className={`line-clamp-1 font-satoshi text-sm text-dark dark:text-white ${
+						!isRead ? "font-semibold" : ""
+					}`}
 				>
 					{title}
 				</p>
 				<p className='line-clamp-1 text-xs text-body dark:text-gray-4'>
 					{message}
 				</p>
-				<span className='text-xs font-medium text-body dark:text-gray-4' suppressHydrationWarning>
+				<span
+					className='text-xs font-medium text-body dark:text-gray-4'
+					suppressHydrationWarning
+				>
 					{timeAgo(createdAt)}
 				</span>
 			</div>

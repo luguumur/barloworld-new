@@ -9,17 +9,22 @@ type Props = {
 	onClose: () => void;
 };
 
-export default function NotificationDetailDrawer({ notification, onClose }: Props) {
+export default function NotificationDetailDrawer({
+	notification,
+	onClose,
+}: Props) {
 	const router = useRouter();
 	const drawerRef = useRef<HTMLDivElement>(null);
 	const open = !!notification;
 
-	// mark as read when opened
+	// mark as read when opened — only re-run when the notification id changes
+	const notificationId = notification?.id;
+	const isRead = notification?.isRead;
 	useEffect(() => {
-		if (notification && !notification.isRead) {
-			markAsRead(notification.id).then(() => router.refresh());
+		if (notificationId && !isRead) {
+			markAsRead(notificationId).then(() => router.refresh());
 		}
-	}, [notification?.id]);
+	}, [notificationId, isRead, router]);
 
 	// close on outside click
 	useEffect(() => {
@@ -115,14 +120,21 @@ export default function NotificationDetailDrawer({ notification, onClose }: Prop
 								)}
 								{notification.senderPhone && (
 									<p className='mt-1 text-sm text-body dark:text-gray-5'>
-										<a href={`tel:${notification.senderPhone}`} className='hover:underline'>
+										<a
+											href={`tel:${notification.senderPhone}`}
+											className='hover:underline'
+										>
 											{notification.senderPhone}
 										</a>
 									</p>
 								)}
-								{!notification.senderName && !notification.senderEmail && !notification.senderPhone && (
-									<p className='text-sm text-body dark:text-gray-5'>Anonymous</p>
-								)}
+								{!notification.senderName &&
+									!notification.senderEmail &&
+									!notification.senderPhone && (
+										<p className='text-sm text-body dark:text-gray-5'>
+											Anonymous
+										</p>
+									)}
 							</div>
 
 							{/* message */}

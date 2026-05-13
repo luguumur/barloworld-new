@@ -32,14 +32,14 @@ function normalizeSlug(s: string): string {
 		.toLowerCase()
 		.replace(/\s+/g, "-")
 		.replace(/[^a-z0-9-_/]/g, "") // allow / for nested slugs like parts/undercarriage
-		.replace(/\/+/g, "/")          // collapse duplicate slashes
-		.replace(/^\/|\/$/g, "");      // strip leading/trailing slashes
+		.replace(/\/+/g, "/") // collapse duplicate slashes
+		.replace(/^\/|\/$/g, ""); // strip leading/trailing slashes
 }
 
 export async function getPageById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.page.findUnique({ where: { id } }) as PageRow | null;
+		return (await prisma.page.findUnique({ where: { id } })) as PageRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -48,9 +48,9 @@ export async function getPageById(id: string) {
 /** Public: get page by slug (no auth) */
 export async function getPageBySlug(slug: string) {
 	try {
-		return await prisma.page.findUnique({
+		return (await prisma.page.findUnique({
 			where: { slug: slug.toLowerCase().trim() },
-		}) as PageRow | null;
+		})) as PageRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -72,7 +72,7 @@ export async function getAllPageSlugs(): Promise<string[]> {
 export async function getPages(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.page.findMany({
+		return (await prisma.page.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -81,11 +81,16 @@ export async function getPages(search?: string) {
 							{ title: { contains: search.trim(), mode: "insensitive" } },
 							{ title_en: { contains: search.trim(), mode: "insensitive" } },
 							{ description: { contains: search.trim(), mode: "insensitive" } },
-							{ description_en: { contains: search.trim(), mode: "insensitive" } },
+							{
+								description_en: {
+									contains: search.trim(),
+									mode: "insensitive",
+								},
+							},
 						],
 					}
 				: undefined,
-		}) as PageRow[];
+		})) as PageRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as PageRow[]);
 	}
@@ -111,13 +116,21 @@ export async function updatePage(id: string, data: Partial<PageInput>) {
 	return prisma.page.update({
 		where: { id },
 		data: {
-			...(data.slug !== undefined && { slug: normalizeSlug(data.slug) || undefined }),
+			...(data.slug !== undefined && {
+				slug: normalizeSlug(data.slug) || undefined,
+			}),
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.description !== undefined && { description: data.description?.trim() ?? null }),
-			...(data.description_en !== undefined && { description_en: data.description_en?.trim() ?? null }),
+			...(data.description !== undefined && {
+				description: data.description?.trim() ?? null,
+			}),
+			...(data.description_en !== undefined && {
+				description_en: data.description_en?.trim() ?? null,
+			}),
 			...(data.content !== undefined && { content: data.content.trim() }),
-			...(data.content_en !== undefined && { content_en: data.content_en.trim() }),
+			...(data.content_en !== undefined && {
+				content_en: data.content_en.trim(),
+			}),
 		},
 	});
 }

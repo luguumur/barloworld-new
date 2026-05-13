@@ -30,7 +30,7 @@ async function loadMessages(locale: string) {
 function applyTranslation(
 	messages: Record<string, unknown>,
 	key: string,
-	value: string,
+	value: string
 ): void {
 	const parts = key.split(".");
 	if (parts.length === 1) {
@@ -41,7 +41,11 @@ function applyTranslation(
 	if (typeof messages[ns] !== "object" || messages[ns] === null) {
 		messages[ns] = {};
 	}
-	applyTranslation(messages[ns] as Record<string, unknown>, rest.join("."), value);
+	applyTranslation(
+		messages[ns] as Record<string, unknown>,
+		rest.join("."),
+		value
+	);
 }
 
 export default getRequestConfig(async () => {
@@ -52,7 +56,10 @@ export default getRequestConfig(async () => {
 		getTranslationsPublic(),
 	]);
 
-	const messages = JSON.parse(JSON.stringify(jsonMessages)) as Record<string, unknown>;
+	const messages = JSON.parse(JSON.stringify(jsonMessages)) as Record<
+		string,
+		unknown
+	>;
 
 	for (const row of dbRows) {
 		const value = (locale as string) === "mn" ? row.value_mn : row.value_en;

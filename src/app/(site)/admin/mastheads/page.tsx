@@ -22,10 +22,10 @@ export default async function MastheadsPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Mastheads" />
+			<Breadcrumb pageTitle='Mastheads' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}

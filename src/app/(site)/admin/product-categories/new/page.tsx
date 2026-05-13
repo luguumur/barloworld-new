@@ -10,12 +10,16 @@ export const metadata: Metadata = {
 
 export default async function NewProductCategoryPage() {
 	const productTypes = await getProductTypes();
-	const typeOptions = productTypes.map((t) => ({ id: t.id, name: t.name, name_en: t.name_en }));
+	const typeOptions = productTypes.map((t) => ({
+		id: t.id,
+		name: t.name,
+		name_en: t.name_en,
+	}));
 
 	return (
 		<>
-			<Breadcrumb pageTitle="New Product Category" />
-			<ProductCategoryForm mode="create" productTypes={typeOptions} />
+			<Breadcrumb pageTitle='New Product Category' />
+			<ProductCategoryForm mode='create' productTypes={typeOptions} />
 		</>
 	);
 }

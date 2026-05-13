@@ -2,12 +2,6 @@
 import QuoteRequestAction from "./QuoteRequestAction";
 import { QuoteRequestRow } from "@/actions/quoteRequest";
 
-const STATUS_COLOR: Record<string, string> = {
-	NEW: "bg-primary/10 text-primary",
-	READ: "bg-yellow-100 text-yellow-700",
-	DONE: "bg-green-100 text-green-700",
-};
-
 export default function QuoteRequestListTable({
 	quotes,
 }: {
@@ -48,7 +42,9 @@ export default function QuoteRequestListTable({
 									{q.firstName} {q.lastName}
 								</p>
 								{q.title && (
-									<p className='text-xs text-body dark:text-gray-5'>{q.title}</p>
+									<p className='text-xs text-body dark:text-gray-5'>
+										{q.title}
+									</p>
 								)}
 								{q.contactState && (
 									<p className='text-xs text-body dark:text-gray-5'>

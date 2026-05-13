@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewAttributePage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Attribute" />
-			<AttributeForm mode="create" />
+			<Breadcrumb pageTitle='New Attribute' />
+			<AttributeForm mode='create' />
 		</>
 	);
 }

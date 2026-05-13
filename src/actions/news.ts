@@ -38,10 +38,10 @@ export type NewsInput = {
 export async function getNewsById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.news.findUnique({
+		return (await prisma.news.findUnique({
 			where: { id },
 			include: { category: true },
-		}) as NewsRow | null;
+		})) as NewsRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -50,7 +50,7 @@ export async function getNewsById(id: string) {
 export async function getNews(search?: string, categoryId?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.news.findMany({
+		return (await prisma.news.findMany({
 			orderBy: { createdAt: "desc" },
 			include: { category: true },
 			where: {
@@ -64,7 +64,7 @@ export async function getNews(search?: string, categoryId?: string) {
 					],
 				}),
 			},
-		}) as NewsRow[];
+		})) as NewsRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as NewsRow[]);
 	}
@@ -93,12 +93,22 @@ export async function updateNews(id: string, data: Partial<NewsInput>) {
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
-			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
-			...(data.thumbnail !== undefined && { thumbnail: data.thumbnail?.trim() || null }),
+			...(data.subtitle !== undefined && {
+				subtitle: data.subtitle?.trim() ?? null,
+			}),
+			...(data.subtitle_en !== undefined && {
+				subtitle_en: data.subtitle_en?.trim() ?? null,
+			}),
+			...(data.thumbnail !== undefined && {
+				thumbnail: data.thumbnail?.trim() || null,
+			}),
 			...(data.content !== undefined && { content: data.content.trim() }),
-			...(data.content_en !== undefined && { content_en: data.content_en.trim() }),
-			...(data.categoryId !== undefined && { categoryId: data.categoryId.trim() }),
+			...(data.content_en !== undefined && {
+				content_en: data.content_en.trim(),
+			}),
+			...(data.categoryId !== undefined && {
+				categoryId: data.categoryId.trim(),
+			}),
 		},
 	});
 }
@@ -110,11 +120,11 @@ export async function deleteNews(id: string) {
 
 export async function getNewsPublic(limit = 6) {
 	try {
-		return await prisma.news.findMany({
+		return (await prisma.news.findMany({
 			orderBy: { createdAt: "desc" },
 			take: limit,
 			include: { category: true },
-		}) as NewsRow[];
+		})) as NewsRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as NewsRow[]);
 	}

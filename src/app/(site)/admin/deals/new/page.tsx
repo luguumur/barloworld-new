@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewDealPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Deal" />
-			<DealForm mode="create" />
+			<Breadcrumb pageTitle='New Deal' />
+			<DealForm mode='create' />
 		</>
 	);
 }

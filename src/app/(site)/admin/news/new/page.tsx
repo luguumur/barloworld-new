@@ -18,8 +18,8 @@ export default async function NewNewsPage() {
 
 	return (
 		<>
-			<Breadcrumb pageTitle="New News" />
-			<NewsForm mode="create" categories={categoryOptions} />
+			<Breadcrumb pageTitle='New News' />
+			<NewsForm mode='create' categories={categoryOptions} />
 		</>
 	);
 }

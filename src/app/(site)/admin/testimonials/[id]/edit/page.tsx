@@ -31,8 +31,8 @@ export default async function EditTestimonialPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Testimonial" />
-			<TestimonialForm mode="edit" editId={id} initial={initial} />
+			<Breadcrumb pageTitle='Edit Testimonial' />
+			<TestimonialForm mode='edit' editId={id} initial={initial} />
 		</>
 	);
 }

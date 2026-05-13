@@ -20,9 +20,9 @@ export default async function EditAttributeValueGroupPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Attribute Group" />
+			<Breadcrumb pageTitle='Edit Attribute Group' />
 			<AttributeValueGroupForm
-				mode="edit"
+				mode='edit'
 				editId={id}
 				initial={{ name: item.name, name_en: item.name_en }}
 			/>

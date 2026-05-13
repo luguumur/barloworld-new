@@ -31,7 +31,9 @@ export type TestimonialInput = {
 export async function getTestimonialById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.testimonial.findUnique({ where: { id } }) as TestimonialRow | null;
+		return (await prisma.testimonial.findUnique({
+			where: { id },
+		})) as TestimonialRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -40,7 +42,7 @@ export async function getTestimonialById(id: string) {
 export async function getTestimonials(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.testimonial.findMany({
+		return (await prisma.testimonial.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -52,7 +54,7 @@ export async function getTestimonials(search?: string) {
 						],
 					}
 				: undefined,
-		}) as TestimonialRow[];
+		})) as TestimonialRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as TestimonialRow[]);
 	}
@@ -74,19 +76,34 @@ export async function createTestimonial(data: TestimonialInput) {
 	});
 }
 
-export async function updateTestimonial(id: string, data: Partial<TestimonialInput>) {
+export async function updateTestimonial(
+	id: string,
+	data: Partial<TestimonialInput>
+) {
 	await isAuthorized();
 	return prisma.testimonial.update({
 		where: { id },
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
-			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
-			...(data.description !== undefined && { description: data.description.trim() }),
-			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
-			...(data.videoUrl !== undefined && { videoUrl: data.videoUrl?.trim() || null }),
-			...(data.imageUrl !== undefined && { imageUrl: data.imageUrl?.trim() || null }),
+			...(data.subtitle !== undefined && {
+				subtitle: data.subtitle?.trim() ?? null,
+			}),
+			...(data.subtitle_en !== undefined && {
+				subtitle_en: data.subtitle_en?.trim() ?? null,
+			}),
+			...(data.description !== undefined && {
+				description: data.description.trim(),
+			}),
+			...(data.description_en !== undefined && {
+				description_en: data.description_en.trim(),
+			}),
+			...(data.videoUrl !== undefined && {
+				videoUrl: data.videoUrl?.trim() || null,
+			}),
+			...(data.imageUrl !== undefined && {
+				imageUrl: data.imageUrl?.trim() || null,
+			}),
 		},
 	});
 }
@@ -99,10 +116,10 @@ export async function deleteTestimonial(id: string) {
 /** Public: testimonials for homepage — no auth required */
 export async function getTestimonialsPublic(limit = 6) {
 	try {
-		return await prisma.testimonial.findMany({
+		return (await prisma.testimonial.findMany({
 			orderBy: { createdAt: "desc" },
 			take: limit,
-		}) as TestimonialRow[];
+		})) as TestimonialRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as TestimonialRow[]);
 	}

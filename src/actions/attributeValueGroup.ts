@@ -14,7 +14,7 @@ export type AttributeValueGroupRow = {
 export async function getAttributeValueGroups(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.attributeValueGroup.findMany({
+		return (await prisma.attributeValueGroup.findMany({
 			orderBy: { createdAt: "asc" },
 			where: search?.trim()
 				? {
@@ -24,7 +24,7 @@ export async function getAttributeValueGroups(search?: string) {
 						],
 					}
 				: undefined,
-		}) as AttributeValueGroupRow[];
+		})) as AttributeValueGroupRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as AttributeValueGroupRow[]);
 	}
@@ -33,7 +33,9 @@ export async function getAttributeValueGroups(search?: string) {
 export async function getAttributeValueGroupById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.attributeValueGroup.findUnique({ where: { id } }) as AttributeValueGroupRow | null;
+		return (await prisma.attributeValueGroup.findUnique({
+			where: { id },
+		})) as AttributeValueGroupRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}

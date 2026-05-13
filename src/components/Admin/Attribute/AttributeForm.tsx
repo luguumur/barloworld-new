@@ -55,58 +55,82 @@ export default function AttributeForm({ mode, editId, initial }: Props) {
 	};
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6">
-				<Link href="/admin/attributes" className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6'>
+				<Link
+					href='/admin/attributes'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
+				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Attribute" : "Add Attribute"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4 max-w-md">
+			<form
+				onSubmit={handleSubmit}
+				className='flex max-w-md flex-col space-y-4'
+			>
 				<InputGroup
-					label="Name (MN)"
-					type="text"
-					name="name"
+					label='Name (MN)'
+					type='text'
+					name='name'
 					value={name}
-					placeholder="Шинж чанар"
+					placeholder='Шинж чанар'
 					required
-					handleChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						setName(e.target.value)
+					}
 				/>
 				<InputGroup
-					label="Name (EN)"
-					type="text"
-					name="name_en"
+					label='Name (EN)'
+					type='text'
+					name='name_en'
 					value={name_en}
-					placeholder="Attribute name"
+					placeholder='Attribute name'
 					required
-					handleChange={(e: React.ChangeEvent<HTMLInputElement>) => setNameEn(e.target.value)}
+					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						setNameEn(e.target.value)
+					}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Data type
 					</label>
 					<select
 						value={data_type}
 						onChange={(e) => setDataType(e.target.value)}
-						className="h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						className='h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 					>
 						{DATA_TYPES.map((t) => (
-							<option key={t} value={t}>{t}</option>
+							<option key={t} value={t}>
+								{t}
+							</option>
 						))}
 					</select>
 				</div>
-				<div className="flex gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
-					<Link href="/admin/attributes" className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium dark:border-stroke-dark dark:bg-white/5 dark:text-white">
+				<div className='flex gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
+					<Link
+						href='/admin/attributes'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium dark:border-stroke-dark dark:bg-white/5 dark:text-white'
+					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white hover:bg-primary-dark disabled:opacity-70'
 					>
-						{loading ? <><Loader style="border-white" /><span className="ml-2">Saving...</span></> : mode === "edit" ? "Update" : "Create"}
+						{loading ? (
+							<>
+								<Loader style='border-white' />
+								<span className='ml-2'>Saving...</span>
+							</>
+						) : mode === "edit" ? (
+							"Update"
+						) : (
+							"Create"
+						)}
 					</button>
 				</div>
 			</form>

@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewMenuItemPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Menu Item" />
-			<MenuItemForm mode="create" />
+			<Breadcrumb pageTitle='New Menu Item' />
+			<MenuItemForm mode='create' />
 		</>
 	);
 }

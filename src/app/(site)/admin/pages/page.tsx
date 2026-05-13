@@ -22,10 +22,10 @@ export default async function PagesAdminPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Custom Pages" />
+			<Breadcrumb pageTitle='Custom Pages' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}

@@ -31,7 +31,7 @@ export type DealInput = {
 export async function getDealById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.deal.findUnique({ where: { id } }) as DealRow | null;
+		return (await prisma.deal.findUnique({ where: { id } })) as DealRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -40,7 +40,7 @@ export async function getDealById(id: string) {
 export async function getDeals(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.deal.findMany({
+		return (await prisma.deal.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -52,7 +52,7 @@ export async function getDeals(search?: string) {
 						],
 					}
 				: undefined,
-		}) as DealRow[];
+		})) as DealRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as DealRow[]);
 	}
@@ -81,12 +81,24 @@ export async function updateDeal(id: string, data: Partial<DealInput>) {
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
-			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
-			...(data.description !== undefined && { description: data.description.trim() }),
-			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
-			...(data.status !== undefined && { status: data.status.trim() || "ACTIVE" }),
-			...(data.img_path !== undefined && { img_path: data.img_path?.trim() || null }),
+			...(data.subtitle !== undefined && {
+				subtitle: data.subtitle?.trim() ?? null,
+			}),
+			...(data.subtitle_en !== undefined && {
+				subtitle_en: data.subtitle_en?.trim() ?? null,
+			}),
+			...(data.description !== undefined && {
+				description: data.description.trim(),
+			}),
+			...(data.description_en !== undefined && {
+				description_en: data.description_en.trim(),
+			}),
+			...(data.status !== undefined && {
+				status: data.status.trim() || "ACTIVE",
+			}),
+			...(data.img_path !== undefined && {
+				img_path: data.img_path?.trim() || null,
+			}),
 		},
 	});
 }
@@ -99,11 +111,11 @@ export async function deleteDeal(id: string) {
 /** Public: active deals for homepage — no auth required */
 export async function getDealsPublic(limit = 6) {
 	try {
-		return await prisma.deal.findMany({
+		return (await prisma.deal.findMany({
 			where: { status: "ACTIVE" },
 			orderBy: { createdAt: "desc" },
 			take: limit,
-		}) as DealRow[];
+		})) as DealRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as DealRow[]);
 	}

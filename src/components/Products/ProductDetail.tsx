@@ -358,7 +358,9 @@ export default function ProductDetail({
 						</div>
 						<div className='col-xs-6 col-md-5'>
 							<a
-								href={`/quote?equipment=${encodeURIComponent(lang === "mn" ? product.name : product.name_en)}`}
+								href={`/quote?equipment=${encodeURIComponent(
+									lang === "mn" ? product.name : product.name_en
+								)}`}
 								className='btn btn-primary btn-block'
 							>
 								Request a Quote
@@ -371,7 +373,7 @@ export default function ProductDetail({
 												<a
 													href={`https://webapi.barloworld.mn/file/${brochureUrl}`}
 													target='_blank'
-													rel='nofollow'
+													rel='nofollow noreferrer'
 												>
 													<span className='icon-pdf-01'></span>{" "}
 													{t("downloadbrochure")}

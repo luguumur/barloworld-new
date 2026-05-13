@@ -14,7 +14,7 @@ export type NewsCategoryRow = {
 export async function getNewsCategories(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.newsCategory.findMany({
+		return (await prisma.newsCategory.findMany({
 			orderBy: { createdAt: "asc" },
 			where: search?.trim()
 				? {
@@ -24,13 +24,16 @@ export async function getNewsCategories(search?: string) {
 						],
 					}
 				: undefined,
-		}) as NewsCategoryRow[];
+		})) as NewsCategoryRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as NewsCategoryRow[]);
 	}
 }
 
-export async function createNewsCategory(data: { name: string; name_en: string }) {
+export async function createNewsCategory(data: {
+	name: string;
+	name_en: string;
+}) {
 	await isAuthorized();
 	return prisma.newsCategory.create({
 		data: { name: data.name.trim(), name_en: data.name_en.trim() },

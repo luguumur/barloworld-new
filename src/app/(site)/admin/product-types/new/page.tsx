@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewProductTypePage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Product Type" />
-			<ProductTypeForm mode="create" />
+			<Breadcrumb pageTitle='New Product Type' />
+			<ProductTypeForm mode='create' />
 		</>
 	);
 }

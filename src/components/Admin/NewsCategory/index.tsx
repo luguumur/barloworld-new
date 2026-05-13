@@ -35,8 +35,11 @@ export default function NewsCategoryListContainer({
 
 	return (
 		<>
-			<div className="mb-5">
-				<NewsCategoryTopbar onAddClick={handleAdd} initialSearch={initialSearch} />
+			<div className='mb-5'>
+				<NewsCategoryTopbar
+					onAddClick={handleAdd}
+					initialSearch={initialSearch}
+				/>
 			</div>
 			{categories?.length ? (
 				<NewsCategoryListTable categories={categories} onEdit={handleEdit} />

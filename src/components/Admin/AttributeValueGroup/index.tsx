@@ -14,7 +14,7 @@ export default function AttributeValueGroupListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<AttributeValueGroupTopbar initialSearch={initialSearch} />
 			</div>
 			{items?.length ? (

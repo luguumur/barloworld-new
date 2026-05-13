@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewTestimonialPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Testimonial" />
-			<TestimonialForm mode="create" />
+			<Breadcrumb pageTitle='New Testimonial' />
+			<TestimonialForm mode='create' />
 		</>
 	);
 }

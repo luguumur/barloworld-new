@@ -1,7 +1,6 @@
 import { Sidebar } from "@/types/sidebar";
 import {
 	Squares2X2Icon,
-	UserGroupIcon,
 	CubeIcon,
 	RectangleStackIcon,
 	ViewColumnsIcon,

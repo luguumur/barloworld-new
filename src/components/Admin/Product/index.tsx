@@ -14,7 +14,12 @@ type Product = {
 	category?: { name: string; name_en: string } | null;
 };
 
-type CategoryOption = { id: string; name: string; name_en: string; types: string };
+type CategoryOption = {
+	id: string;
+	name: string;
+	name_en: string;
+	types: string;
+};
 type TypeOption = { id: string; name: string; name_en: string };
 
 export default function ProductListContainer({
@@ -34,7 +39,7 @@ export default function ProductListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<ProductTopbar
 					initialSearch={initialSearch}
 					initialCategoryId={initialCategoryId}

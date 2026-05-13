@@ -3,7 +3,13 @@ import AttributeEmptyState from "./AttributeEmptyState";
 import AttributeListTable from "./AttributeListTable";
 import AttributeTopbar from "./AttributeTopbar";
 
-type Item = { id: string; name: string; name_en: string; data_type: string; createdAt: Date };
+type Item = {
+	id: string;
+	name: string;
+	name_en: string;
+	data_type: string;
+	createdAt: Date;
+};
 
 export default function AttributeListContainer({
 	items,
@@ -14,7 +20,7 @@ export default function AttributeListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<AttributeTopbar initialSearch={initialSearch} />
 			</div>
 			{items?.length ? (

@@ -22,10 +22,10 @@ export default async function TestimonialsPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Testimonials" />
+			<Breadcrumb pageTitle='Testimonials' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}

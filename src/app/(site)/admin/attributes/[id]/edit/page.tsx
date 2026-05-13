@@ -20,9 +20,9 @@ export default async function EditAttributePage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Attribute" />
+			<Breadcrumb pageTitle='Edit Attribute' />
 			<AttributeForm
-				mode="edit"
+				mode='edit'
 				editId={id}
 				initial={{
 					name: item.name,

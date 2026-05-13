@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewTranslationPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Translation" />
-			<TranslationForm mode="create" />
+			<Breadcrumb pageTitle='New Translation' />
+			<TranslationForm mode='create' />
 		</>
 	);
 }

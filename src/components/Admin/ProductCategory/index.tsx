@@ -3,7 +3,14 @@ import ProductCategoryEmptyState from "./ProductCategoryEmptyState";
 import ProductCategoryListTable from "./ProductCategoryListTable";
 import ProductCategoryTopbar from "./ProductCategoryTopbar";
 
-type Item = { id: string; name: string; name_en: string; types: string; img_path: string | null; createdAt: Date };
+type Item = {
+	id: string;
+	name: string;
+	name_en: string;
+	types: string;
+	img_path: string | null;
+	createdAt: Date;
+};
 type TypeOption = { id: string; name: string };
 
 export default function ProductCategoryListContainer({
@@ -19,7 +26,7 @@ export default function ProductCategoryListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<ProductCategoryTopbar
 					initialSearch={initialSearch}
 					initialType={initialType}

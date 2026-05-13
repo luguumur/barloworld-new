@@ -29,24 +29,29 @@ export interface EditorProps {
 	onChange?: (value: string) => void;
 }
 
-export function Editor({ label, value = "", placeholder, onChange }: EditorProps) {
+export function Editor({
+	label,
+	value = "",
+	placeholder,
+	onChange,
+}: EditorProps) {
 	const quillRef = useRef<ReactQuill>(null);
 
 	return (
 		<div>
 			{label && (
-				<label className="mb-2.5 block font-satoshi text-base font-medium text-dark dark:text-white">
+				<label className='mb-2.5 block font-satoshi text-base font-medium text-dark dark:text-white'>
 					{label}
 				</label>
 			)}
-			<div className="rounded-lg border border-gray-3 focus-within:shadow-input focus-within:ring-2 focus-within:ring-primary/20 dark:border-stroke-dark dark:bg-transparent">
+			<div className='rounded-lg border border-gray-3 focus-within:shadow-input focus-within:ring-2 focus-within:ring-primary/20 dark:border-stroke-dark dark:bg-transparent'>
 				<ReactQuillBase
 					forwardedRef={quillRef}
 					value={value}
 					placeholder={placeholder}
 					onChange={(content) => onChange?.(content)}
-					theme="snow"
-					className="[&_.ql-editor]:min-h-[120px] [&_.ql-container]:border-0 [&_.ql-toolbar]:border-0 [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-stroke [&_.ql-toolbar]:dark:border-stroke-dark"
+					theme='snow'
+					className='[&_.ql-container]:border-0 [&_.ql-editor]:min-h-[120px] [&_.ql-toolbar]:border-0 [&_.ql-toolbar]:border-b [&_.ql-toolbar]:border-stroke [&_.ql-toolbar]:dark:border-stroke-dark'
 				/>
 			</div>
 		</div>

@@ -46,23 +46,14 @@ function CustomHits(props: Props) {
 						)}
 						<div className='w-full'>
 							<h3 className='text-base font-medium text-black dark:text-gray-400'>
-								{plain ? (
-									hit.title
-								) : (
-									<Highlight attribute='title' hit={hit} />
-								)}
+								{plain ? hit.title : <Highlight attribute='title' hit={hit} />}
 							</h3>
 							<div className='text-body-color flex text-sm'>
 								<div>
 									{plain ? hit.type : <Highlight attribute='type' hit={hit} />}
 								</div>
 								<div>
-									:{" "}
-									{plain ? (
-										hit.url
-									) : (
-										<Highlight attribute='url' hit={hit} />
-									)}
+									: {plain ? hit.url : <Highlight attribute='url' hit={hit} />}
 								</div>
 							</div>
 						</div>

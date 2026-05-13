@@ -17,7 +17,9 @@ export async function getProductsPublic(opts?: {
 			where: {
 				status: "ACTIVE",
 				...(opts?.categoryId?.trim() && { categoryId: opts.categoryId.trim() }),
-				...(opts?.productTypes?.trim() && { product_types: opts.productTypes.trim() }),
+				...(opts?.productTypes?.trim() && {
+					product_types: opts.productTypes.trim(),
+				}),
 			},
 		})) as unknown as ProductRow[];
 	} catch (error) {
@@ -25,7 +27,9 @@ export async function getProductsPublic(opts?: {
 	}
 }
 
-export async function getProductByIdPublic(id: string): Promise<ProductRow | null> {
+export async function getProductByIdPublic(
+	id: string
+): Promise<ProductRow | null> {
 	try {
 		return (await prisma.product.findUnique({
 			where: { id },

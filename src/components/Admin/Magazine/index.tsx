@@ -24,7 +24,7 @@ export default function MagazineListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<MagazineTopbar initialSearch={initialSearch} />
 			</div>
 			{magazines?.length ? (

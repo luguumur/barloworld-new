@@ -31,8 +31,8 @@ export default async function EditDealPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Deal" />
-			<DealForm mode="edit" editId={id} initial={initial} />
+			<Breadcrumb pageTitle='Edit Deal' />
+			<DealForm mode='edit' editId={id} initial={initial} />
 		</>
 	);
 }

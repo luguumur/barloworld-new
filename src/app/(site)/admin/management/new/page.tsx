@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewManagementPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Management" />
-			<ManagementForm mode="create" />
+			<Breadcrumb pageTitle='New Management' />
+			<ManagementForm mode='create' />
 		</>
 	);
 }

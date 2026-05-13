@@ -27,7 +27,9 @@ export type MagazineInput = {
 export async function getMagazineById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.magazine.findUnique({ where: { id } }) as MagazineRow | null;
+		return (await prisma.magazine.findUnique({
+			where: { id },
+		})) as MagazineRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -36,7 +38,7 @@ export async function getMagazineById(id: string) {
 export async function getMagazines(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.magazine.findMany({
+		return (await prisma.magazine.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -48,7 +50,7 @@ export async function getMagazines(search?: string) {
 						],
 					}
 				: undefined,
-		}) as MagazineRow[];
+		})) as MagazineRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as MagazineRow[]);
 	}

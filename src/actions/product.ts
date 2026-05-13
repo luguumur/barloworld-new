@@ -74,12 +74,14 @@ export async function getProducts(opts?: {
 }) {
 	await isAuthorized();
 	try {
-		return await prisma.product.findMany({
+		return (await prisma.product.findMany({
 			orderBy: [{ product_order: "asc" }, { createdAt: "desc" }],
 			include: { category: true },
 			where: {
 				...(opts?.categoryId?.trim() && { categoryId: opts.categoryId.trim() }),
-				...(opts?.productTypes?.trim() && { product_types: opts.productTypes.trim() }),
+				...(opts?.productTypes?.trim() && {
+					product_types: opts.productTypes.trim(),
+				}),
 				...(opts?.search?.trim() && {
 					OR: [
 						{ name: { contains: opts.search.trim(), mode: "insensitive" } },
@@ -87,7 +89,7 @@ export async function getProducts(opts?: {
 					],
 				}),
 			},
-		}) as unknown as ProductRow[];
+		})) as unknown as ProductRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as ProductRow[]);
 	}
@@ -96,14 +98,14 @@ export async function getProducts(opts?: {
 export async function getProductById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.product.findUnique({
+		return (await prisma.product.findUnique({
 			where: { id },
 			include: {
 				category: true,
 				attributeValues: { include: { attribute: true, group: true } },
 				images: { orderBy: { createdAt: "asc" } },
 			},
-		}) as unknown as ProductRow | null;
+		})) as unknown as ProductRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -111,9 +113,13 @@ export async function getProductById(id: string) {
 
 export async function createProduct(data: ProductInput) {
 	await isAuthorized();
-	const attributeValues = data.attributeValues?.filter(
-		(av) => av.attributeId?.trim() && av.groupId?.trim() && av.value?.trim() !== undefined
-	) ?? [];
+	const attributeValues =
+		data.attributeValues?.filter(
+			(av) =>
+				av.attributeId?.trim() &&
+				av.groupId?.trim() &&
+				av.value?.trim() !== undefined
+		) ?? [];
 	return prisma.product.create({
 		data: {
 			name: data.name.trim(),
@@ -146,24 +152,47 @@ export async function createProduct(data: ProductInput) {
 export async function updateProduct(id: string, data: Partial<ProductInput>) {
 	await isAuthorized();
 	const attributeValues = data.attributeValues?.filter(
-		(av) => av.attributeId?.trim() && av.groupId?.trim() && av.value?.trim() !== undefined
+		(av) =>
+			av.attributeId?.trim() &&
+			av.groupId?.trim() &&
+			av.value?.trim() !== undefined
 	);
 	return prisma.product.update({
 		where: { id },
 		data: {
 			...(data.name !== undefined && { name: data.name.trim() }),
 			...(data.name_en !== undefined && { name_en: data.name_en.trim() }),
-			...(data.description !== undefined && { description: data.description.trim() }),
-			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
+			...(data.description !== undefined && {
+				description: data.description.trim(),
+			}),
+			...(data.description_en !== undefined && {
+				description_en: data.description_en.trim(),
+			}),
 			...(data.price !== undefined && { price: parsePrice(data.price) }),
-			...(data.img_path !== undefined && { img_path: data.img_path?.trim() || null }),
-			...(data.brochure_path !== undefined && { brochure_path: data.brochure_path?.trim() || null }),
-			...(data.model_3d !== undefined && { model_3d: data.model_3d?.trim() || null }),
-			...(data.video_link !== undefined && { video_link: data.video_link?.trim() || null }),
-			...(data.product_types !== undefined && { product_types: data.product_types?.trim() || null }),
-			...(data.product_order !== undefined && { product_order: data.product_order }),
-			...(data.status !== undefined && { status: data.status.trim() || "ACTIVE" }),
-			...(data.categoryId !== undefined && { categoryId: data.categoryId.trim() }),
+			...(data.img_path !== undefined && {
+				img_path: data.img_path?.trim() || null,
+			}),
+			...(data.brochure_path !== undefined && {
+				brochure_path: data.brochure_path?.trim() || null,
+			}),
+			...(data.model_3d !== undefined && {
+				model_3d: data.model_3d?.trim() || null,
+			}),
+			...(data.video_link !== undefined && {
+				video_link: data.video_link?.trim() || null,
+			}),
+			...(data.product_types !== undefined && {
+				product_types: data.product_types?.trim() || null,
+			}),
+			...(data.product_order !== undefined && {
+				product_order: data.product_order,
+			}),
+			...(data.status !== undefined && {
+				status: data.status.trim() || "ACTIVE",
+			}),
+			...(data.categoryId !== undefined && {
+				categoryId: data.categoryId.trim(),
+			}),
 			...(attributeValues !== undefined && {
 				attributeValues: {
 					deleteMany: {},

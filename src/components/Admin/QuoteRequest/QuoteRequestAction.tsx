@@ -65,7 +65,9 @@ export default function QuoteRequestAction({
 			<div className='mt-2 flex flex-wrap items-center gap-2 lsm:ml-auto lsm:justify-end sm:mt-0'>
 				<button
 					onClick={handleStatusToggle}
-					className={`flex h-8 items-center rounded-full px-3 text-xs font-medium ${STATUS_COLOR[quote.status] ?? "bg-gray-2 text-dark"}`}
+					className={`flex h-8 items-center rounded-full px-3 text-xs font-medium ${
+						STATUS_COLOR[quote.status] ?? "bg-gray-2 text-dark"
+					}`}
 				>
 					{STATUS_LABEL[quote.status] ?? quote.status}
 				</button>

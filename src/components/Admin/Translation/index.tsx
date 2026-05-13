@@ -13,7 +13,7 @@ export default function TranslationListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<TranslationTopbar initialSearch={initialSearch} />
 			</div>
 			{translations.length ? (

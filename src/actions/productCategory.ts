@@ -25,7 +25,7 @@ export type ProductCategoryInput = {
 export async function getProductCategories(types?: string, search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.productCategory.findMany({
+		return (await prisma.productCategory.findMany({
 			orderBy: { createdAt: "asc" },
 			where: {
 				...(types?.trim() && { types: types.trim() }),
@@ -36,7 +36,7 @@ export async function getProductCategories(types?: string, search?: string) {
 					],
 				}),
 			},
-		}) as ProductCategoryRow[];
+		})) as ProductCategoryRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as ProductCategoryRow[]);
 	}
@@ -45,7 +45,9 @@ export async function getProductCategories(types?: string, search?: string) {
 export async function getProductCategoryById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.productCategory.findUnique({ where: { id } }) as ProductCategoryRow | null;
+		return (await prisma.productCategory.findUnique({
+			where: { id },
+		})) as ProductCategoryRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -74,8 +76,12 @@ export async function updateProductCategory(
 		data: {
 			...(data.name !== undefined && { name: data.name.trim() }),
 			...(data.name_en !== undefined && { name_en: data.name_en.trim() }),
-			...(data.parentId !== undefined && { parentId: data.parentId?.trim() || null }),
-			...(data.img_path !== undefined && { img_path: data.img_path?.trim() || null }),
+			...(data.parentId !== undefined && {
+				parentId: data.parentId?.trim() || null,
+			}),
+			...(data.img_path !== undefined && {
+				img_path: data.img_path?.trim() || null,
+			}),
 			...(data.types !== undefined && { types: data.types.trim() }),
 		},
 	});

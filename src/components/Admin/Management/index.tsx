@@ -22,7 +22,7 @@ export default function ManagementListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<ManagementTopbar initialSearch={initialSearch} />
 			</div>
 			{managements?.length ? (

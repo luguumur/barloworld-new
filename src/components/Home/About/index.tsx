@@ -53,7 +53,7 @@ const About = () => {
 										data-fancybox='goal-video'
 										href='https://www.youtube.com/watch?v=sds1NxKwucM&ab_channel=BarloworldMongolia'
 										target='_blank'
-										rel='noopener'
+										rel='noopener noreferrer'
 										aria-label='Watch video on YouTube'
 									>
 										<div className='video-button-outer'>

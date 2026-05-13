@@ -46,9 +46,9 @@ export default async function NewProductPage() {
 
 	return (
 		<>
-			<Breadcrumb pageTitle="New Product" />
+			<Breadcrumb pageTitle='New Product' />
 			<ProductForm
-				mode="create"
+				mode='create'
 				categories={categoryOptions}
 				productTypes={typeOptions}
 				attributeGroups={groupOptions}

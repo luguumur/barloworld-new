@@ -12,9 +12,13 @@ export async function getProductTypesPublic(): Promise<ProductTypeRow[]> {
 	}
 }
 
-export async function getProductTypeByIdPublic(id: string): Promise<ProductTypeRow | null> {
+export async function getProductTypeByIdPublic(
+	id: string
+): Promise<ProductTypeRow | null> {
 	try {
-		return (await prisma.productType.findUnique({ where: { id } })) as ProductTypeRow | null;
+		return (await prisma.productType.findUnique({
+			where: { id },
+		})) as ProductTypeRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}

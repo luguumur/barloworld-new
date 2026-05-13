@@ -15,7 +15,7 @@ export type AttributeRow = {
 export async function getAttributes(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.attribute.findMany({
+		return (await prisma.attribute.findMany({
 			orderBy: { createdAt: "asc" },
 			where: search?.trim()
 				? {
@@ -25,7 +25,7 @@ export async function getAttributes(search?: string) {
 						],
 					}
 				: undefined,
-		}) as AttributeRow[];
+		})) as AttributeRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as AttributeRow[]);
 	}
@@ -34,7 +34,9 @@ export async function getAttributes(search?: string) {
 export async function getAttributeById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.attribute.findUnique({ where: { id } }) as AttributeRow | null;
+		return (await prisma.attribute.findUnique({
+			where: { id },
+		})) as AttributeRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}

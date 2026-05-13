@@ -22,13 +22,17 @@ export default async function EditProductCategoryPage({
 	]);
 	if (!item) notFound();
 
-	const typeOptions = productTypes.map((t) => ({ id: t.id, name: t.name, name_en: t.name_en }));
+	const typeOptions = productTypes.map((t) => ({
+		id: t.id,
+		name: t.name,
+		name_en: t.name_en,
+	}));
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Product Category" />
+			<Breadcrumb pageTitle='Edit Product Category' />
 			<ProductCategoryForm
-				mode="edit"
+				mode='edit'
 				editId={id}
 				initial={{
 					name: item.name,

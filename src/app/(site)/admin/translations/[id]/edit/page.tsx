@@ -21,9 +21,9 @@ export default async function EditTranslationPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Translation" />
+			<Breadcrumb pageTitle='Edit Translation' />
 			<TranslationForm
-				mode="edit"
+				mode='edit'
 				editId={translation.id}
 				initial={{
 					key: translation.key,

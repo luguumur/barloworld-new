@@ -26,7 +26,7 @@ export default function MastheadListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<MastheadTopbar initialSearch={initialSearch} />
 			</div>
 			{mastheads?.length ? (

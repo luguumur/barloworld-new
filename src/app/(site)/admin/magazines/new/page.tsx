@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewMagazinePage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Magazine" />
-			<MagazineForm mode="create" />
+			<Breadcrumb pageTitle='New Magazine' />
+			<MagazineForm mode='create' />
 		</>
 	);
 }

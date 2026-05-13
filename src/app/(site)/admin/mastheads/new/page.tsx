@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewMastheadPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Masthead" />
-			<MastheadForm mode="create" />
+			<Breadcrumb pageTitle='New Masthead' />
+			<MastheadForm mode='create' />
 		</>
 	);
 }

@@ -3,7 +3,13 @@ import ProductTypeEmptyState from "./ProductTypeEmptyState";
 import ProductTypeListTable from "./ProductTypeListTable";
 import ProductTypeTopbar from "./ProductTypeTopbar";
 
-type Item = { id: string; name: string; name_en: string; img_path?: string | null; createdAt: Date };
+type Item = {
+	id: string;
+	name: string;
+	name_en: string;
+	img_path?: string | null;
+	createdAt: Date;
+};
 
 export default function ProductTypeListContainer({
 	items,
@@ -14,7 +20,7 @@ export default function ProductTypeListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<ProductTypeTopbar initialSearch={initialSearch} />
 			</div>
 			{items?.length ? (

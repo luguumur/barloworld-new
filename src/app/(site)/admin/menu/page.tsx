@@ -16,10 +16,10 @@ export default async function MenuAdminPage() {
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Menu" />
+			<Breadcrumb pageTitle='Menu' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}

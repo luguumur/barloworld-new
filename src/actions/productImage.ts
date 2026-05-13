@@ -11,19 +11,24 @@ export type ProductImageRow = {
 	updatedAt: Date;
 };
 
-export async function getProductImages(productId: string): Promise<ProductImageRow[]> {
+export async function getProductImages(
+	productId: string
+): Promise<ProductImageRow[]> {
 	await isAuthorized();
 	try {
-		return await prisma.productImage.findMany({
+		return (await prisma.productImage.findMany({
 			where: { productId },
 			orderBy: { createdAt: "asc" },
-		}) as ProductImageRow[];
+		})) as ProductImageRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as ProductImageRow[]);
 	}
 }
 
-export async function addProductImage(productId: string, path: string): Promise<ProductImageRow> {
+export async function addProductImage(
+	productId: string,
+	path: string
+): Promise<ProductImageRow> {
 	await isAuthorized();
 	return prisma.productImage.create({
 		data: { productId, path },

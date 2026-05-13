@@ -31,8 +31,8 @@ export default async function EditMastheadPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Masthead" />
-			<MastheadForm mode="edit" editId={id} initial={initial} />
+			<Breadcrumb pageTitle='Edit Masthead' />
+			<MastheadForm mode='edit' editId={id} initial={initial} />
 		</>
 	);
 }

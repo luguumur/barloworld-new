@@ -29,8 +29,8 @@ export default async function EditMagazinePage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Magazine" />
-			<MagazineForm mode="edit" editId={id} initial={initial} />
+			<Breadcrumb pageTitle='Edit Magazine' />
+			<MagazineForm mode='edit' editId={id} initial={initial} />
 		</>
 	);
 }

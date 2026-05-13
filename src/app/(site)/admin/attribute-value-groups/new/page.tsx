@@ -10,8 +10,8 @@ export const metadata: Metadata = {
 export default function NewAttributeValueGroupPage() {
 	return (
 		<>
-			<Breadcrumb pageTitle="New Attribute Group" />
-			<AttributeValueGroupForm mode="create" />
+			<Breadcrumb pageTitle='New Attribute Group' />
+			<AttributeValueGroupForm mode='create' />
 		</>
 	);
 }

@@ -20,10 +20,20 @@ import {
 } from "@/actions/productImage";
 import { useRouter } from "next/navigation";
 
-type CategoryOption = { id: string; name: string; name_en: string; types: string };
+type CategoryOption = {
+	id: string;
+	name: string;
+	name_en: string;
+	types: string;
+};
 type TypeOption = { id: string; name: string; name_en: string };
 type GroupOption = { id: string; name: string; name_en: string };
-type AttributeOption = { id: string; name: string; name_en: string; data_type: string };
+type AttributeOption = {
+	id: string;
+	name: string;
+	name_en: string;
+	data_type: string;
+};
 
 function productImageSrc(path: string | null): string | null {
 	if (!path?.trim()) return null;
@@ -122,12 +132,7 @@ export default function ProductForm({
 		if (!file) return data.img_path?.trim() || null;
 		const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
 		const name = `${Date.now()}.${ext}`;
-		const result = await getSignedURL(
-			file.type,
-			file.size,
-			"product",
-			name
-		);
+		const result = await getSignedURL(file.type, file.size, "product", name);
 		if (result.failure) {
 			toast.error(result.failure);
 			return null;
@@ -143,7 +148,10 @@ export default function ProductForm({
 		return null;
 	};
 
-	const setAttributeValue = (index: number, patch: Partial<AttributeValueInput>) => {
+	const setAttributeValue = (
+		index: number,
+		patch: Partial<AttributeValueInput>
+	) => {
 		setData((p) => {
 			const next = [...(p.attributeValues ?? [])];
 			next[index] = { ...next[index], ...patch };
@@ -152,8 +160,9 @@ export default function ProductForm({
 	};
 
 	const addAttributeValue = () => {
-		const groupId = (attributeGroups && attributeGroups[0]) ? attributeGroups[0].id : "";
-		const attributeId = (attributes && attributes[0]) ? attributes[0].id : "";
+		const groupId =
+			attributeGroups && attributeGroups[0] ? attributeGroups[0].id : "";
+		const attributeId = attributes && attributes[0] ? attributes[0].id : "";
 		setData((p) => ({
 			...p,
 			attributeValues: [
@@ -177,14 +186,25 @@ export default function ProductForm({
 		setImageUploading(true);
 		try {
 			const ext = f.name.split(".").pop()?.toLowerCase() || "jpg";
-			const result = await getSignedURL(f.type, f.size, "product", `${Date.now()}.${ext}`);
-			if (result.failure) { toast.error(result.failure); return; }
+			const result = await getSignedURL(
+				f.type,
+				f.size,
+				"product",
+				`${Date.now()}.${ext}`
+			);
+			if (result.failure) {
+				toast.error(result.failure);
+				return;
+			}
 			const res = await fetch(result.success!.url, {
 				method: "PUT",
 				headers: { "Content-Type": f.type || "application/octet-stream" },
 				body: f,
 			});
-			if (!res.ok) { toast.error("Image upload failed"); return; }
+			if (!res.ok) {
+				toast.error("Image upload failed");
+				return;
+			}
 			const row = await addProductImage(editId, result.success!.key);
 			setImages((prev) => [...prev, row]);
 			toast.success("Image added");
@@ -215,7 +235,9 @@ export default function ProductForm({
 			!data.description_en?.trim() ||
 			!data.categoryId?.trim()
 		) {
-			return toast.error("Name, Description (MN & EN) and Category are required!");
+			return toast.error(
+				"Name, Description (MN & EN) and Category are required!"
+			);
 		}
 		setLoading(true);
 		try {
@@ -247,59 +269,61 @@ export default function ProductForm({
 		imagePreview || (data.img_path ? productImageSrc(data.img_path) : null);
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6 flex items-center gap-3">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6 flex items-center gap-3'>
 				<Link
-					href="/admin/products"
-					className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary"
+					href='/admin/products'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
 				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Product" : "Add Product"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+			<form onSubmit={handleSubmit} className='flex flex-col space-y-4'>
 				<InputGroup
-					label="Name (MN)"
-					type="text"
-					name="name"
+					label='Name (MN)'
+					type='text'
+					name='name'
 					value={data.name}
-					placeholder="Нэр"
+					placeholder='Нэр'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, name: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Name (EN)"
-					type="text"
-					name="name_en"
+					label='Name (EN)'
+					type='text'
+					name='name_en'
 					value={data.name_en}
-					placeholder="Name"
+					placeholder='Name'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, name_en: e.target.value }))
 					}
 				/>
 				<Editor
-					label="Description (MN)"
+					label='Description (MN)'
 					value={data.description}
-					placeholder="Тайлбар"
+					placeholder='Тайлбар'
 					onChange={(value) => setData((p) => ({ ...p, description: value }))}
 				/>
 				<Editor
-					label="Description (EN)"
+					label='Description (EN)'
 					value={data.description_en}
-					placeholder="Description"
-					onChange={(value) => setData((p) => ({ ...p, description_en: value }))}
+					placeholder='Description'
+					onChange={(value) =>
+						setData((p) => ({ ...p, description_en: value }))
+					}
 				/>
 				<InputGroup
-					label="Price (optional)"
-					type="text"
-					name="price"
+					label='Price (optional)'
+					type='text'
+					name='price'
 					value={data.price != null ? String(data.price) : ""}
-					placeholder="0"
+					placeholder='0'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						const v = e.target.value.trim();
 						setData((p) => ({
@@ -309,7 +333,7 @@ export default function ProductForm({
 					}}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Product type
 					</label>
 					<select
@@ -322,9 +346,9 @@ export default function ProductForm({
 								categoryId: v ? p.categoryId : "",
 							}));
 						}}
-						className="h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						className='h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 					>
-						<option value="">—</option>
+						<option value=''>—</option>
 						{productTypes.map((t) => (
 							<option key={t.id} value={t.name}>
 								{t.name}
@@ -333,7 +357,7 @@ export default function ProductForm({
 					</select>
 				</div>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Category
 					</label>
 					<select
@@ -342,9 +366,9 @@ export default function ProductForm({
 							setData((p) => ({ ...p, categoryId: e.target.value }))
 						}
 						required
-						className="h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						className='h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 					>
-						<option value="">Select category</option>
+						<option value=''>Select category</option>
 						{categoriesForType.map((c) => (
 							<option key={c.id} value={c.id}>
 								{c.name}
@@ -353,11 +377,11 @@ export default function ProductForm({
 					</select>
 				</div>
 				<InputGroup
-					label="Product order (optional)"
-					type="number"
-					name="product_order"
+					label='Product order (optional)'
+					type='number'
+					name='product_order'
 					value={data.product_order != null ? String(data.product_order) : ""}
-					placeholder="0"
+					placeholder='0'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 						const v = e.target.value.trim();
 						setData((p) => ({
@@ -367,82 +391,89 @@ export default function ProductForm({
 					}}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Status
 					</label>
 					<select
 						value={data.status ?? "ACTIVE"}
 						onChange={(e) => setData((p) => ({ ...p, status: e.target.value }))}
-						className="h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+						className='h-11 w-full rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 					>
-						<option value="ACTIVE">ACTIVE</option>
-						<option value="INACTIVE">INACTIVE</option>
+						<option value='ACTIVE'>ACTIVE</option>
+						<option value='INACTIVE'>INACTIVE</option>
 					</select>
 				</div>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Product image
 					</label>
-					<div className="flex flex-wrap items-start gap-4">
-						<label className="relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5">
+					<div className='flex flex-wrap items-start gap-4'>
+						<label className='relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5'>
 							{currentPreview ? (
 								<Image
 									src={currentPreview}
-									alt="Product"
+									alt='Product'
 									fill
-									className="object-cover"
-									sizes="160px"
+									className='object-cover'
+									sizes='160px'
 									unoptimized={currentPreview.startsWith("blob:")}
 								/>
 							) : (
-								<span className="text-body/70">Upload image</span>
+								<span className='text-body/70'>Upload image</span>
 							)}
 							<input
-								type="file"
-								className="sr-only"
-								accept="image/png,image/jpeg,image/jpg"
+								type='file'
+								className='sr-only'
+								accept='image/png,image/jpeg,image/jpg'
 								onChange={handleImageChange}
 							/>
 						</label>
-						<p className="text-sm text-body/70">PNG, JPG. Max 2MB.</p>
+						<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
 					</div>
 				</div>
 				{mode === "edit" && (
-					<div className="border-t border-stroke pt-6 dark:border-stroke-dark">
-						<div className="mb-3 flex items-center justify-between">
-							<h2 className="font-satoshi text-base font-semibold text-dark dark:text-white">
+					<div className='border-t border-stroke pt-6 dark:border-stroke-dark'>
+						<div className='mb-3 flex items-center justify-between'>
+							<h2 className='font-satoshi text-base font-semibold text-dark dark:text-white'>
 								Additional Images
 							</h2>
-							<label className={`cursor-pointer rounded-lg border border-stroke bg-gray-1 px-3 py-2 text-sm dark:border-stroke-dark dark:bg-white/5 dark:text-white${imageUploading ? " opacity-50 pointer-events-none" : ""}`}>
+							<label
+								className={`cursor-pointer rounded-lg border border-stroke bg-gray-1 px-3 py-2 text-sm dark:border-stroke-dark dark:bg-white/5 dark:text-white${
+									imageUploading ? " pointer-events-none opacity-50" : ""
+								}`}
+							>
 								{imageUploading ? "Uploading…" : "+ Add image"}
 								<input
-									type="file"
-									className="sr-only"
-									accept="image/png,image/jpeg,image/jpg"
+									type='file'
+									className='sr-only'
+									accept='image/png,image/jpeg,image/jpg'
 									onChange={handleAddImage}
 									disabled={imageUploading}
 								/>
 							</label>
 						</div>
 						{images.length === 0 ? (
-							<p className="text-sm text-body/70">No additional images yet.</p>
+							<p className='text-sm text-body/70'>No additional images yet.</p>
 						) : (
-							<div className="flex flex-wrap gap-3">
+							<div className='flex flex-wrap gap-3'>
 								{images.map((img) => (
-									<div key={img.id} className="group relative h-28 w-36 overflow-hidden rounded-lg border border-stroke dark:border-stroke-dark">
+									<div
+										key={img.id}
+										className='group relative h-28 w-36 overflow-hidden rounded-lg border border-stroke dark:border-stroke-dark'
+									>
 										<Image
 											src={productImageSrc(img.path) ?? ""}
-											alt=""
+											alt=''
 											fill
-											className="object-cover"
-											sizes="144px"
+											className='object-cover'
+											sizes='144px'
 											unoptimized
 										/>
 										<button
-											type="button"
+											type='button'
 											onClick={() => handleDeleteImage(img.id)}
-											className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-red text-white opacity-0 transition-opacity group-hover:opacity-100"
-											aria-label="Delete image"
+											className='absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-red text-white opacity-0 transition-opacity group-hover:opacity-100'
+											aria-label='Delete image'
 										>
 											×
 										</button>
@@ -453,17 +484,17 @@ export default function ProductForm({
 					</div>
 				)}
 				<InputGroup
-					label="Brochure path (optional)"
-					type="text"
-					name="brochure_path"
+					label='Brochure path (optional)'
+					type='text'
+					name='brochure_path'
 					value={data.brochure_path ?? ""}
-					placeholder="product/filename.pdf"
+					placeholder='product/filename.pdf'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, brochure_path: e.target.value }))
 					}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Model 3D / iframe (optional)
 					</label>
 					<textarea
@@ -472,58 +503,63 @@ export default function ProductForm({
 							setData((p) => ({ ...p, model_3d: e.target.value }))
 						}
 						rows={4}
-						className="w-full rounded-lg border border-stroke bg-gray-1 px-4 py-3 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white"
-						placeholder="<iframe ...></iframe>"
+						className='w-full rounded-lg border border-stroke bg-gray-1 px-4 py-3 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white'
+						placeholder='<iframe ...></iframe>'
 					/>
 				</div>
 				<InputGroup
-					label="Video link (optional)"
-					type="url"
-					name="video_link"
+					label='Video link (optional)'
+					type='url'
+					name='video_link'
 					value={data.video_link ?? ""}
-					placeholder="https://..."
+					placeholder='https://...'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, video_link: e.target.value }))
 					}
 				/>
 
 				{/* Attribute values (specifications) */}
-				<div className="border-t border-stroke pt-6 dark:border-stroke-dark">
-					<div className="mb-3 flex items-center justify-between">
-						<h2 className="font-satoshi text-base font-semibold text-dark dark:text-white">
+				<div className='border-t border-stroke pt-6 dark:border-stroke-dark'>
+					<div className='mb-3 flex items-center justify-between'>
+						<h2 className='font-satoshi text-base font-semibold text-dark dark:text-white'>
 							Specifications
 						</h2>
 						<button
-							type="button"
+							type='button'
 							onClick={addAttributeValue}
 							disabled={!attributeGroups?.length || !attributes?.length}
-							className="rounded-lg border border-stroke bg-gray-1 px-3 py-2 text-sm disabled:opacity-50 dark:border-stroke-dark dark:bg-white/5 dark:text-white"
+							className='rounded-lg border border-stroke bg-gray-1 px-3 py-2 text-sm disabled:opacity-50 dark:border-stroke-dark dark:bg-white/5 dark:text-white'
 						>
 							+ Add spec
 						</button>
 					</div>
 					{(!attributeGroups?.length || !attributes?.length) && (
-						<p className="mb-3 text-sm text-amber-600 dark:text-amber-400">
-							Create <strong>Attribute Value Groups</strong> and <strong>Attributes</strong> from the admin sidebar first, then they will appear here.
+						<p className='mb-3 text-sm text-amber-600 dark:text-amber-400'>
+							Create <strong>Attribute Value Groups</strong> and{" "}
+							<strong>Attributes</strong> from the admin sidebar first, then
+							they will appear here.
 						</p>
 					)}
 					{(data.attributeValues ?? []).length === 0 ? (
-						<p className="text-sm text-body/70">No specifications. Click &quot;Add spec&quot; to add attribute values.</p>
+						<p className='text-sm text-body/70'>
+							No specifications. Click &quot;Add spec&quot; to add attribute
+							values.
+						</p>
 					) : (
-						<div className="space-y-3">
+						<div className='space-y-3'>
 							{(data.attributeValues ?? []).map((av, index) => (
 								<div
 									key={index}
-									className="flex flex-wrap items-center gap-2 rounded-lg border border-stroke p-3 dark:border-stroke-dark"
+									className='flex flex-wrap items-center gap-2 rounded-lg border border-stroke p-3 dark:border-stroke-dark'
 								>
 									<select
 										value={av.groupId}
 										onChange={(e) =>
 											setAttributeValue(index, { groupId: e.target.value })
 										}
-										className="h-10 min-w-[140px] rounded border border-stroke bg-gray-1 px-3 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+										className='h-10 min-w-[140px] rounded border border-stroke bg-gray-1 px-3 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 									>
-										<option value="">Select group</option>
+										<option value=''>Select group</option>
 										{(attributeGroups ?? []).map((g) => (
 											<option key={g.id} value={g.id}>
 												{g.name}
@@ -535,9 +571,9 @@ export default function ProductForm({
 										onChange={(e) =>
 											setAttributeValue(index, { attributeId: e.target.value })
 										}
-										className="h-10 min-w-[160px] rounded border border-stroke bg-gray-1 px-3 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+										className='h-10 min-w-[160px] rounded border border-stroke bg-gray-1 px-3 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 									>
-										<option value="">Select attribute</option>
+										<option value=''>Select attribute</option>
 										{(attributes ?? []).map((a) => (
 											<option key={a.id} value={a.id}>
 												{a.name}
@@ -545,19 +581,19 @@ export default function ProductForm({
 										))}
 									</select>
 									<input
-										type="text"
+										type='text'
 										value={av.value}
 										onChange={(e) =>
 											setAttributeValue(index, { value: e.target.value })
 										}
-										placeholder="Value"
-										className="h-10 flex-1 min-w-[100px] rounded border border-stroke bg-gray-1 px-3 dark:border-stroke-dark dark:bg-transparent dark:text-white"
+										placeholder='Value'
+										className='h-10 min-w-[100px] flex-1 rounded border border-stroke bg-gray-1 px-3 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 									/>
 									<button
-										type="button"
+										type='button'
 										onClick={() => removeAttributeValue(index)}
-										className="h-10 w-10 rounded bg-red/10 text-red hover:bg-red hover:text-white"
-										aria-label="Remove"
+										className='h-10 w-10 rounded bg-red/10 text-red hover:bg-red hover:text-white'
+										aria-label='Remove'
 									>
 										×
 									</button>
@@ -567,22 +603,22 @@ export default function ProductForm({
 					)}
 				</div>
 
-				<div className="flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
+				<div className='flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
 					<Link
-						href="/admin/products"
-						className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+						href='/admin/products'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
 					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70'
 					>
 						{loading ? (
 							<>
-								<Loader style="border-white" />
-								<span className="ml-2">
+								<Loader style='border-white' />
+								<span className='ml-2'>
 									{mode === "edit" ? "Updating..." : "Creating..."}
 								</span>
 							</>

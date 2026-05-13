@@ -27,8 +27,8 @@ export default async function EditManagementPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Management" />
-			<ManagementForm mode="edit" editId={id} initial={initial} />
+			<Breadcrumb pageTitle='Edit Management' />
+			<ManagementForm mode='edit' editId={id} initial={initial} />
 		</>
 	);
 }

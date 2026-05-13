@@ -30,8 +30,8 @@ export default async function EditMenuItemPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Menu Item" />
-			<MenuItemForm mode="edit" editId={id} initial={initial} />
+			<Breadcrumb pageTitle='Edit Menu Item' />
+			<MenuItemForm mode='edit' editId={id} initial={initial} />
 		</>
 	);
 }

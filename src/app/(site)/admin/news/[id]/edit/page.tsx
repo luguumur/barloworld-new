@@ -41,9 +41,9 @@ export default async function EditNewsPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit News" />
+			<Breadcrumb pageTitle='Edit News' />
 			<NewsForm
-				mode="edit"
+				mode='edit'
 				editId={id}
 				initial={initial}
 				categories={categoryOptions}

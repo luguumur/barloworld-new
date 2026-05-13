@@ -16,13 +16,20 @@ export default async function ProductTypesPage({
 }: {
 	searchParams: { search?: string };
 }) {
-	const search = typeof searchParams.search === "string" ? searchParams.search : undefined;
+	const search =
+		typeof searchParams.search === "string" ? searchParams.search : undefined;
 	const items = await getProductTypes(search);
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Product Types" />
-			<Suspense fallback={<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">Loading…</div>}>
+			<Breadcrumb pageTitle='Product Types' />
+			<Suspense
+				fallback={
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
+						Loading…
+					</div>
+				}
+			>
 				<ProductTypeListContainer items={items} initialSearch={search ?? ""} />
 			</Suspense>
 		</>

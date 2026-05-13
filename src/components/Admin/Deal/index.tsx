@@ -26,14 +26,10 @@ export default function DealListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<DealTopbar initialSearch={initialSearch} />
 			</div>
-			{deals?.length ? (
-				<DealListTable deals={deals} />
-			) : (
-				<DealEmptyState />
-			)}
+			{deals?.length ? <DealListTable deals={deals} /> : <DealEmptyState />}
 		</>
 	);
 }

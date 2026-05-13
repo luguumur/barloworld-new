@@ -21,10 +21,7 @@ export default async function QuoteRequestsPage({
 	return (
 		<>
 			<Breadcrumb pageTitle='Quote Requests' />
-			<QuoteRequestListContainer
-				quotes={quotes}
-				initialSearch={search ?? ""}
-			/>
+			<QuoteRequestListContainer quotes={quotes} initialSearch={search ?? ""} />
 		</>
 	);
 }

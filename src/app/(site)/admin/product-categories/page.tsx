@@ -17,8 +17,10 @@ export default async function ProductCategoriesPage({
 }: {
 	searchParams: { search?: string; type?: string };
 }) {
-	const search = typeof searchParams.search === "string" ? searchParams.search : undefined;
-	const typeFilter = typeof searchParams.type === "string" ? searchParams.type : undefined;
+	const search =
+		typeof searchParams.search === "string" ? searchParams.search : undefined;
+	const typeFilter =
+		typeof searchParams.type === "string" ? searchParams.type : undefined;
 	const [items, productTypes] = await Promise.all([
 		getProductCategories(typeFilter, search),
 		getProductTypes(),
@@ -27,8 +29,14 @@ export default async function ProductCategoriesPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Product Categories" />
-			<Suspense fallback={<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">Loading…</div>}>
+			<Breadcrumb pageTitle='Product Categories' />
+			<Suspense
+				fallback={
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
+						Loading…
+					</div>
+				}
+			>
 				<ProductCategoryListContainer
 					items={items}
 					productTypes={typeOptions}

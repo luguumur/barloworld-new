@@ -20,7 +20,9 @@ export default async function NewsPage({
 	const search =
 		typeof searchParams.search === "string" ? searchParams.search : undefined;
 	const categoryId =
-		typeof searchParams.category === "string" ? searchParams.category : undefined;
+		typeof searchParams.category === "string"
+			? searchParams.category
+			: undefined;
 	const [news, categories] = await Promise.all([
 		getNews(search, categoryId),
 		getNewsCategories(),
@@ -33,10 +35,10 @@ export default async function NewsPage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="News" />
+			<Breadcrumb pageTitle='News' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}

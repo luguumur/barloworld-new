@@ -113,96 +113,98 @@ export default function ManagementForm({
 		imagePreview || (data.image ? managementImageSrc(data.image) : null);
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6 flex items-center gap-3">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6 flex items-center gap-3'>
 				<Link
-					href="/admin/management"
-					className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary"
+					href='/admin/management'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
 				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Management" : "Add Management"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+			<form onSubmit={handleSubmit} className='flex flex-col space-y-4'>
 				<InputGroup
-					label="Name"
-					type="text"
-					name="name"
+					label='Name'
+					type='text'
+					name='name'
 					value={data.name}
-					placeholder="Full name"
+					placeholder='Full name'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, name: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Position"
-					type="text"
-					name="position"
+					label='Position'
+					type='text'
+					name='position'
 					value={data.position}
-					placeholder="e.g. CEO, Director"
+					placeholder='e.g. CEO, Director'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, position: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Order"
-					type="number"
-					name="order"
+					label='Order'
+					type='number'
+					name='order'
 					value={String(data.order ?? 0)}
-					placeholder="0"
+					placeholder='0'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, order: parseInt(e.target.value, 10) || 0 }))
 					}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Image
 					</label>
-					<div className="flex flex-wrap items-start gap-4">
-						<label className="relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5">
+					<div className='flex flex-wrap items-start gap-4'>
+						<label className='relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5'>
 							{currentPreview ? (
 								<Image
 									src={currentPreview}
-									alt="Management"
+									alt='Management'
 									fill
-									className="object-cover"
-									sizes="160px"
+									className='object-cover'
+									sizes='160px'
 									unoptimized={currentPreview.startsWith("blob:")}
 								/>
 							) : (
-								<span className="text-body/70">Upload image</span>
+								<span className='text-body/70'>Upload image</span>
 							)}
 							<input
-								type="file"
-								className="sr-only"
-								accept="image/png,image/jpeg,image/jpg"
+								type='file'
+								className='sr-only'
+								accept='image/png,image/jpeg,image/jpg'
 								onChange={handleImageChange}
 							/>
 						</label>
-						<p className="text-sm text-body/70">PNG, JPG. Max 2MB.</p>
+						<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
 					</div>
 				</div>
 
-				<div className="flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
+				<div className='flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
 					<Link
-						href="/admin/management"
-						className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+						href='/admin/management'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
 					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70'
 					>
 						{loading ? (
 							<>
-								<Loader style="border-white" />
-								<span className="ml-2">{mode === "edit" ? "Updating..." : "Creating..."}</span>
+								<Loader style='border-white' />
+								<span className='ml-2'>
+									{mode === "edit" ? "Updating..." : "Creating..."}
+								</span>
 							</>
 						) : mode === "edit" ? (
 							"Update"

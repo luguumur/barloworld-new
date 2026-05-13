@@ -6,7 +6,11 @@ import InputGroup from "@/components/Common/Dashboard/InputGroup";
 import Loader from "@/components/Common/Loader";
 import toast from "react-hot-toast";
 import { getSignedURL } from "@/actions/upload";
-import { createProductType, updateProductType, type ProductTypeInput } from "@/actions/productType";
+import {
+	createProductType,
+	updateProductType,
+	type ProductTypeInput,
+} from "@/actions/productType";
 import { useRouter } from "next/navigation";
 
 function imageSrc(imgPath: string | null | undefined): string | null {
@@ -28,7 +32,9 @@ export default function ProductTypeForm({ mode, editId, initial }: Props) {
 	const [name_en, setNameEn] = useState(initial?.name_en ?? "");
 	const [imgPath] = useState(initial?.img_path ?? null);
 	const [file, setFile] = useState<File | null>(null);
-	const [imagePreview, setImagePreview] = useState<string | null>(imageSrc(initial?.img_path));
+	const [imagePreview, setImagePreview] = useState<string | null>(
+		imageSrc(initial?.img_path)
+	);
 	const [loading, setLoading] = useState(false);
 
 	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,7 +52,12 @@ export default function ProductTypeForm({ mode, editId, initial }: Props) {
 		if (!file) return imgPath?.trim() || null;
 		const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
 		const name = `${Date.now()}.${ext}`;
-		const result = await getSignedURL(file.type, file.size, "product-types", name);
+		const result = await getSignedURL(
+			file.type,
+			file.size,
+			"product-types",
+			name
+		);
 		if (result.failure) {
 			toast.error(result.failure);
 			return null;
@@ -95,75 +106,94 @@ export default function ProductTypeForm({ mode, editId, initial }: Props) {
 	const currentPreview = imagePreview || imageSrc(imgPath);
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6">
-				<Link href="/admin/product-types" className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6'>
+				<Link
+					href='/admin/product-types'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
+				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Product Type" : "Add Product Type"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4 max-w-md">
+			<form
+				onSubmit={handleSubmit}
+				className='flex max-w-md flex-col space-y-4'
+			>
 				<InputGroup
-					label="Name (MN)"
-					type="text"
-					name="name"
+					label='Name (MN)'
+					type='text'
+					name='name'
 					value={name}
-					placeholder="e.g. CAT"
+					placeholder='e.g. CAT'
 					required
-					handleChange={(e: React.ChangeEvent<HTMLInputElement>) => setName(e.target.value)}
+					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						setName(e.target.value)
+					}
 				/>
 				<InputGroup
-					label="Name (EN)"
-					type="text"
-					name="name_en"
+					label='Name (EN)'
+					type='text'
+					name='name_en'
 					value={name_en}
-					placeholder="e.g. CAT"
+					placeholder='e.g. CAT'
 					required
-					handleChange={(e: React.ChangeEvent<HTMLInputElement>) => setNameEn(e.target.value)}
+					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+						setNameEn(e.target.value)
+					}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Image
 					</label>
-					<div className="flex flex-wrap items-start gap-4">
-						<label className="relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5">
+					<div className='flex flex-wrap items-start gap-4'>
+						<label className='relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5'>
 							{currentPreview ? (
 								<Image
 									src={currentPreview}
-									alt="Product Type"
+									alt='Product Type'
 									fill
-									className="object-cover"
-									sizes="160px"
+									className='object-cover'
+									sizes='160px'
 									unoptimized={currentPreview.startsWith("blob:")}
 								/>
 							) : (
-								<span className="text-body/70">Upload image</span>
+								<span className='text-body/70'>Upload image</span>
 							)}
 							<input
-								type="file"
-								className="sr-only"
-								accept="image/png,image/jpeg,image/jpg"
+								type='file'
+								className='sr-only'
+								accept='image/png,image/jpeg,image/jpg'
 								onChange={handleImageChange}
 							/>
 						</label>
-						<p className="text-sm text-body/70">PNG, JPG. Max 2MB.</p>
+						<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
 					</div>
 				</div>
-				<div className="flex gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
+				<div className='flex gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
 					<Link
-						href="/admin/product-types"
-						className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium dark:border-stroke-dark dark:bg-white/5 dark:text-white"
+						href='/admin/product-types'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium dark:border-stroke-dark dark:bg-white/5 dark:text-white'
 					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white hover:bg-primary-dark disabled:opacity-70'
 					>
-						{loading ? <><Loader style="border-white" /><span className="ml-2">Saving...</span></> : mode === "edit" ? "Update" : "Create"}
+						{loading ? (
+							<>
+								<Loader style='border-white' />
+								<span className='ml-2'>Saving...</span>
+							</>
+						) : mode === "edit" ? (
+							"Update"
+						) : (
+							"Create"
+						)}
 					</button>
 				</div>
 			</form>

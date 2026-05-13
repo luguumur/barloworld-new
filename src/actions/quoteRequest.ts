@@ -64,7 +64,7 @@ export async function createQuoteRequestPublic(data: QuoteRequestInput) {
 export async function getQuoteRequests(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.quoteRequest.findMany({
+		return (await prisma.quoteRequest.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -77,7 +77,7 @@ export async function getQuoteRequests(search?: string) {
 						],
 					}
 				: undefined,
-		}) as QuoteRequestRow[];
+		})) as QuoteRequestRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as QuoteRequestRow[]);
 	}

@@ -25,14 +25,10 @@ export default function PageListContainer({
 }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<PageTopbar initialSearch={initialSearch} />
 			</div>
-			{pages?.length ? (
-				<PageListTable pages={pages} />
-			) : (
-				<PageEmptyState />
-			)}
+			{pages?.length ? <PageListTable pages={pages} /> : <PageEmptyState />}
 		</>
 	);
 }

@@ -21,7 +21,7 @@ export type ProductTypeInput = {
 export async function getProductTypes(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.productType.findMany({
+		return (await prisma.productType.findMany({
 			orderBy: { createdAt: "asc" },
 			where: search?.trim()
 				? {
@@ -31,7 +31,7 @@ export async function getProductTypes(search?: string) {
 						],
 					}
 				: undefined,
-		}) as ProductTypeRow[];
+		})) as ProductTypeRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as ProductTypeRow[]);
 	}
@@ -40,7 +40,9 @@ export async function getProductTypes(search?: string) {
 export async function getProductTypeById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.productType.findUnique({ where: { id } }) as ProductTypeRow | null;
+		return (await prisma.productType.findUnique({
+			where: { id },
+		})) as ProductTypeRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}

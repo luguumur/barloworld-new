@@ -75,12 +75,7 @@ export default function MastheadForm({
 		if (!file) return data.imageurl?.trim() || null;
 		const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
 		const name = `${Date.now()}.${ext}`;
-		const result = await getSignedURL(
-			file.type,
-			file.size,
-			"masthead",
-			name
-		);
+		const result = await getSignedURL(file.type, file.size, "masthead", name);
 		if (result.failure) {
 			toast.error(result.failure);
 			return null;
@@ -133,128 +128,130 @@ export default function MastheadForm({
 		imagePreview || (data.imageurl ? mastheadImageSrc(data.imageurl) : null);
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6 flex items-center gap-3">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6 flex items-center gap-3'>
 				<Link
-					href="/admin/mastheads"
-					className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary"
+					href='/admin/mastheads'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
 				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Masthead" : "Add Masthead"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+			<form onSubmit={handleSubmit} className='flex flex-col space-y-4'>
 				<InputGroup
-					label="Title (MN)"
-					type="text"
-					name="title"
+					label='Title (MN)'
+					type='text'
+					name='title'
 					value={data.title}
-					placeholder="Гарчиг"
+					placeholder='Гарчиг'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, title: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Title (EN)"
-					type="text"
-					name="title_en"
+					label='Title (EN)'
+					type='text'
+					name='title_en'
 					value={data.title_en}
-					placeholder="Title"
+					placeholder='Title'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, title_en: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Subtitle (MN)"
-					type="text"
-					name="subtitle"
+					label='Subtitle (MN)'
+					type='text'
+					name='subtitle'
 					value={data.subtitle ?? ""}
-					placeholder="Дэд гарчиг"
+					placeholder='Дэд гарчиг'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, subtitle: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Subtitle (EN)"
-					type="text"
-					name="subtitle_en"
+					label='Subtitle (EN)'
+					type='text'
+					name='subtitle_en'
 					value={data.subtitle_en ?? ""}
-					placeholder="Subtitle"
+					placeholder='Subtitle'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, subtitle_en: e.target.value }))
 					}
 				/>
 				<Editor
-					label="Description (MN)"
+					label='Description (MN)'
 					value={data.description}
-					placeholder="Тайлбар"
+					placeholder='Тайлбар'
 					onChange={(value) => setData((p) => ({ ...p, description: value }))}
 				/>
 				<Editor
-					label="Description (EN)"
+					label='Description (EN)'
 					value={data.description_en}
-					placeholder="Description"
-					onChange={(value) => setData((p) => ({ ...p, description_en: value }))}
+					placeholder='Description'
+					onChange={(value) =>
+						setData((p) => ({ ...p, description_en: value }))
+					}
 				/>
 				<InputGroup
-					label="URL"
-					type="url"
-					name="url"
+					label='URL'
+					type='url'
+					name='url'
 					value={data.url ?? ""}
-					placeholder="https://..."
+					placeholder='https://...'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, url: e.target.value }))
 					}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Image
 					</label>
-					<div className="flex flex-wrap items-start gap-4">
-						<label className="relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5">
+					<div className='flex flex-wrap items-start gap-4'>
+						<label className='relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5'>
 							{currentPreview ? (
 								<Image
 									src={currentPreview}
-									alt="Masthead"
+									alt='Masthead'
 									fill
-									className="object-cover"
-									sizes="160px"
+									className='object-cover'
+									sizes='160px'
 									unoptimized={currentPreview.startsWith("blob:")}
 								/>
 							) : (
-								<span className="text-body/70">Upload image</span>
+								<span className='text-body/70'>Upload image</span>
 							)}
 							<input
-								type="file"
-								className="sr-only"
-								accept="image/png,image/jpeg,image/jpg"
+								type='file'
+								className='sr-only'
+								accept='image/png,image/jpeg,image/jpg'
 								onChange={handleImageChange}
 							/>
 						</label>
-						<p className="text-sm text-body/70">PNG, JPG. Max 2MB.</p>
+						<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
 					</div>
 				</div>
 
-				<div className="flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
+				<div className='flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
 					<Link
-						href="/admin/mastheads"
-						className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+						href='/admin/mastheads'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
 					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70'
 					>
 						{loading ? (
 							<>
-								<Loader style="border-white" />
-								<span className="ml-2">
+								<Loader style='border-white' />
+								<span className='ml-2'>
 									{mode === "edit" ? "Updating..." : "Creating..."}
 								</span>
 							</>

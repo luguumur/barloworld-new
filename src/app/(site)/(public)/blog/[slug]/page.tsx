@@ -6,7 +6,7 @@ import Image from "next/image";
 import { structuredAlgoliaHtmlData } from "@/libs/crawlIndex";
 import CopyToClipboard from "@/components/Common/CopyToClipboard";
 import SocialShare from "@/components/Blog/SocialShare";
-import { integrations, messages } from "../../../../../integrations.config";
+import { integrations, messages } from "../../../../../../integrations.config";
 import { Blog } from "@/types/blog";
 
 type Props = {

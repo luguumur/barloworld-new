@@ -41,7 +41,9 @@ export default async function CustomPageRoute({ params }: Props) {
 	const breadcrumbs = [
 		{ label: "Home", href: "/" },
 		...slug.map((segment, i) => {
-			const label = segment.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+			const label = segment
+				.replace(/-/g, " ")
+				.replace(/\b\w/g, (c) => c.toUpperCase());
 			const href = "/" + slug.slice(0, i + 1).join("/");
 			return i === slug.length - 1 ? { label } : { label, href };
 		}),
@@ -51,11 +53,11 @@ export default async function CustomPageRoute({ params }: Props) {
 		<>
 			<ProductPageHeader title={title} breadcrumbs={breadcrumbs} />
 			<main>
-				<section className="relative z-1 overflow-hidden pb-17.5 pt-10 xl:pb-27.5">
-					<div className="container mx-auto w-full px-4 sm:px-8 xl:px-0">
-						<div className="mx-auto w-full max-w-[770px]">
+				<section className='relative z-1 overflow-hidden pb-17.5 pt-10 xl:pb-27.5'>
+					<div className='container mx-auto w-full px-4 sm:px-8 xl:px-0'>
+						<div className='mx-auto w-full max-w-[770px]'>
 							<div
-								className="prose dark:prose-invert prose-headings:font-satoshi prose-headings:font-bold prose-p:mb-4 prose-ul:my-4 prose-li:my-1 max-w-none text-black dark:text-gray-5"
+								className='prose dark:prose-invert prose-headings:font-satoshi prose-headings:font-bold prose-p:mb-4 prose-ul:my-4 prose-li:my-1 max-w-none text-black dark:text-gray-5'
 								dangerouslySetInnerHTML={{ __html: content }}
 							/>
 						</div>

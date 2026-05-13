@@ -16,20 +16,24 @@ export default async function ManagementPage({
 }: {
 	searchParams: { search?: string };
 }) {
-	const search = typeof searchParams.search === "string" ? searchParams.search : undefined;
+	const search =
+		typeof searchParams.search === "string" ? searchParams.search : undefined;
 	const managements = await getManagements(search);
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Management" />
+			<Breadcrumb pageTitle='Management' />
 			<Suspense
 				fallback={
-					<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark">
+					<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark'>
 						Loading…
 					</div>
 				}
 			>
-				<ManagementListContainer managements={managements} initialSearch={search ?? ""} />
+				<ManagementListContainer
+					managements={managements}
+					initialSearch={search ?? ""}
+				/>
 			</Suspense>
 		</>
 	);

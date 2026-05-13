@@ -64,7 +64,10 @@ export async function createTranslation(data: TranslationInput) {
 	return result;
 }
 
-export async function updateTranslation(id: string, data: Partial<TranslationInput>) {
+export async function updateTranslation(
+	id: string,
+	data: Partial<TranslationInput>
+) {
 	await isAuthorized();
 	const result = await prisma.translation.update({
 		where: { id },
@@ -97,5 +100,5 @@ export const getTranslationsPublic = unstable_cache(
 		}
 	},
 	["translations-public"],
-	{ tags: ["translations"], revalidate: 3600 },
+	{ tags: ["translations"], revalidate: 3600 }
 );

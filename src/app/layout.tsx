@@ -23,7 +23,9 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 			suppressHydrationWarning={true}
 			className={`${inter.variable} ${robotoCondensed.variable}`}
 		>
-			<body className={`${inter.className} flex min-h-screen flex-col dark:bg-[#151F34]`}>
+			<body
+				className={`${inter.className} flex min-h-screen flex-col dark:bg-[#151F34]`}
+			>
 				<NextIntlClientProvider>{children}</NextIntlClientProvider>
 			</body>
 		</html>

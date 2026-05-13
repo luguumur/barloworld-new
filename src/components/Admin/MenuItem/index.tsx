@@ -19,14 +19,10 @@ type MenuItem = {
 export default function MenuListContainer({ items }: { items: MenuItem[] }) {
 	return (
 		<>
-			<div className="mb-5">
+			<div className='mb-5'>
 				<MenuTopbar />
 			</div>
-			{items?.length ? (
-				<MenuListTable items={items} />
-			) : (
-				<MenuEmptyState />
-			)}
+			{items?.length ? <MenuListTable items={items} /> : <MenuEmptyState />}
 		</>
 	);
 }

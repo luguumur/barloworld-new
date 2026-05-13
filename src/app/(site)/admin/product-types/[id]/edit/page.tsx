@@ -20,11 +20,15 @@ export default async function EditProductTypePage({
 
 	return (
 		<>
-			<Breadcrumb pageTitle="Edit Product Type" />
+			<Breadcrumb pageTitle='Edit Product Type' />
 			<ProductTypeForm
-				mode="edit"
+				mode='edit'
 				editId={id}
-				initial={{ name: item.name, name_en: item.name_en, img_path: item.img_path }}
+				initial={{
+					name: item.name,
+					name_en: item.name_en,
+					img_path: item.img_path,
+				}}
 			/>
 		</>
 	);

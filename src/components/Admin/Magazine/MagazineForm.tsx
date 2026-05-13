@@ -70,12 +70,7 @@ export default function MagazineForm({
 		if (!file) return data.image?.trim() || null;
 		const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
 		const name = `${Date.now()}.${ext}`;
-		const result = await getSignedURL(
-			file.type,
-			file.size,
-			"magazine",
-			name
-		);
+		const result = await getSignedURL(file.type, file.size, "magazine", name);
 		if (result.failure) {
 			toast.error(result.failure);
 			return null;
@@ -123,116 +118,116 @@ export default function MagazineForm({
 		imagePreview || (data.image ? magazineImageSrc(data.image) : null);
 
 	return (
-		<div className="rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8">
-			<div className="mb-6 flex items-center gap-3">
+		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
+			<div className='mb-6 flex items-center gap-3'>
 				<Link
-					href="/admin/magazines"
-					className="text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary"
+					href='/admin/magazines'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
 				>
 					← Back to list
 				</Link>
 			</div>
-			<h1 className="mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl">
+			<h1 className='mb-6 font-satoshi text-xl font-bold tracking-[-.5px] text-dark dark:text-white sm:text-custom-2xl'>
 				{mode === "edit" ? "Edit Magazine" : "Add Magazine"}
 			</h1>
-			<form onSubmit={handleSubmit} className="flex flex-col space-y-4">
+			<form onSubmit={handleSubmit} className='flex flex-col space-y-4'>
 				<InputGroup
-					label="Title (MN)"
-					type="text"
-					name="title"
+					label='Title (MN)'
+					type='text'
+					name='title'
 					value={data.title}
-					placeholder="Гарчиг"
+					placeholder='Гарчиг'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, title: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Title (EN)"
-					type="text"
-					name="title_en"
+					label='Title (EN)'
+					type='text'
+					name='title_en'
 					value={data.title_en}
-					placeholder="Title"
+					placeholder='Title'
 					required
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, title_en: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Number"
-					type="text"
-					name="number"
+					label='Number'
+					type='text'
+					name='number'
 					value={data.number ?? ""}
-					placeholder="e.g. 1"
+					placeholder='e.g. 1'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, number: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="Date"
-					type="text"
-					name="date"
+					label='Date'
+					type='text'
+					name='date'
 					value={data.date ?? ""}
-					placeholder="e.g. Apr 2020"
+					placeholder='e.g. Apr 2020'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, date: e.target.value }))
 					}
 				/>
 				<InputGroup
-					label="URL"
-					type="url"
-					name="url"
+					label='URL'
+					type='url'
+					name='url'
 					value={data.url ?? ""}
-					placeholder="https://... (e.g. PDF link)"
+					placeholder='https://... (e.g. PDF link)'
 					handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
 						setData((p) => ({ ...p, url: e.target.value }))
 					}
 				/>
 				<div>
-					<label className="mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white">
+					<label className='mb-2 block font-satoshi text-sm font-medium text-dark dark:text-white'>
 						Image
 					</label>
-					<div className="flex flex-wrap items-start gap-4">
-						<label className="relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5">
+					<div className='flex flex-wrap items-start gap-4'>
+						<label className='relative flex h-32 w-40 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5'>
 							{currentPreview ? (
 								<Image
 									src={currentPreview}
-									alt="Magazine"
+									alt='Magazine'
 									fill
-									className="object-cover"
-									sizes="160px"
+									className='object-cover'
+									sizes='160px'
 									unoptimized={currentPreview.startsWith("blob:")}
 								/>
 							) : (
-								<span className="text-body/70">Upload image</span>
+								<span className='text-body/70'>Upload image</span>
 							)}
 							<input
-								type="file"
-								className="sr-only"
-								accept="image/png,image/jpeg,image/jpg"
+								type='file'
+								className='sr-only'
+								accept='image/png,image/jpeg,image/jpg'
 								onChange={handleImageChange}
 							/>
 						</label>
-						<p className="text-sm text-body/70">PNG, JPG. Max 2MB.</p>
+						<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
 					</div>
 				</div>
 
-				<div className="flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark">
+				<div className='flex flex-wrap gap-3 border-t border-stroke pt-6 dark:border-stroke-dark'>
 					<Link
-						href="/admin/magazines"
-						className="inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10"
+						href='/admin/magazines'
+						className='inline-flex items-center rounded-lg border border-stroke bg-gray-1 px-5 py-2.5 font-medium duration-200 hover:bg-slate-100 dark:border-stroke-dark dark:bg-white/5 dark:text-white dark:hover:bg-white/10'
 					>
 						Cancel
 					</Link>
 					<button
-						type="submit"
+						type='submit'
 						disabled={loading}
-						className="inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70"
+						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70'
 					>
 						{loading ? (
 							<>
-								<Loader style="border-white" />
-								<span className="ml-2">
+								<Loader style='border-white' />
+								<span className='ml-2'>
 									{mode === "edit" ? "Updating..." : "Creating..."}
 								</span>
 							</>

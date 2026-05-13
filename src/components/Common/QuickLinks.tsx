@@ -31,7 +31,11 @@ export default function QuickLinks({ primary, secondary = [] }: Props) {
 			{secondary.length > 0 && (
 				<div className='quick-links__secondary'>
 					{secondary.map((link) => (
-						<a key={link.href} className='quick-link--secondary' href={link.href}>
+						<a
+							key={link.href}
+							className='quick-link--secondary'
+							href={link.href}
+						>
 							{/* eslint-disable-next-line @next/next/no-img-element */}
 							<img
 								width={35}

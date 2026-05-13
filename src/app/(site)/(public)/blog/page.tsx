@@ -3,7 +3,7 @@ import BlogItem from "@/components/Blog/BlogItem";
 import Breadcrumbs from "@/components/Common/Breadcrumbs";
 import Image from "next/image";
 import { Metadata } from "next";
-import { integrations, messages } from "../../../../integrations.config";
+import { integrations, messages } from "../../../../../integrations.config";
 
 export const metadata: Metadata = {
 	title: `Blog - ${process.env.SITE_NAME}`,

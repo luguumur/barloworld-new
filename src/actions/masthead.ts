@@ -31,7 +31,9 @@ export type MastheadInput = {
 export async function getMastheadById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.masthead.findUnique({ where: { id } }) as MastheadRow | null;
+		return (await prisma.masthead.findUnique({
+			where: { id },
+		})) as MastheadRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -40,7 +42,7 @@ export async function getMastheadById(id: string) {
 export async function getMastheads(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.masthead.findMany({
+		return (await prisma.masthead.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -52,7 +54,7 @@ export async function getMastheads(search?: string) {
 						],
 					}
 				: undefined,
-		}) as MastheadRow[];
+		})) as MastheadRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as MastheadRow[]);
 	}
@@ -61,7 +63,7 @@ export async function getMastheads(search?: string) {
 /** Public: read mastheads without admin auth */
 export async function getMastheadsPublic(search?: string) {
 	try {
-		return await prisma.masthead.findMany({
+		return (await prisma.masthead.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -73,7 +75,7 @@ export async function getMastheadsPublic(search?: string) {
 						],
 					}
 				: undefined,
-		}) as MastheadRow[];
+		})) as MastheadRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as MastheadRow[]);
 	}
@@ -102,12 +104,22 @@ export async function updateMasthead(id: string, data: Partial<MastheadInput>) {
 		data: {
 			...(data.title !== undefined && { title: data.title.trim() }),
 			...(data.title_en !== undefined && { title_en: data.title_en.trim() }),
-			...(data.subtitle !== undefined && { subtitle: data.subtitle?.trim() ?? null }),
-			...(data.subtitle_en !== undefined && { subtitle_en: data.subtitle_en?.trim() ?? null }),
-			...(data.description !== undefined && { description: data.description.trim() }),
-			...(data.description_en !== undefined && { description_en: data.description_en.trim() }),
+			...(data.subtitle !== undefined && {
+				subtitle: data.subtitle?.trim() ?? null,
+			}),
+			...(data.subtitle_en !== undefined && {
+				subtitle_en: data.subtitle_en?.trim() ?? null,
+			}),
+			...(data.description !== undefined && {
+				description: data.description.trim(),
+			}),
+			...(data.description_en !== undefined && {
+				description_en: data.description_en.trim(),
+			}),
 			...(data.url !== undefined && { url: data.url?.trim() || null }),
-			...(data.imageurl !== undefined && { imageurl: data.imageurl?.trim() || null }),
+			...(data.imageurl !== undefined && {
+				imageurl: data.imageurl?.trim() || null,
+			}),
 		},
 	});
 }

@@ -23,7 +23,9 @@ export type ManagementInput = {
 export async function getManagementById(id: string) {
 	await isAuthorized();
 	try {
-		return await prisma.management.findUnique({ where: { id } }) as ManagementRow | null;
+		return (await prisma.management.findUnique({
+			where: { id },
+		})) as ManagementRow | null;
 	} catch (error) {
 		return handleTableMissing(error, null);
 	}
@@ -32,7 +34,7 @@ export async function getManagementById(id: string) {
 export async function getManagements(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.management.findMany({
+		return (await prisma.management.findMany({
 			orderBy: [{ order: "asc" }, { createdAt: "asc" }],
 			where: search?.trim()
 				? {
@@ -42,7 +44,7 @@ export async function getManagements(search?: string) {
 						],
 					}
 				: undefined,
-		}) as ManagementRow[];
+		})) as ManagementRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as ManagementRow[]);
 	}
@@ -60,7 +62,10 @@ export async function createManagement(data: ManagementInput) {
 	});
 }
 
-export async function updateManagement(id: string, data: Partial<ManagementInput>) {
+export async function updateManagement(
+	id: string,
+	data: Partial<ManagementInput>
+) {
 	await isAuthorized();
 	return prisma.management.update({
 		where: { id },
