@@ -11,6 +11,7 @@ export type MagazineRow = {
 	url: string | null;
 	date: string | null;
 	number: string | null;
+	order: number;
 	createdAt: Date;
 	updatedAt: Date;
 };
@@ -39,7 +40,7 @@ export async function getMagazines(search?: string) {
 	await isAuthorized();
 	try {
 		return (await prisma.magazine.findMany({
-			orderBy: { createdAt: "desc" },
+			orderBy: [{ order: "asc" }, { createdAt: "desc" }],
 			where: search?.trim()
 				? {
 						OR: [
@@ -88,4 +89,24 @@ export async function updateMagazine(id: string, data: Partial<MagazineInput>) {
 export async function deleteMagazine(id: string) {
 	await isAuthorized();
 	return prisma.magazine.delete({ where: { id } });
+}
+
+/** Public — no auth required */
+export async function getMagazinesPublic() {
+	try {
+		return (await prisma.magazine.findMany({
+			orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+		})) as MagazineRow[];
+	} catch (error) {
+		return handleTableMissing(error, [] as MagazineRow[]);
+	}
+}
+
+export async function reorderMagazines(orderedIds: string[]) {
+	await isAuthorized();
+	await Promise.all(
+		orderedIds.map((id, index) =>
+			prisma.magazine.update({ where: { id }, data: { order: index } })
+		)
+	);
 }

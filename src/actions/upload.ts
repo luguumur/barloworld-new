@@ -11,7 +11,7 @@ const s3Client = new S3Client({
 	},
 });
 
-const acceptedTypes = ["image/png", "image/jpeg", "image/jpg"];
+const acceptedTypes = ["image/png", "image/jpeg", "image/jpg", "image/webp"];
 const maxSize = 2000000; // 2mb
 
 /** S3 key prefix (folder). Use "" for root, or e.g. "profiles" for profiles/profile-image--id */

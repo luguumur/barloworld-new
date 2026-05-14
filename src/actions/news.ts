@@ -118,14 +118,27 @@ export async function deleteNews(id: string) {
 	return prisma.news.delete({ where: { id } });
 }
 
-export async function getNewsPublic(limit = 6) {
+/** Public — no auth. Pass limit=0 for all. */
+export async function getNewsPublic(limit = 6, categoryId?: string) {
 	try {
 		return (await prisma.news.findMany({
 			orderBy: { createdAt: "desc" },
-			take: limit,
+			...(limit > 0 ? { take: limit } : {}),
+			where: categoryId ? { categoryId } : undefined,
 			include: { category: true },
 		})) as NewsRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as NewsRow[]);
+	}
+}
+
+export async function getNewsByIdPublic(id: string) {
+	try {
+		return (await prisma.news.findUnique({
+			where: { id },
+			include: { category: true },
+		})) as NewsRow | null;
+	} catch (error) {
+		return handleTableMissing(error, null);
 	}
 }

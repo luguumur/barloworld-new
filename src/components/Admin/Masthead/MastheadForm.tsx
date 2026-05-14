@@ -228,11 +228,11 @@ export default function MastheadForm({
 							<input
 								type='file'
 								className='sr-only'
-								accept='image/png,image/jpeg,image/jpg'
+								accept='image/png,image/jpeg,image/jpg,image/webp'
 								onChange={handleImageChange}
 							/>
 						</label>
-						<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
+						<p className='text-sm text-body/70'>PNG, JPG, WEBP. Max 2MB.</p>
 					</div>
 				</div>
 

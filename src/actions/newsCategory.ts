@@ -55,3 +55,11 @@ export async function deleteNewsCategory(id: string) {
 	await isAuthorized();
 	return prisma.newsCategory.delete({ where: { id } });
 }
+
+export async function getNewsCategoriesPublic() {
+	try {
+		return await prisma.newsCategory.findMany({ orderBy: { name: "asc" } });
+	} catch {
+		return [] as { id: string; name: string; name_en: string; createdAt: Date; updatedAt: Date }[];
+	}
+}

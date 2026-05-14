@@ -160,6 +160,7 @@ model Magazine {
   url       String?
   date      String?
   number    String?
+  order     Int      @default(0)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
@@ -321,6 +322,50 @@ model Translation {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("translations")
+}
+
+model LocationSetting {
+  id          String   @id @default(cuid())
+  image       String   @default("https://d3leeb4r1qy96s.cloudfront.net/assets/img/hr/location2.jpg")
+  mapEmbedUrl String   @map("map_embed_url") @db.Text
+  address     String   @db.Text
+  address_en  String   @map("address_en") @db.Text
+  phone       String
+  email       String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("location_settings")
+}
+
+model HomeContent {
+  id            String   @id @default(cuid())
+  titleBefore   String   @map("title_before") @db.Text
+  titleBefore_en String  @map("title_before_en") @db.Text
+  titleMain     String   @map("title_main") @db.Text
+  titleMain_en  String   @map("title_main_en") @db.Text
+  description   String   @db.Text
+  description_en String  @map("description_en") @db.Text
+  btnText       String   @map("btn_text")
+  btnText_en    String   @map("btn_text_en")
+  btnUrl        String   @map("btn_url")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  @@map("home_content")
+}
+
+model HomeCard {
+  id        String   @id @default(cuid())
+  title     String   @db.Text
+  title_en  String   @map("title_en") @db.Text
+  image     String
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("home_cards")
 }
 
 model Team {

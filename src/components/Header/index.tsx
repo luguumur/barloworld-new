@@ -89,7 +89,7 @@ const Header = ({ menu: menuProp }: { menu?: MenuItemPublic[] }) => {
 								</Link>
 								<span className='text-white/20'>|</span>
 								<Link
-									href='/blog'
+									href='/news'
 									className='hidden transition hover:text-primary sm:block'
 								>
 									News & Blog

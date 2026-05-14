@@ -293,12 +293,12 @@ export const adminSidebarData: Sidebar[] = [
 		path: "/admin/magazines",
 		icon: <BookOpenIcon className={adminIconClass} aria-hidden />,
 	},
-	{
-		id: 19,
-		title: "Management",
-		path: "/admin/management",
-		icon: <BriefcaseIcon className={adminIconClass} aria-hidden />,
-	},
+	// {
+	// 	id: 19,
+	// 	title: "Management",
+	// 	path: "/admin/management",
+	// 	icon: <BriefcaseIcon className={adminIconClass} aria-hidden />,
+	// },
 	{
 		id: 17,
 		title: "Custom Pages",
@@ -374,8 +374,40 @@ export const adminSidebarData: Sidebar[] = [
 	// 	),
 	// },
 	{
+		id: 45,
+		title: "Location",
+		path: "/admin/location",
+		icon: (
+			<svg width='20' height='20' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'>
+				<path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' fill='currentColor' />
+			</svg>
+		),
+	},
+	{
+		id: 44,
+		title: "Home — Main",
+		path: "/admin/home-main",
+		icon: (
+			<svg
+				width='20'
+				height='20'
+				viewBox='0 0 24 24'
+				fill='none'
+				xmlns='http://www.w3.org/2000/svg'
+			>
+				<path
+					d='M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6'
+					stroke='currentColor'
+					strokeWidth='1.5'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				/>
+			</svg>
+		),
+	},
+	{
 		id: 43,
-		title: "Team",
+		title: "Management",
 		path: "/admin/team",
 		icon: (
 			<svg

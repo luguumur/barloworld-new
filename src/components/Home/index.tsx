@@ -12,6 +12,7 @@ import Blog from "./Blog";
 import About from "./About";
 import { getTestimonialsPublic } from "@/actions/testimonial";
 import { getNewsPublic } from "@/actions/news";
+import Main from "./Main";
 
 const Home = async () => {
 	const cookieStore = cookies();
@@ -24,6 +25,7 @@ const Home = async () => {
 		<>
 			<Masthead mastheads={mastheads} language={language} />
 			<DealsSection lang={language} />
+			<Main />
 			<About />
 			<TestimonialsSection testi={testi} />
 			<ContactCTA />

@@ -18,7 +18,7 @@ export default function ProductPageHeader({
 	const bgImg = backgroundImage ?? "/images/content/cta-banner-image.jpg";
 
 	return (
-		<header className='masthead text--center clearfix'>
+		<header className='masthead text--center clearfix font-noto'>
 			<div className='masthead-background'>
 				<h1 className='text-6xl font-bold text-white'>{title}</h1>
 				<div className='masthead-dark-overlay'>
