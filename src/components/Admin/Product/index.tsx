@@ -8,6 +8,7 @@ type Product = {
 	name: string;
 	name_en: string;
 	img_path: string | null;
+	product_order: number | null;
 	product_types: string | null;
 	status: string;
 	createdAt: Date;

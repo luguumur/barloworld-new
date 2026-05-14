@@ -112,11 +112,12 @@ export async function updateHomeCard(id: string, data: Partial<HomeCardInput>) {
 
 export async function reorderHomeCards(orderedIds: string[]) {
 	await isAuthorized();
-	await Promise.all(
-		orderedIds.map((id, index) =>
-			prisma.homeCard.update({ where: { id }, data: { order: index } })
-		)
-	);
+	for (let i = 0; i < orderedIds.length; i++) {
+		await prisma.homeCard.update({
+			where: { id: orderedIds[i] },
+			data: { order: i },
+		});
+	}
 }
 
 export async function deleteHomeCard(id: string) {

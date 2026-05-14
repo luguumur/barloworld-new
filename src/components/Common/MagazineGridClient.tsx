@@ -41,7 +41,12 @@ function MagazineCard({ item }: { item: Item }) {
 					<img
 						src={item.image}
 						alt={item.title}
-						style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+						style={{
+							width: "100%",
+							height: "100%",
+							objectFit: "cover",
+							display: "block",
+						}}
 					/>
 				) : (
 					<div
@@ -54,7 +59,14 @@ function MagazineCard({ item }: { item: Item }) {
 							background: "#222",
 						}}
 					>
-						<span style={{ color: "#FFBE00", fontWeight: 900, fontSize: "18px", opacity: 0.6 }}>
+						<span
+							style={{
+								color: "#FFBE00",
+								fontWeight: 900,
+								fontSize: "18px",
+								opacity: 0.6,
+							}}
+						>
 							CAT
 						</span>
 					</div>
@@ -79,7 +91,14 @@ function MagazineCard({ item }: { item: Item }) {
 				)}
 			</div>
 
-			<p style={{ fontWeight: 700, fontSize: "13px", color: "#1a1a1a", marginBottom: "2px" }}>
+			<p
+				style={{
+					fontWeight: 700,
+					fontSize: "13px",
+					color: "#1a1a1a",
+					marginBottom: "2px",
+				}}
+			>
 				{item.title}
 			</p>
 			{item.date && (

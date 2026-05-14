@@ -30,8 +30,14 @@ function imageSrc(image: string | null): string | null {
 }
 
 function SortableRow({ magazine }: { magazine: MagazineRow }) {
-	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-		useSortable({ id: magazine.id });
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({ id: magazine.id });
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -70,7 +76,13 @@ function SortableRow({ magazine }: { magazine: MagazineRow }) {
 			<td className='p-4 text-left sm:pl-7.5'>
 				{src ? (
 					<div className='relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-gray-1 dark:bg-white/5'>
-						<Image src={src} alt='' fill className='object-cover' sizes='48px' />
+						<Image
+							src={src}
+							alt=''
+							fill
+							className='object-cover'
+							sizes='48px'
+						/>
 					</div>
 				) : (
 					<div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gray-1 text-body/50 dark:bg-white/5 dark:text-gray-5'>
@@ -86,7 +98,14 @@ function SortableRow({ magazine }: { magazine: MagazineRow }) {
 				</span>
 				<span className='block xl:hidden'>
 					{magazine.url ? (
-						<a href={magazine.url} target='_blank' rel='noopener noreferrer' className='text-sm text-primary hover:underline'>Link</a>
+						<a
+							href={magazine.url}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='text-sm text-primary hover:underline'
+						>
+							Link
+						</a>
 					) : null}
 				</span>
 				<span className='block sm:hidden'>
@@ -107,10 +126,17 @@ function SortableRow({ magazine }: { magazine: MagazineRow }) {
 
 			<td className='hidden max-w-[180px] truncate p-4 text-left text-base tracking-[-.16px] text-body dark:text-gray-5 xl:table-cell'>
 				{magazine.url ? (
-					<a href={magazine.url} target='_blank' rel='noopener noreferrer' className='block truncate text-primary hover:underline'>
+					<a
+						href={magazine.url}
+						target='_blank'
+						rel='noopener noreferrer'
+						className='block truncate text-primary hover:underline'
+					>
 						{magazine.url}
 					</a>
-				) : "—"}
+				) : (
+					"—"
+				)}
 			</td>
 
 			<td className='hidden p-4 text-left text-base tracking-[-.16px] text-body dark:text-gray-5 sm:table-cell'>
@@ -124,7 +150,11 @@ function SortableRow({ magazine }: { magazine: MagazineRow }) {
 	);
 }
 
-export default function MagazineListTable({ magazines }: { magazines: MagazineRow[] }) {
+export default function MagazineListTable({
+	magazines,
+}: {
+	magazines: MagazineRow[];
+}) {
 	const router = useRouter();
 	const [items, setItems] = useState(magazines);
 	const [saving, setSaving] = useState(false);
@@ -156,24 +186,47 @@ export default function MagazineListTable({ magazines }: { magazines: MagazineRo
 	return (
 		<div>
 			{saving && (
-				<p className='mb-2 text-right text-xs text-body dark:text-gray-5'>Saving order…</p>
+				<p className='mb-2 text-right text-xs text-body dark:text-gray-5'>
+					Saving order…
+				</p>
 			)}
 			<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
 				<table className='w-full'>
 					<thead>
 						<tr className='hidden border-b border-stroke dark:border-stroke-dark lsm:table-row'>
 							<th className='w-8 px-3 py-5 sm:pl-7.5' />
-							<th className='w-16 px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:pl-7.5'>Image</th>
-							<th className='min-w-[180px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>Title</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>Number</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>Date</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 xl:table-cell'>URL</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:table-cell'>Created</th>
-							<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>Action</th>
+							<th className='w-16 px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:pl-7.5'>
+								Image
+							</th>
+							<th className='min-w-[180px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
+								Title
+							</th>
+							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
+								Number
+							</th>
+							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
+								Date
+							</th>
+							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 xl:table-cell'>
+								URL
+							</th>
+							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:table-cell'>
+								Created
+							</th>
+							<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
+								Action
+							</th>
 						</tr>
 					</thead>
-					<DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-						<SortableContext items={items.map((m) => m.id)} strategy={verticalListSortingStrategy}>
+					<DndContext
+						sensors={sensors}
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+					>
+						<SortableContext
+							items={items.map((m) => m.id)}
+							strategy={verticalListSortingStrategy}
+						>
 							<tbody>
 								{items.map((magazine) => (
 									<SortableRow key={magazine.id} magazine={magazine} />

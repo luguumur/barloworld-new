@@ -1,4 +1,5 @@
 "use server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
@@ -210,4 +211,18 @@ export async function updateProduct(id: string, data: Partial<ProductInput>) {
 export async function deleteProduct(id: string) {
 	await isAuthorized();
 	return prisma.product.delete({ where: { id } });
+}
+
+export async function reorderProducts(orderedIds: string[]) {
+	await isAuthorized();
+	if (orderedIds.length === 0) return;
+
+	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
+
+	await prisma.$executeRaw`
+		UPDATE products
+		SET product_order = CASE id ${Prisma.join(whenClauses, " ")} ELSE product_order END
+		WHERE id IN (${Prisma.join(inList)})
+	`;
 }

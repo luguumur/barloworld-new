@@ -45,33 +45,77 @@ export default async function LocationsPage() {
 					<PageSidebar />
 
 					<main className='page-content col-md-9'>
-
 						{/* Photo + info side by side */}
-						<div style={{ display: "flex", gap: "32px", flexWrap: "wrap", marginBottom: "40px" }}>
+						<div
+							style={{
+								display: "flex",
+								gap: "32px",
+								flexWrap: "wrap",
+								marginBottom: "40px",
+							}}
+						>
 							{/* Photo */}
 							<div style={{ flex: "1 1 280px", minWidth: "0" }}>
 								<img
 									src={imgSrc}
 									alt={isMn ? "Байршил" : "Location"}
-									style={{ width: "100%", height: "auto", display: "block", borderRadius: "4px" }}
+									style={{
+										width: "100%",
+										height: "auto",
+										display: "block",
+										borderRadius: "4px",
+									}}
 								/>
 							</div>
 
 							{/* Contact info */}
 							<div style={{ flex: "1 1 240px", minWidth: "0" }}>
-								<h2 style={{ fontSize: "22px", fontWeight: 700, marginBottom: "20px", color: "#1a1a1a", borderBottom: "3px solid #FFBE00", paddingBottom: "10px", display: "inline-block" }}>
+								<h2
+									style={{
+										fontSize: "22px",
+										fontWeight: 700,
+										marginBottom: "20px",
+										color: "#1a1a1a",
+										borderBottom: "3px solid #FFBE00",
+										paddingBottom: "10px",
+										display: "inline-block",
+									}}
+								>
 									{isMn ? "Холбоо барих" : "Contact Information"}
 								</h2>
 
-								<div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+								<div
+									style={{
+										display: "flex",
+										flexDirection: "column",
+										gap: "16px",
+									}}
+								>
 									{/* Address */}
 									<div style={{ display: "flex", gap: "12px" }}>
 										<span style={{ fontSize: "20px", flexShrink: 0 }}>📍</span>
 										<div>
-											<p style={{ fontWeight: 700, fontSize: "13px", color: "#888", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>
+											<p
+												style={{
+													fontWeight: 700,
+													fontSize: "13px",
+													color: "#888",
+													textTransform: "uppercase",
+													letterSpacing: "0.05em",
+													marginBottom: "4px",
+												}}
+											>
 												{isMn ? "Хаяг" : "Address"}
 											</p>
-											<p style={{ fontSize: "14px", color: "#333", lineHeight: 1.6 }}>{address}</p>
+											<p
+												style={{
+													fontSize: "14px",
+													color: "#333",
+													lineHeight: 1.6,
+												}}
+											>
+												{address}
+											</p>
 										</div>
 									</div>
 
@@ -79,10 +123,27 @@ export default async function LocationsPage() {
 									<div style={{ display: "flex", gap: "12px" }}>
 										<span style={{ fontSize: "20px", flexShrink: 0 }}>📞</span>
 										<div>
-											<p style={{ fontWeight: 700, fontSize: "13px", color: "#888", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>
+											<p
+												style={{
+													fontWeight: 700,
+													fontSize: "13px",
+													color: "#888",
+													textTransform: "uppercase",
+													letterSpacing: "0.05em",
+													marginBottom: "4px",
+												}}
+											>
 												{isMn ? "Утас" : "Phone"}
 											</p>
-											<a href={`tel:${loc.phone.replace(/\s/g, "")}`} style={{ fontSize: "14px", color: "#FFBE00", fontWeight: 700, textDecoration: "none" }}>
+											<a
+												href={`tel:${loc.phone.replace(/\s/g, "")}`}
+												style={{
+													fontSize: "14px",
+													color: "#FFBE00",
+													fontWeight: 700,
+													textDecoration: "none",
+												}}
+											>
 												{loc.phone}
 											</a>
 										</div>
@@ -92,10 +153,27 @@ export default async function LocationsPage() {
 									<div style={{ display: "flex", gap: "12px" }}>
 										<span style={{ fontSize: "20px", flexShrink: 0 }}>✉️</span>
 										<div>
-											<p style={{ fontWeight: 700, fontSize: "13px", color: "#888", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>
+											<p
+												style={{
+													fontWeight: 700,
+													fontSize: "13px",
+													color: "#888",
+													textTransform: "uppercase",
+													letterSpacing: "0.05em",
+													marginBottom: "4px",
+												}}
+											>
 												{isMn ? "И-мэйл" : "Email"}
 											</p>
-											<a href={`mailto:${loc.email}`} style={{ fontSize: "14px", color: "#FFBE00", fontWeight: 700, textDecoration: "none" }}>
+											<a
+												href={`mailto:${loc.email}`}
+												style={{
+													fontSize: "14px",
+													color: "#FFBE00",
+													fontWeight: 700,
+													textDecoration: "none",
+												}}
+											>
 												{loc.email}
 											</a>
 										</div>
@@ -105,23 +183,59 @@ export default async function LocationsPage() {
 									<div style={{ display: "flex", gap: "12px" }}>
 										<span style={{ fontSize: "20px", flexShrink: 0 }}>🕐</span>
 										<div>
-											<p style={{ fontWeight: 700, fontSize: "13px", color: "#888", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: "4px" }}>
+											<p
+												style={{
+													fontWeight: 700,
+													fontSize: "13px",
+													color: "#888",
+													textTransform: "uppercase",
+													letterSpacing: "0.05em",
+													marginBottom: "4px",
+												}}
+											>
 												{isMn ? "Ажлын цаг" : "Working Hours"}
 											</p>
-											<p style={{ fontSize: "14px", color: "#333", lineHeight: 1.7 }}>
-												{isMn ? "Даваа — Баасан: 09:00–18:00" : "Mon – Fri: 09:00–18:00"}<br />
-												{isMn ? "Бямба: 09:00–15:00" : "Sat: 09:00–15:00"}<br />
-												<span style={{ color: "#999" }}>{isMn ? "Ням — Амарна" : "Sun: Closed"}</span>
+											<p
+												style={{
+													fontSize: "14px",
+													color: "#333",
+													lineHeight: 1.7,
+												}}
+											>
+												{isMn
+													? "Даваа — Баасан: 09:00–18:00"
+													: "Mon – Fri: 09:00–18:00"}
+												<br />
+												{isMn ? "Бямба: 09:00–15:00" : "Sat: 09:00–15:00"}
+												<br />
+												<span style={{ color: "#999" }}>
+													{isMn ? "Ням — Амарна" : "Sun: Closed"}
+												</span>
 											</p>
 										</div>
 									</div>
 								</div>
 
-								<div style={{ marginTop: "24px", display: "flex", gap: "10px", flexWrap: "wrap" }}>
-									<a href='/quote' className='btn btn-primary' style={{ minWidth: "140px" }}>
+								<div
+									style={{
+										marginTop: "24px",
+										display: "flex",
+										gap: "10px",
+										flexWrap: "wrap",
+									}}
+								>
+									<a
+										href='/quote'
+										className='btn btn-primary'
+										style={{ minWidth: "140px" }}
+									>
 										{isMn ? "Үнийн санал" : "Get a Quote"}
 									</a>
-									<a href='/support' className='btn btn-secondary' style={{ minWidth: "140px" }}>
+									<a
+										href='/support'
+										className='btn btn-secondary'
+										style={{ minWidth: "140px" }}
+									>
 										{isMn ? "Холбоо барих" : "Contact Us"}
 									</a>
 								</div>
@@ -130,10 +244,25 @@ export default async function LocationsPage() {
 
 						{/* Map */}
 						<div style={{ marginBottom: "40px" }}>
-							<h3 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "16px", color: "#1a1a1a" }}>
+							<h3
+								style={{
+									fontSize: "18px",
+									fontWeight: 700,
+									marginBottom: "16px",
+									color: "#1a1a1a",
+								}}
+							>
 								{isMn ? "Газрын зураг" : "Map"}
 							</h3>
-							<div style={{ width: "100%", height: "400px", borderRadius: "4px", overflow: "hidden", border: "1px solid #e5e5e5" }}>
+							<div
+								style={{
+									width: "100%",
+									height: "400px",
+									borderRadius: "4px",
+									overflow: "hidden",
+									border: "1px solid #e5e5e5",
+								}}
+							>
 								<iframe
 									src={loc.mapEmbedUrl}
 									width='100%'
@@ -150,13 +279,16 @@ export default async function LocationsPage() {
 									href='https://www.google.com/maps/search/Barloworld+Mongolia'
 									target='_blank'
 									rel='noopener noreferrer'
-									style={{ fontSize: "13px", color: "#FFBE00", fontWeight: 600 }}
+									style={{
+										fontSize: "13px",
+										color: "#FFBE00",
+										fontWeight: 600,
+									}}
 								>
 									{isMn ? "Google Maps дээр нээх ↗" : "Open in Google Maps ↗"}
 								</a>
 							</div>
 						</div>
-
 					</main>
 				</div>
 			</article>

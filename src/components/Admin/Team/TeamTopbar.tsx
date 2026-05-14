@@ -4,7 +4,11 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function TeamTopbar({ initialSearch = "" }: { initialSearch?: string }) {
+export default function TeamTopbar({
+	initialSearch = "",
+}: {
+	initialSearch?: string;
+}) {
 	const [search, setSearch] = useState(initialSearch);
 	const router = useRouter();
 
@@ -15,7 +19,12 @@ export default function TeamTopbar({ initialSearch = "" }: { initialSearch?: str
 					href='/admin/team/new'
 					className='flex h-10 items-center justify-center gap-3 rounded-lg bg-primary p-3 text-white hover:bg-primary-dark'
 				>
-					<Image src='/images/icon/plus.svg' alt='plus' width={20} height={20} />
+					<Image
+						src='/images/icon/plus.svg'
+						alt='plus'
+						width={20}
+						height={20}
+					/>
 					Add member
 				</Link>
 			</div>

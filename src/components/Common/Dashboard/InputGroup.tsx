@@ -31,7 +31,7 @@ export default function InputGroup(props: any) {
 					value={value}
 					onChange={handleChange ? (e) => handleChange(e) : undefined}
 					name={name}
-					className={`w-full rounded-lg border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white dark:focus:border-transparent`}
+					className={`w-full border border-gray-3 px-5.5 py-3 text-dark outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:text-white dark:focus:border-transparent`}
 					style={{ height: height }}
 					required={required}
 					maxLength={maxlength}

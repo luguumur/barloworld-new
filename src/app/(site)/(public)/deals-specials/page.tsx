@@ -9,7 +9,8 @@ export const revalidate = 0;
 
 export const metadata: Metadata = {
 	title: `Deals & Specials - ${process.env.SITE_NAME}`,
-	description: "Browse current deals and special offers from Barloworld Mongolia.",
+	description:
+		"Browse current deals and special offers from Barloworld Mongolia.",
 };
 
 export default async function DealsSpecialsPage() {

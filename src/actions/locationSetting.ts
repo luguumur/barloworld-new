@@ -28,7 +28,10 @@ export async function upsertLocationSetting(data: LocationSettingInput) {
 	await isAuthorized();
 	const existing = await prisma.locationSetting.findMany({ take: 1 });
 	if (existing[0]) {
-		return prisma.locationSetting.update({ where: { id: existing[0].id }, data });
+		return prisma.locationSetting.update({
+			where: { id: existing[0].id },
+			data,
+		});
 	}
 	return prisma.locationSetting.create({ data });
 }

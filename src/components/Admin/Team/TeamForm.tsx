@@ -63,7 +63,10 @@ export default function TeamForm({ mode, editId, initial = emptyForm }: Props) {
 		const ext = file.name.split(".").pop()?.toLowerCase() || "jpg";
 		const name = `${Date.now()}.${ext}`;
 		const result = await getSignedURL(file.type, file.size, "team", name);
-		if (result.failure) { toast.error(result.failure); return null; }
+		if (result.failure) {
+			toast.error(result.failure);
+			return null;
+		}
 		const res = await fetch(result.success!.url, {
 			method: "PUT",
 			headers: { "Content-Type": file.type || "application/octet-stream" },
@@ -83,7 +86,10 @@ export default function TeamForm({ mode, editId, initial = emptyForm }: Props) {
 		setLoading(true);
 		try {
 			const imageKey = await uploadImage();
-			const payload: TeamInput = { ...data, image: imageKey ?? (data.image?.trim() || null) };
+			const payload: TeamInput = {
+				...data,
+				image: imageKey ?? (data.image?.trim() || null),
+			};
 			if (mode === "edit" && editId) {
 				await updateTeam(editId, payload);
 				toast.success("Team member updated!");
@@ -100,12 +106,16 @@ export default function TeamForm({ mode, editId, initial = emptyForm }: Props) {
 		}
 	};
 
-	const currentPreview = imagePreview || (data.image ? resolveImage(data.image) : null);
+	const currentPreview =
+		imagePreview || (data.image ? resolveImage(data.image) : null);
 
 	return (
 		<div className='rounded-10 bg-white p-6 shadow-1 dark:bg-gray-dark sm:p-8'>
 			<div className='mb-6 flex items-center gap-3'>
-				<Link href='/admin/team' className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'>
+				<Link
+					href='/admin/team'
+					className='text-body hover:text-primary dark:text-gray-5 dark:hover:text-primary'
+				>
 					← Back to list
 				</Link>
 			</div>
@@ -180,19 +190,37 @@ export default function TeamForm({ mode, editId, initial = emptyForm }: Props) {
 					<div className='flex flex-wrap items-start gap-4'>
 						<label className='relative flex h-32 w-32 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-stroke bg-gray-1 dark:border-stroke-dark dark:bg-white/5'>
 							{currentPreview ? (
-								<Image src={currentPreview} alt='Team member' fill className='object-cover' sizes='128px' unoptimized={currentPreview.startsWith("blob:")} />
+								<Image
+									src={currentPreview}
+									alt='Team member'
+									fill
+									className='object-cover'
+									sizes='128px'
+									unoptimized={currentPreview.startsWith("blob:")}
+								/>
 							) : (
-								<span className='text-center text-xs text-body/70 px-2'>Upload photo</span>
+								<span className='px-2 text-center text-xs text-body/70'>
+									Upload photo
+								</span>
 							)}
-							<input type='file' className='sr-only' accept='image/png,image/jpeg,image/jpg' onChange={handleImageChange} />
+							<input
+								type='file'
+								className='sr-only'
+								accept='image/png,image/jpeg,image/jpg'
+								onChange={handleImageChange}
+							/>
 						</label>
 						<div className='flex flex-col gap-2'>
 							<p className='text-sm text-body/70'>PNG, JPG. Max 2MB.</p>
-							<p className='text-xs text-body/50'>Or paste an image URL below:</p>
+							<p className='text-xs text-body/50'>
+								Or paste an image URL below:
+							</p>
 							<input
 								type='url'
 								placeholder='https://example.com/photo.jpg'
-								value={file ? "" : (data.image?.startsWith("http") ? data.image : "")}
+								value={
+									file ? "" : data.image?.startsWith("http") ? data.image : ""
+								}
 								onChange={(e) => {
 									setData((p) => ({ ...p, image: e.target.value }));
 									setImagePreview(e.target.value || null);
@@ -218,8 +246,17 @@ export default function TeamForm({ mode, editId, initial = emptyForm }: Props) {
 						className='inline-flex items-center rounded-lg bg-primary px-5 py-2.5 font-medium text-white duration-200 hover:bg-primary-dark disabled:opacity-70'
 					>
 						{loading ? (
-							<><Loader style='border-white' /><span className='ml-2'>{mode === "edit" ? "Updating..." : "Creating..."}</span></>
-						) : mode === "edit" ? "Update" : "Create"}
+							<>
+								<Loader style='border-white' />
+								<span className='ml-2'>
+									{mode === "edit" ? "Updating..." : "Creating..."}
+								</span>
+							</>
+						) : mode === "edit" ? (
+							"Update"
+						) : (
+							"Create"
+						)}
 					</button>
 				</div>
 			</form>

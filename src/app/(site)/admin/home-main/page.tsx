@@ -13,7 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function HomeMainPage() {
-	const [content, cards] = await Promise.all([getHomeContent(), getHomeCards()]);
+	const [content, cards] = await Promise.all([
+		getHomeContent(),
+		getHomeCards(),
+	]);
 	const initial = content
 		? {
 				titleBefore: content.titleBefore,

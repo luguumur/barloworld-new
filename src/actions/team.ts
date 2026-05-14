@@ -101,9 +101,10 @@ export async function deleteTeam(id: string) {
 
 export async function reorderTeams(orderedIds: string[]) {
 	await isAuthorized();
-	await Promise.all(
-		orderedIds.map((id, index) =>
-			prisma.team.update({ where: { id }, data: { order: index } })
-		)
-	);
+	for (let i = 0; i < orderedIds.length; i++) {
+		await prisma.team.update({
+			where: { id: orderedIds[i] },
+			data: { order: i },
+		});
+	}
 }

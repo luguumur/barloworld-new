@@ -2,24 +2,13 @@
 import MagazineEmptyState from "./MagazineEmptyState";
 import MagazineListTable from "./MagazineListTable";
 import MagazineTopbar from "./MagazineTopbar";
-
-type Magazine = {
-	id: string;
-	title: string;
-	title_en: string;
-	image: string | null;
-	url: string | null;
-	date: string | null;
-	number: string | null;
-	createdAt: Date;
-	updatedAt: Date;
-};
+import { MagazineRow } from "@/actions/magazine";
 
 export default function MagazineListContainer({
 	magazines,
 	initialSearch = "",
 }: {
-	magazines: Magazine[];
+	magazines: MagazineRow[];
 	initialSearch?: string;
 }) {
 	return (

@@ -39,7 +39,7 @@ export default function ContactRequestListTable({
 							<tr
 								key={c.id}
 								onClick={() => setSelected(c)}
-								className={`cursor-pointer border-b border-stroke last-of-type:border-b-0 transition-colors hover:bg-gray-1 dark:border-stroke-dark dark:hover:bg-white/5 ${
+								className={`cursor-pointer border-b border-stroke transition-colors last-of-type:border-b-0 hover:bg-gray-1 dark:border-stroke-dark dark:hover:bg-white/5 ${
 									c.status === "NEW" ? "bg-primary/5 dark:bg-primary/10" : ""
 								}`}
 							>

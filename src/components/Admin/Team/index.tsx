@@ -16,11 +16,7 @@ export default function TeamListContainer({
 			<div className='mb-5'>
 				<TeamTopbar initialSearch={initialSearch} />
 			</div>
-			{teams?.length ? (
-				<TeamListTable teams={teams} />
-			) : (
-				<TeamEmptyState />
-			)}
+			{teams?.length ? <TeamListTable teams={teams} /> : <TeamEmptyState />}
 		</>
 	);
 }

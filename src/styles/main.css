@@ -3646,11 +3646,11 @@ input.wpcf7-not-valid {
 }
 
 @media (min-width: 768px) {
-	.masthead {
+	/* .masthead {
 		padding: 0;
 		background: transparent;
 		z-index: 9;
-	}
+	} */
 
 	.masthead-image {
 		height: 540px;
@@ -11120,11 +11120,11 @@ h2.h1.hp-mast-heading {
         top: 0;
         left: 0
     } */
-
-	/* .background-image-wrapper:after {
-    border-bottom: 80px solid #e8e9e8;
-    bottom: 0px;
-  } */
+	/* 
+	.background-image-wrapper:after {
+		border-bottom: 80px solid #e8e9e8;
+		bottom: -1px;
+	} */
 
 	.container.hp-slide-content {
 		padding-top: 50px;
@@ -12611,6 +12611,37 @@ input::placeholder {
 .dark .testimonial-author-dash {
 	color: #94a3b8;
 }
+/* Image-button (Main) section */
+.dark .image-button {
+	background: #111827;
+}
+.dark .image-button-left-panel h2 {
+	color: #f1f5f9;
+}
+.dark .image-button-left-panel h2 span {
+	color: #94a3b8;
+}
+.dark .image-button-left-panel div,
+.dark .image-button-left-panel p {
+	color: #cbd5e1;
+}
+.dark .image-button-graphics-right img,
+.dark .image-button-graphics-left img {
+	opacity: 0.15;
+}
+.dark .image-button-title .arrow-icon span:after {
+	border-left-color: #1e293b;
+}
+.dark .image-button-title-clippy {
+	color: #1e293b;
+}
+.dark .image-button-title-clippy::after {
+	background: #fbbf24;
+}
+.dark .image-button-item a:hover .image-button-title {
+	color: #111827;
+}
+
 .active {
 	background: initial;
 	color: initial;

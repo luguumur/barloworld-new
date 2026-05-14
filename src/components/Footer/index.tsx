@@ -12,7 +12,7 @@ const Footer = () => {
 					<div className='container'>
 						<div className='row push--bottom'>
 							<div className='col-md-7 col-sm-9'>
-								<nav className='nav--footer'>
+								<nav className='nav--footer font-satoshi'>
 									<ul className='menu text-center md:text-left'>
 										<li className='!pl-0 !pr-3'>
 											<Link href='/equipment'>{menut("equipment")}</Link>
@@ -36,7 +36,7 @@ const Footer = () => {
 								</nav>
 							</div>
 							<div className='col-md-5 col-sm-3'>
-								<div className='flex items-center justify-center gap-6 lg:justify-end'>
+								<div className='flex items-center justify-center gap-6 font-noto lg:justify-end'>
 									<ul className='page-footer__social social-links hidden-xs hidden-sm clearfix !float-none'>
 										<li className='mr-6 sm:mr-0'>
 											<a

@@ -15,10 +15,7 @@ export default function MagazinesPage() {
 		<>
 			<ProductPageHeader
 				title='Magazines'
-				breadcrumbs={[
-					{ label: "Home", href: "/" },
-					{ label: "Magazines" },
-				]}
+				breadcrumbs={[{ label: "Home", href: "/" }, { label: "Magazines" }]}
 			/>
 			<article className='page-body container'>
 				<div className='row'>

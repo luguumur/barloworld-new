@@ -14,7 +14,14 @@ export const metadata: Metadata = {
 export default async function AdminLocationPage() {
 	const row = await getLocationSetting();
 	const initial = row
-		? { image: row.image, mapEmbedUrl: row.mapEmbedUrl, address: row.address, address_en: row.address_en, phone: row.phone, email: row.email }
+		? {
+				image: row.image,
+				mapEmbedUrl: row.mapEmbedUrl,
+				address: row.address,
+				address_en: row.address_en,
+				phone: row.phone,
+				email: row.email,
+			}
 		: DEFAULT_LOCATION;
 
 	return (

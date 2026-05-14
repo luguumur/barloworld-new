@@ -74,7 +74,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 					onMouseEnter={() => setPaused(true)}
 					onMouseLeave={() => setPaused(false)}
 				>
-					<div className='relative min-h-[min(100svh,720px)] w-full lg:min-h-[560px]'>
+					<div className='relative min-h-[min(200svh,320px)] w-full lg:min-h-[560px]'>
 						<div className='absolute inset-0 flex flex-col lg:grid lg:grid-cols-12'>
 							<div className='relative order-1 min-h-[220px] lg:order-none lg:col-span-12 lg:min-h-0'>
 								{slides.map((slide, i) => (
@@ -88,7 +88,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 										aria-hidden
 									>
 										<div
-											className={`relative h-full min-h-[220px] lg:min-h-full ${slide.mediaClassName}`}
+											className={`background-image-wrapper relative h-full min-h-[220px] lg:min-h-full ${slide.mediaClassName}`}
 										>
 											{slide.imageUrl ? (
 												<Image

@@ -54,7 +54,7 @@ export async function createContactRequestPublic(data: ContactRequestInput) {
 export async function getContactRequests(search?: string) {
 	await isAuthorized();
 	try {
-		return await prisma.contactRequest.findMany({
+		return (await prisma.contactRequest.findMany({
 			orderBy: { createdAt: "desc" },
 			where: search?.trim()
 				? {
@@ -66,7 +66,7 @@ export async function getContactRequests(search?: string) {
 						],
 					}
 				: undefined,
-		}) as ContactRequestRow[];
+		})) as ContactRequestRow[];
 	} catch (error) {
 		return handleTableMissing(error, [] as ContactRequestRow[]);
 	}

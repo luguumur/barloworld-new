@@ -21,7 +21,7 @@ export default function ProductCategoryTopbar({
 
 	return (
 		<div className='items-center justify-between rounded-10 bg-white px-3.5 py-3 shadow-1 dark:bg-gray-dark md:flex'>
-			<div className='mb-6 flex flex-wrap items-center gap-3 md:mb-0'>
+			<div className='mb-6 flex items-center gap-3 md:mb-0'>
 				<Link
 					href='/admin/product-categories/new'
 					className='flex h-10 items-center justify-center gap-3 rounded-lg bg-primary p-3 text-white hover:bg-primary-dark'
@@ -45,7 +45,7 @@ export default function ProductCategoryTopbar({
 						`/admin/product-categories${params.toString() ? `?${params}` : ""}`
 					);
 				}}
-				className='flex flex-wrap items-center gap-2'
+				className='flex items-center gap-2'
 			>
 				{productTypes.length > 0 && (
 					<select

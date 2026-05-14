@@ -127,7 +127,7 @@ export default function SigninWithPassword() {
 				</Link>
 			</div>
 
-			<FormButton height='50px'>
+			<FormButton height='50px w-full'>
 				Sign In {loading && <Loader style='dark:border-primary border-white' />}
 			</FormButton>
 		</form>

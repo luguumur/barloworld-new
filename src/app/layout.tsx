@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import "../styles/satoshi.css";
-import { Inter, Roboto_Condensed } from "next/font/google";
+import { Inter } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 
 const inter = Inter({
@@ -9,20 +9,21 @@ const inter = Inter({
 	display: "swap",
 });
 
-const robotoCondensed = Roboto_Condensed({
-	subsets: ["latin"],
-	variable: "--font-roboto-condensed",
-	weight: ["300", "400", "500", "600", "700", "800", "900"],
-	display: "swap",
-});
-
 const layout = ({ children }: { children: React.ReactNode }) => {
 	return (
-		<html
-			lang='en'
-			suppressHydrationWarning={true}
-			className={`${inter.variable} ${robotoCondensed.variable}`}
-		>
+		<html lang='en' suppressHydrationWarning={true} className={inter.variable}>
+			<head>
+				<link rel='preconnect' href='https://fonts.googleapis.com' />
+				<link
+					rel='preconnect'
+					href='https://fonts.gstatic.com'
+					crossOrigin='anonymous'
+				/>
+				<link
+					href='https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap'
+					rel='stylesheet'
+				/>
+			</head>
 			<body
 				className={`${inter.className} flex min-h-screen flex-col dark:bg-[#151F34]`}
 			>

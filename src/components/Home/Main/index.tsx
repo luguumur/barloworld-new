@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
 import { getHomeContent, getHomeCards } from "@/actions/homeMain";
 import { DEFAULT_CONTENT } from "@/actions/homeMainDefaults";
-import { resolve } from "path";
 
 function resolveImg(path: string | null | undefined): string | null {
 	const raw = path?.trim();

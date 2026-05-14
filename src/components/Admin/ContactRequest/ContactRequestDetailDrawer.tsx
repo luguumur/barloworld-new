@@ -1,14 +1,20 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { updateContactRequestStatus, ContactRequestRow } from "@/actions/contactRequest";
+import {
+	updateContactRequestStatus,
+	ContactRequestRow,
+} from "@/actions/contactRequest";
 
 type Props = {
 	contact: ContactRequestRow | null;
 	onClose: () => void;
 };
 
-export default function ContactRequestDetailDrawer({ contact, onClose }: Props) {
+export default function ContactRequestDetailDrawer({
+	contact,
+	onClose,
+}: Props) {
 	const router = useRouter();
 	const drawerRef = useRef<HTMLDivElement>(null);
 	const open = !!contact;
@@ -18,7 +24,9 @@ export default function ContactRequestDetailDrawer({ contact, onClose }: Props) 
 	const status = contact?.status;
 	useEffect(() => {
 		if (contactId && status === "NEW") {
-			updateContactRequestStatus(contactId, "READ").then(() => router.refresh());
+			updateContactRequestStatus(contactId, "READ").then(() =>
+				router.refresh()
+			);
 		}
 	}, [contactId, status, router]);
 
@@ -108,7 +116,10 @@ export default function ContactRequestDetailDrawer({ contact, onClose }: Props) 
 									{contact.email}
 								</a>
 								<p className='mt-1 text-sm text-body dark:text-gray-5'>
-									<a href={`tel:${contact.phoneNumber}`} className='hover:underline'>
+									<a
+										href={`tel:${contact.phoneNumber}`}
+										className='hover:underline'
+									>
 										{contact.phoneNumber}
 									</a>
 								</p>

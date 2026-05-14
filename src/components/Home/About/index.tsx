@@ -6,7 +6,7 @@ const About = () => {
 	return (
 		<section className='home-about image-button'>
 			<div className='image-button-graphics-right hidden-xs-down'>
-				<Image
+				{/* <Image
 					priority
 					src={
 						"https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics2-585x272.webp"
@@ -17,10 +17,17 @@ const About = () => {
 					height={272}
 					layout='intrinsic'
 					alt='graphics2'
+				/> */}
+				<img
+					width='585'
+					height='283'
+					src='https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics2-585x272.webp'
+					className='img-responsive entered lazyloaded'
+					alt=''
 				/>
 			</div>
 			<div className='image-button-graphics-left hidden-sm-down'>
-				<Image
+				{/* <Image
 					priority
 					src={
 						"https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics1-497x283.webp"
@@ -31,6 +38,13 @@ const About = () => {
 					height={283}
 					layout='intrinsic'
 					alt='graphics1'
+				/> */}
+				<img
+					width='455'
+					height='220'
+					src='https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics1-497x283.webp'
+					className='img-responsive entered lazyloaded'
+					alt=''
 				/>
 			</div>
 			<div className='container'>

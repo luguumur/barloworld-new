@@ -29,8 +29,14 @@ function resolveImage(image: string | null): string | null {
 }
 
 function SortableRow({ team }: { team: TeamRow }) {
-	const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
-		useSortable({ id: team.id });
+	const {
+		attributes,
+		listeners,
+		setNodeRef,
+		transform,
+		transition,
+		isDragging,
+	} = useSortable({ id: team.id });
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
@@ -69,12 +75,25 @@ function SortableRow({ team }: { team: TeamRow }) {
 			<td className='p-4 text-left'>
 				{src ? (
 					<div className='relative h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-1 dark:bg-white/5'>
-						<Image src={src} alt={team.name} fill className='object-cover' sizes='48px' unoptimized />
+						<Image
+							src={src}
+							alt={team.name}
+							fill
+							className='object-cover'
+							sizes='48px'
+							unoptimized
+						/>
 					</div>
 				) : (
 					<div className='flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gray-1 text-body/50 dark:bg-white/5 dark:text-gray-5'>
 						<svg width='24' height='24' viewBox='0 0 24 24' fill='none'>
-							<path d='M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z' stroke='currentColor' strokeWidth='1.5' strokeLinecap='round' strokeLinejoin='round' />
+							<path
+								d='M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z'
+								stroke='currentColor'
+								strokeWidth='1.5'
+								strokeLinecap='round'
+								strokeLinejoin='round'
+							/>
 						</svg>
 					</div>
 				)}

@@ -104,9 +104,10 @@ export async function getMagazinesPublic() {
 
 export async function reorderMagazines(orderedIds: string[]) {
 	await isAuthorized();
-	await Promise.all(
-		orderedIds.map((id, index) =>
-			prisma.magazine.update({ where: { id }, data: { order: index } })
-		)
-	);
+	for (let i = 0; i < orderedIds.length; i++) {
+		await prisma.magazine.update({
+			where: { id: orderedIds[i] },
+			data: { order: i },
+		});
+	}
 }

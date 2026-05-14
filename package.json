@@ -10,6 +10,7 @@
 		"dev:http": "next dev",
 		"build": "prisma generate && next build",
 		"start": "next start",
+		"start:https": "node server.mjs",
 		"check-format": "prettier --check .",
 		"check-lint": "eslint . --ext ts --ext tsx --ext js",
 		"check-style": "npm run check-format && npm run check-lint",
