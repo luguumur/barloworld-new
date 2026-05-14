@@ -1,4 +1,5 @@
 "use server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
@@ -112,12 +113,14 @@ export async function updateHomeCard(id: string, data: Partial<HomeCardInput>) {
 
 export async function reorderHomeCards(orderedIds: string[]) {
 	await isAuthorized();
-	for (let i = 0; i < orderedIds.length; i++) {
-		await prisma.homeCard.update({
-			where: { id: orderedIds[i] },
-			data: { order: i },
-		});
-	}
+	if (orderedIds.length === 0) return;
+	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
+	await prisma.$executeRaw`
+		UPDATE home_cards
+		SET "order" = CASE id ${Prisma.join(whenClauses, " ")} ELSE "order" END
+		WHERE id IN (${Prisma.join(inList)})
+	`;
 }
 
 export async function deleteHomeCard(id: string) {

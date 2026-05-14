@@ -167,7 +167,6 @@ function SortableRow({ card }: { card: HomeCardRow }) {
 }
 
 export default function HomeCardList({ cards }: { cards: HomeCardRow[] }) {
-	const router = useRouter();
 	const [items, setItems] = useState(cards);
 	const [saving, setSaving] = useState(false);
 
@@ -186,7 +185,6 @@ export default function HomeCardList({ cards }: { cards: HomeCardRow[] }) {
 		try {
 			await reorderHomeCards(reordered.map((c) => c.id));
 			toast.success("Order saved");
-			router.refresh();
 		} catch {
 			toast.error("Failed to save order");
 			setItems(items); // revert
@@ -216,6 +214,12 @@ export default function HomeCardList({ cards }: { cards: HomeCardRow[] }) {
 
 			{items.length ? (
 				<div className='overflow-hidden rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
+					<DndContext
+					id='home-card-list-dnd'
+					sensors={sensors}
+					collisionDetection={closestCenter}
+					onDragEnd={handleDragEnd}
+				>
 					<table className='w-full'>
 						<thead>
 							<tr className='border-b border-stroke dark:border-stroke-dark'>
@@ -237,23 +241,18 @@ export default function HomeCardList({ cards }: { cards: HomeCardRow[] }) {
 								</th>
 							</tr>
 						</thead>
-						<DndContext
-							sensors={sensors}
-							collisionDetection={closestCenter}
-							onDragEnd={handleDragEnd}
+						<SortableContext
+							items={items.map((c) => c.id)}
+							strategy={verticalListSortingStrategy}
 						>
-							<SortableContext
-								items={items.map((c) => c.id)}
-								strategy={verticalListSortingStrategy}
-							>
-								<tbody>
-									{items.map((c) => (
-										<SortableRow key={c.id} card={c} />
-									))}
-								</tbody>
-							</SortableContext>
-						</DndContext>
+							<tbody>
+								{items.map((c) => (
+									<SortableRow key={c.id} card={c} />
+								))}
+							</tbody>
+						</SortableContext>
 					</table>
+				</DndContext>
 				</div>
 			) : (
 				<div className='rounded-10 bg-white py-12 text-center shadow-1 dark:bg-gray-dark'>

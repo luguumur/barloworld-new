@@ -1,4 +1,5 @@
 "use server";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
@@ -85,9 +86,12 @@ export async function deleteManagement(id: string) {
 
 export async function reorderManagements(orderedIds: string[]) {
 	await isAuthorized();
-	await Promise.all(
-		orderedIds.map((id, index) =>
-			prisma.management.update({ where: { id }, data: { order: index } })
-		)
-	);
+	if (orderedIds.length === 0) return;
+	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
+	await prisma.$executeRaw`
+		UPDATE managements
+		SET "order" = CASE id ${Prisma.join(whenClauses, " ")} ELSE "order" END
+		WHERE id IN (${Prisma.join(inList)})
+	`;
 }

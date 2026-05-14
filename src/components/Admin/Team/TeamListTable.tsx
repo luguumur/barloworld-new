@@ -125,7 +125,6 @@ function SortableRow({ team }: { team: TeamRow }) {
 }
 
 export default function TeamListTable({ teams }: { teams: TeamRow[] }) {
-	const router = useRouter();
 	const [items, setItems] = useState(teams);
 	const [saving, setSaving] = useState(false);
 
@@ -144,7 +143,6 @@ export default function TeamListTable({ teams }: { teams: TeamRow[] }) {
 		try {
 			await reorderTeams(reordered.map((t) => t.id));
 			toast.success("Order saved");
-			router.refresh();
 		} catch {
 			toast.error("Failed to save order");
 			setItems(items);
@@ -160,33 +158,34 @@ export default function TeamListTable({ teams }: { teams: TeamRow[] }) {
 					Saving order…
 				</p>
 			)}
-			<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
-				<table className='w-full'>
-					<thead>
-						<tr className='hidden border-b border-stroke dark:border-stroke-dark lsm:table-row'>
-							<th className='w-8 px-3 py-5 sm:pl-7.5' />
-							<th className='w-16 px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
-								Photo
-							</th>
-							<th className='min-w-[180px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
-								Name
-							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
-								Position
-							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lg:table-cell'>
-								Order
-							</th>
-							<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
-								Action
-							</th>
-						</tr>
-					</thead>
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragEnd={handleDragEnd}
-					>
+			<DndContext
+				id='team-list-dnd'
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
+			>
+				<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
+					<table className='w-full'>
+						<thead>
+							<tr className='hidden border-b border-stroke dark:border-stroke-dark lsm:table-row'>
+								<th className='w-8 px-3 py-5 sm:pl-7.5' />
+								<th className='w-16 px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
+									Photo
+								</th>
+								<th className='min-w-[180px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
+									Name
+								</th>
+								<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
+									Position
+								</th>
+								<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lg:table-cell'>
+									Order
+								</th>
+								<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
+									Action
+								</th>
+							</tr>
+						</thead>
 						<SortableContext
 							items={items.map((t) => t.id)}
 							strategy={verticalListSortingStrategy}
@@ -197,9 +196,9 @@ export default function TeamListTable({ teams }: { teams: TeamRow[] }) {
 								))}
 							</tbody>
 						</SortableContext>
-					</DndContext>
-				</table>
-			</div>
+					</table>
+				</div>
+			</DndContext>
 		</div>
 	);
 }

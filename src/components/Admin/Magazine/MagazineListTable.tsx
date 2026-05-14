@@ -155,7 +155,6 @@ export default function MagazineListTable({
 }: {
 	magazines: MagazineRow[];
 }) {
-	const router = useRouter();
 	const [items, setItems] = useState(magazines);
 	const [saving, setSaving] = useState(false);
 
@@ -174,7 +173,6 @@ export default function MagazineListTable({
 		try {
 			await reorderMagazines(reordered.map((m) => m.id));
 			toast.success("Order saved");
-			router.refresh();
 		} catch {
 			toast.error("Failed to save order");
 			setItems(items);
@@ -190,39 +188,40 @@ export default function MagazineListTable({
 					Saving order…
 				</p>
 			)}
-			<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
-				<table className='w-full'>
-					<thead>
-						<tr className='hidden border-b border-stroke dark:border-stroke-dark lsm:table-row'>
-							<th className='w-8 px-3 py-5 sm:pl-7.5' />
-							<th className='w-16 px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:pl-7.5'>
-								Image
-							</th>
-							<th className='min-w-[180px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
-								Title
-							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
-								Number
-							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
-								Date
-							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 xl:table-cell'>
-								URL
-							</th>
-							<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:table-cell'>
-								Created
-							</th>
-							<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
-								Action
-							</th>
-						</tr>
-					</thead>
-					<DndContext
-						sensors={sensors}
-						collisionDetection={closestCenter}
-						onDragEnd={handleDragEnd}
-					>
+			<DndContext
+				id='magazine-list-dnd'
+				sensors={sensors}
+				collisionDetection={closestCenter}
+				onDragEnd={handleDragEnd}
+			>
+				<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
+					<table className='w-full'>
+						<thead>
+							<tr className='hidden border-b border-stroke dark:border-stroke-dark lsm:table-row'>
+								<th className='w-8 px-3 py-5 sm:pl-7.5' />
+								<th className='w-16 px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:pl-7.5'>
+									Image
+								</th>
+								<th className='min-w-[180px] px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5'>
+									Title
+								</th>
+								<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
+									Number
+								</th>
+								<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 md:table-cell'>
+									Date
+								</th>
+								<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 xl:table-cell'>
+									URL
+								</th>
+								<th className='hidden px-4 py-5 text-left font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 sm:table-cell'>
+									Created
+								</th>
+								<th className='hidden px-4 py-5 text-right font-satoshi text-base font-medium tracking-[-.2px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
+									Action
+								</th>
+							</tr>
+						</thead>
 						<SortableContext
 							items={items.map((m) => m.id)}
 							strategy={verticalListSortingStrategy}
@@ -233,9 +232,9 @@ export default function MagazineListTable({
 								))}
 							</tbody>
 						</SortableContext>
-					</DndContext>
-				</table>
-			</div>
+					</table>
+				</div>
+			</DndContext>
 		</div>
 	);
 }

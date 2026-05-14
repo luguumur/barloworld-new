@@ -2,7 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
-import type { Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 
 export type MenuItemRow = {
 	id: string;
@@ -200,9 +200,12 @@ export async function deleteMenuItem(id: string) {
 /** Admin: reorder menu items by id array */
 export async function reorderMenuItems(orderedIds: string[]) {
 	await isAuthorized();
-	await Promise.all(
-		orderedIds.map((id, index) =>
-			prisma.menuItem.update({ where: { id }, data: { order: index } })
-		)
-	);
+	if (orderedIds.length === 0) return;
+	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
+	await prisma.$executeRaw`
+		UPDATE menu_items
+		SET "order" = CASE id ${Prisma.join(whenClauses, " ")} ELSE "order" END
+		WHERE id IN (${Prisma.join(inList)})
+	`;
 }

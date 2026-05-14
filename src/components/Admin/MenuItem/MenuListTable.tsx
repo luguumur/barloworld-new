@@ -24,7 +24,6 @@ export default function MenuListTable({
 }: {
 	items: MenuItem[];
 }) {
-	const router = useRouter();
 	const [items, setItems] = useState<MenuItem[]>(initialItems);
 	const [draggedId, setDraggedId] = useState<string | null>(null);
 	const [saving, setSaving] = useState(false);
@@ -83,7 +82,6 @@ export default function MenuListTable({
 			try {
 				await reorderMenuItems(orderedIds);
 				toast.success("Order saved");
-				router.refresh();
 			} catch {
 				toast.error("Failed to save order");
 				setItems(initialItems);
@@ -91,7 +89,7 @@ export default function MenuListTable({
 				setSaving(false);
 			}
 		},
-		[items, initialItems, router]
+		[items, initialItems]
 	);
 
 	const handleDragEnter = useCallback(
