@@ -16,7 +16,7 @@ export default function AccountButton({ user }: any) {
 					alt='profile name'
 					className='h-[48px] w-[48px] overflow-hidden rounded-full'
 				/>
-				<p className='font-satoshi text-base font-medium capitalize text-dark dark:text-white'>
+				<p className='p-0 font-satoshi text-base font-medium capitalize text-dark dark:text-white'>
 					{user?.name}
 				</p>
 

@@ -1,10 +1,34 @@
 "use server";
+import bcrypt from "bcrypt";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 
+export async function createUserDirect(data: {
+	name: string;
+	email: string;
+	password: string;
+	role: string;
+}) {
+	await isAuthorized();
+	const existing = await prisma.user.findUnique({
+		where: { email: data.email.toLowerCase().trim() },
+	});
+	if (existing) throw new Error("A user with this email already exists.");
+	const hashed = await bcrypt.hash(data.password, 10);
+	return prisma.user.create({
+		data: {
+			name: data.name.trim(),
+			email: data.email.toLowerCase().trim(),
+			password: hashed,
+			role: data.role,
+		},
+	});
+}
+
 export async function getUsers(filter: any) {
 	const currentUser = await isAuthorized();
-
+	console.log("currentUser", currentUser);
+	console.log("filter", filter);
 	const res = await prisma.user.findMany({
 		where: {
 			role: filter,

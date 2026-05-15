@@ -86,10 +86,6 @@ export default function InviteUserModal(props: any) {
 									label='Select User Role'
 									options={[
 										{
-											label: "User",
-											value: "USER",
-										},
-										{
 											label: "Admin",
 											value: "ADMIN",
 										},

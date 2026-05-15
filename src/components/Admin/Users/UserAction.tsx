@@ -24,12 +24,18 @@ const arrowIcon = (
 	</svg>
 );
 
-export default function UserAction({ user }: any) {
+export default function UserAction({
+	user,
+	customRoles = [],
+}: {
+	user: any;
+	customRoles?: { name: string; label: string }[];
+}) {
 	const [showDeleteModal, setShowDeleteModal] = useState(false);
 	const [role, setRole] = useState(user.role);
 	const [loading, setLodading] = useState(false);
 	const router = useRouter();
-	const roles = ["ADMIN", "USER"];
+	const roles = ["ADMIN", ...customRoles.map((r) => r.name)];
 
 	const { data: session } = useSession();
 
@@ -97,11 +103,15 @@ export default function UserAction({ user }: any) {
 						value={role}
 						className=' h-10 cursor-pointer appearance-none rounded-lg bg-dark px-3 pr-8 text-center text-white'
 					>
-						{roles.map((role, index) => (
-							<option key={index} value={role} className='cursor-pointer'>
-								{role.charAt(0).toUpperCase() + role.slice(1).toLowerCase()}
-							</option>
-						))}
+						{roles.map((r) => {
+							const custom = customRoles.find((cr) => cr.name === r);
+							const label = custom ? custom.label : r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+							return (
+								<option key={r} value={r} className='cursor-pointer'>
+									{label}
+								</option>
+							);
+						})}
 					</select>
 
 					<span className='absolute right-2 top-1/2 z-10 -translate-y-1/2'>

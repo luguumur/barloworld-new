@@ -1,41 +1,22 @@
-"use client";
-import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
-import Sidebar from "@/components/Common/Dashboard/Sidebar";
-import Header from "@/components/Common/Dashboard/Header";
-import {
-	adminSidebarData,
-	adminSidebarOtherData,
-} from "@/staticData/sidebarData";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/libs/auth";
+import { getAdminRoleByName } from "@/actions/adminRole";
+import AdminLayoutClient from "./AdminLayoutClient";
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-	const [openSidebar, setOpenSidebar] = useState(false);
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+	const session = await getServerSession(authOptions);
+	const role = (session?.user as any)?.role as string | undefined;
+
+	// ADMIN = null (full access). Custom roles get their allowed paths.
+	let allowedPaths: string[] | null = null;
+	if (role && role !== "ADMIN") {
+		const adminRole = await getAdminRoleByName(role);
+		allowedPaths = adminRole?.permissions ?? [];
+	}
+
 	return (
-		<>
-			<main className='min-h-screen bg-gray-2 font-inter dark:bg-[#151F34] [&_.font-satoshi]:font-inter'>
-				<aside
-					className={`fixed left-0 top-0 z-[999] h-screen w-[290px] overflow-y-auto bg-white duration-300 dark:bg-gray-dark ${
-						openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-					}`}
-				>
-					<Sidebar
-						sidebarData={adminSidebarData}
-						sidebarOthersData={adminSidebarOtherData}
-					/>
-				</aside>
-				<div
-					onClick={() => setOpenSidebar(false)}
-					className={`fixed inset-0 z-[99] h-screen w-full bg-dark/80 lg:hidden ${
-						openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
-					}`}
-				></div>
-				<section className='lg:ml-[290px]'>
-					<Header openSidebar={openSidebar} setOpenSidebar={setOpenSidebar} />
-					<div className='p-5 pt-12 md:p-10'>{children}</div>
-				</section>
-			</main>
-		</>
+		<AdminLayoutClient allowedPaths={allowedPaths}>
+			{children}
+		</AdminLayoutClient>
 	);
-};
-
-export default AdminLayout;
+}

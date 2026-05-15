@@ -1,8 +1,13 @@
 import { User } from "@prisma/client";
 import UserAction from "./UserAction";
-// import axios from "axios";
 
-export default function UserListTable({ users }: { users: User[] }) {
+export default function UserListTable({
+	users,
+	customRoles = [],
+}: {
+	users: User[];
+	customRoles?: { name: string; label: string }[];
+}) {
 	return (
 		<>
 			<div className='rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
@@ -52,7 +57,7 @@ export default function UserListTable({ users }: { users: User[] }) {
 									</span>
 
 									<span className='block lsm:hidden'>
-										<UserAction user={user} />
+										<UserAction user={user} customRoles={customRoles} />
 									</span>
 								</td>
 
@@ -68,7 +73,7 @@ export default function UserListTable({ users }: { users: User[] }) {
 									{user?.createdAt?.toLocaleDateString()}
 								</td>
 								<td className='hidden p-4 text-right text-base tracking-[-.16px] text-body dark:text-gray-5 lsm:table-cell sm:pr-7.5'>
-									<UserAction user={user} />
+									<UserAction user={user} customRoles={customRoles} />
 								</td>
 							</tr>
 						))}

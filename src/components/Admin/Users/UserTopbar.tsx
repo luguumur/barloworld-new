@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import InviteUserModal from "@/components/Common/Modals/InviteUserModal";
+import CreateUserModal from "./CreateUserModal";
 
 const filterData = [
 	{
@@ -33,27 +33,6 @@ const filterData = [
 		),
 	},
 	{
-		id: 2,
-		title: "User",
-		value: "USER",
-		icon: (
-			<svg
-				width='20'
-				height='20'
-				viewBox='0 0 20 20'
-				fill='none'
-				xmlns='http://www.w3.org/2000/svg'
-			>
-				<path
-					fillRule='evenodd'
-					clipRule='evenodd'
-					d='M9.95227 1.04163L11.2501 1.04163C11.5953 1.04163 11.8751 1.32145 11.8751 1.66663C11.8751 2.0118 11.5953 2.29163 11.2501 2.29163H10.0001C8.01823 2.29163 6.59471 2.29295 5.5114 2.4386C4.44606 2.58183 3.80379 2.85424 3.32908 3.32896C2.85436 3.80367 2.58195 4.44594 2.43872 5.51127C2.29308 6.59459 2.29175 8.01811 2.29175 9.99996C2.29175 11.9818 2.29308 13.4053 2.43872 14.4886C2.58195 15.554 2.85436 16.1962 3.32908 16.671C3.80379 17.1457 4.44606 17.4181 5.5114 17.5613C6.59471 17.707 8.01823 17.7083 10.0001 17.7083C11.9819 17.7083 13.4055 17.707 14.4888 17.5613C15.5541 17.4181 16.1964 17.1457 16.6711 16.671C17.1458 16.1962 17.4182 15.554 17.5614 14.4886C17.7071 13.4053 17.7084 11.9818 17.7084 9.99996V8.74996C17.7084 8.40478 17.9882 8.12496 18.3334 8.12496C18.6786 8.12496 18.9584 8.40478 18.9584 8.74996V10.0478C18.9584 11.9714 18.9584 13.479 18.8003 14.6552C18.6384 15.8592 18.3006 16.8092 17.555 17.5548C16.8093 18.3005 15.8593 18.6383 14.6553 18.8002C13.4791 18.9583 11.9716 18.9583 10.0479 18.9583H9.95227C8.02861 18.9583 6.52108 18.9583 5.34484 18.8002C4.14089 18.6383 3.19087 18.3005 2.4452 17.5548C1.69952 16.8092 1.36174 15.8592 1.19987 14.6552C1.04173 13.479 1.04174 11.9714 1.04175 10.0478V9.95214C1.04174 8.02848 1.04173 6.52095 1.19987 5.34471C1.36174 4.14077 1.69952 3.19075 2.4452 2.44507C3.19087 1.6994 4.14089 1.36161 5.34484 1.19975C6.52107 1.04161 8.0286 1.04162 9.95227 1.04163ZM13.9755 1.89656C15.1154 0.75665 16.9636 0.75665 18.1035 1.89656C19.2434 3.03646 19.2434 4.88461 18.1035 6.02452L12.5634 11.5646C12.254 11.874 12.0602 12.0679 11.8439 12.2366C11.5892 12.4353 11.3135 12.6056 11.0219 12.7446C10.7743 12.8626 10.5142 12.9493 10.0991 13.0876L7.67863 13.8945C7.23176 14.0434 6.73908 13.9271 6.40601 13.594C6.07293 13.261 5.95663 12.7683 6.10558 12.3214L6.91239 9.90098C7.05074 9.48584 7.1374 9.22579 7.25541 8.97817C7.3944 8.68652 7.56476 8.41089 7.76345 8.15614C7.93216 7.93985 8.126 7.74603 8.43545 7.43662L13.9755 1.89656ZM17.2196 2.78044C16.5679 2.12869 15.5112 2.12869 14.8594 2.78044L14.5456 3.09429C14.5645 3.17417 14.5909 3.26935 14.6278 3.37551C14.7472 3.71973 14.9732 4.17305 15.4001 4.59995C15.827 5.02685 16.2803 5.25285 16.6245 5.37227C16.7307 5.4091 16.8259 5.43557 16.9058 5.45448L17.2196 5.14063C17.8714 4.48888 17.8714 3.43219 17.2196 2.78044ZM15.921 6.4392C15.4911 6.25429 14.9902 5.95784 14.5162 5.48384C14.0422 5.00983 13.7458 4.50898 13.5608 4.07901L9.348 8.29184C9.00091 8.63894 8.86478 8.77659 8.74909 8.92492C8.60623 9.10808 8.48375 9.30625 8.38382 9.51594C8.30289 9.68576 8.24064 9.86907 8.08542 10.3347L7.72551 11.4145L8.58555 12.2745L9.66529 11.9146C10.131 11.7594 10.3143 11.6972 10.4841 11.6162C10.6938 11.5163 10.892 11.3938 11.0751 11.2509C11.2235 11.1353 11.3611 10.9991 11.7082 10.652L15.921 6.4392Z'
-					fill='currentColor'
-				/>
-			</svg>
-		),
-	},
-	{
 		id: 3,
 		title: "Admin",
 		value: "ADMIN",
@@ -76,13 +55,15 @@ const filterData = [
 	},
 ];
 
-export default function UserTopbar() {
+export default function UserTopbar({
+	customRoles = [],
+}: {
+	customRoles?: { name: string; label: string; color: string }[];
+}) {
 	const [filterValue, setFilterValue] = useState("all");
 	const [search, setSearch] = useState("");
-	const [showInviteUserModal, setShowInviteUserModal] = useState(false);
+	const [showCreateModal, setShowCreateModal] = useState(false);
 	const router = useRouter();
-
-	// const handleInvite = () => {};
 
 	return (
 		<>
@@ -113,16 +94,11 @@ export default function UserTopbar() {
 
 				<div className='flex flex-wrap items-center gap-3'>
 					<button
-						onClick={() => setShowInviteUserModal(true)}
-						className='flex  h-10 items-center justify-center gap-3 rounded-lg bg-primary p-3 text-white hover:bg-primary-dark'
+						onClick={() => setShowCreateModal(true)}
+						className='flex h-10 items-center justify-center gap-3 rounded-lg bg-primary p-3 text-white hover:bg-primary-dark'
 					>
-						<Image
-							src='/images/icon/plus.svg'
-							alt='plus'
-							width={20}
-							height={20}
-						/>{" "}
-						Add new user
+						<Image src='/images/icon/plus.svg' alt='plus' width={20} height={20} />
+						Add user
 					</button>
 
 					{/* Search bar */}
@@ -139,45 +115,18 @@ export default function UserTopbar() {
 								className='h-11 w-full rounded-lg border border-stroke bg-gray-1 pl-11 pr-4.5 outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:focus:border-transparent'
 								onChange={(e: any) => setSearch(e.target.value)}
 							/>
-
-							<span className='absolute left-4.5 top-1/2 -translate-y-1/2 text-dark dark:text-white'>
-								<svg
-									width='18'
-									height='18'
-									viewBox='0 0 18 18'
-									fill='none'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<g clipPath='url(#clip0_2172_13260)'>
-										<path
-											fillRule='evenodd'
-											clipRule='evenodd'
-											d='M8.625 2.0625C5.00063 2.0625 2.0625 5.00063 2.0625 8.625C2.0625 12.2494 5.00063 15.1875 8.625 15.1875C12.2494 15.1875 15.1875 12.2494 15.1875 8.625C15.1875 5.00063 12.2494 2.0625 8.625 2.0625ZM0.9375 8.625C0.9375 4.37931 4.37931 0.9375 8.625 0.9375C12.8707 0.9375 16.3125 4.37931 16.3125 8.625C16.3125 10.5454 15.6083 12.3013 14.4441 13.6487L16.8977 16.1023C17.1174 16.3219 17.1174 16.6781 16.8977 16.8977C16.6781 17.1174 16.3219 17.1174 16.1023 16.8977L13.6487 14.4441C12.3013 15.6083 10.5454 16.3125 8.625 16.3125C4.37931 16.3125 0.9375 12.8707 0.9375 8.625Z'
-											fill='currentColor'
-										/>
-									</g>
-									<defs>
-										<clipPath id='clip0_2172_13260'>
-											<rect width='18' height='18' fill='white' />
-										</clipPath>
-									</defs>
-								</svg>
-							</span>
 						</div>
 					</form>
 				</div>
 			</div>
 
-			{showInviteUserModal && (
-				<InviteUserModal
-					setShowModal={setShowInviteUserModal}
-					showModal={showInviteUserModal}
-					text={"Add User"}
-					loading={false}
+			{showCreateModal && (
+				<CreateUserModal
+					onClose={() => setShowCreateModal(false)}
+					customRoles={customRoles}
 				/>
 			)}
 		</>
 	);
 }
 
-// showModal, setShowModal, text, loading
