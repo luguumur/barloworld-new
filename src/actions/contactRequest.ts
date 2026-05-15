@@ -3,6 +3,7 @@ import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
 import { createNotificationPublic } from "./notification";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type ContactRequestRow = {
 	id: string;
@@ -51,24 +52,62 @@ export async function createContactRequestPublic(data: ContactRequestInput) {
 	}
 }
 
-export async function getContactRequests(search?: string) {
+export async function getContactRequests(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						name: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						email: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						subject: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						phoneNumber: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.contactRequest.findMany({
-			orderBy: { createdAt: "desc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ name: { contains: search.trim(), mode: "insensitive" } },
-							{ email: { contains: search.trim(), mode: "insensitive" } },
-							{ subject: { contains: search.trim(), mode: "insensitive" } },
-							{ phoneNumber: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as ContactRequestRow[];
+		const [items, total] = await Promise.all([
+			prisma.contactRequest.findMany({
+				orderBy: { createdAt: "desc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.contactRequest.count({ where }),
+		]);
+		return { items: items as ContactRequestRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as ContactRequestRow[]);
+		return handleTableMissing(error, {
+			items: [] as ContactRequestRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

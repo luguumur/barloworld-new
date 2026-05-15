@@ -2,6 +2,7 @@
 import NewsEmptyState from "./NewsEmptyState";
 import NewsListTable from "./NewsListTable";
 import NewsTopbar from "./NewsTopbar";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type NewsItem = {
 	id: string;
@@ -31,11 +32,17 @@ export default function NewsListContainer({
 	categories,
 	initialSearch = "",
 	initialCategoryId = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	news: NewsItem[];
 	categories: CategoryOption[];
 	initialSearch?: string;
 	initialCategoryId?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
@@ -46,7 +53,19 @@ export default function NewsListContainer({
 					categories={categories}
 				/>
 			</div>
-			{news?.length ? <NewsListTable news={news} /> : <NewsEmptyState />}
+			{news?.length ? (
+				<>
+					<NewsListTable news={news} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='news'
+					/>
+				</>
+			) : (
+				<NewsEmptyState />
+			)}
 		</>
 	);
 }

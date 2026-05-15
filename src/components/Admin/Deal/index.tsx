@@ -2,6 +2,7 @@
 import DealEmptyState from "./DealEmptyState";
 import DealListTable from "./DealListTable";
 import DealTopbar from "./DealTopbar";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type Deal = {
 	id: string;
@@ -20,16 +21,34 @@ type Deal = {
 export default function DealListContainer({
 	deals,
 	initialSearch = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	deals: Deal[];
 	initialSearch?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
 			<div className='mb-5'>
 				<DealTopbar initialSearch={initialSearch} />
 			</div>
-			{deals?.length ? <DealListTable deals={deals} /> : <DealEmptyState />}
+			{deals?.length ? (
+				<>
+					<DealListTable deals={deals} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='deals'
+					/>
+				</>
+			) : (
+				<DealEmptyState />
+			)}
 		</>
 	);
 }

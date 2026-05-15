@@ -2,6 +2,7 @@
 import TestimonialEmptyState from "./TestimonialEmptyState";
 import TestimonialListTable from "./TestimonialListTable";
 import TestimonialTopbar from "./TestimonialTopbar";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type Testimonial = {
 	id: string;
@@ -20,9 +21,15 @@ type Testimonial = {
 export default function TestimonialListContainer({
 	testimonials,
 	initialSearch = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	testimonials: Testimonial[];
 	initialSearch?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
@@ -30,7 +37,15 @@ export default function TestimonialListContainer({
 				<TestimonialTopbar initialSearch={initialSearch} />
 			</div>
 			{testimonials?.length ? (
-				<TestimonialListTable testimonials={testimonials} />
+				<>
+					<TestimonialListTable testimonials={testimonials} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='testimonials'
+					/>
+				</>
 			) : (
 				<TestimonialEmptyState />
 			)}

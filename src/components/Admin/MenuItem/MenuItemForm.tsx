@@ -52,7 +52,7 @@ export default function MenuItemForm({
 
 	useEffect(() => {
 		getMenuRoots().then(setRoots);
-		getPages().then(setPages);
+		getPages().then((result) => setPages(result.items));
 	}, []);
 
 	const handleSubmit = async (e: React.FormEvent) => {

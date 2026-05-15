@@ -10,7 +10,7 @@ export const prisma =
 				url:
 					process.env.DATABASE_URL +
 					(process.env.DATABASE_URL?.includes("?") ? "&" : "?") +
-					"connection_limit=5",
+					"connection_limit=1",
 			},
 		},
 		log: process.env.NODE_ENV === "development" ? ["error", "warn"] : ["error"],

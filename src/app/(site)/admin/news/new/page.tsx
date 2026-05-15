@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NewNewsPage() {
-	const categories = await getNewsCategories();
+	const { items: categories } = await getNewsCategories();
 	const categoryOptions = categories.map((c) => ({
 		id: c.id,
 		name: c.name,

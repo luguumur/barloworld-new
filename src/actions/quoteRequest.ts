@@ -3,6 +3,7 @@ import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
 import { createNotificationPublic } from "./notification";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type QuoteRequestRow = {
 	id: string;
@@ -61,25 +62,68 @@ export async function createQuoteRequestPublic(data: QuoteRequestInput) {
 	}
 }
 
-export async function getQuoteRequests(search?: string) {
+export async function getQuoteRequests(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						firstName: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						lastName: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						email: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						productName: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						phoneNumber: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.quoteRequest.findMany({
-			orderBy: { createdAt: "desc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ firstName: { contains: search.trim(), mode: "insensitive" } },
-							{ lastName: { contains: search.trim(), mode: "insensitive" } },
-							{ email: { contains: search.trim(), mode: "insensitive" } },
-							{ productName: { contains: search.trim(), mode: "insensitive" } },
-							{ phoneNumber: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as QuoteRequestRow[];
+		const [items, total] = await Promise.all([
+			prisma.quoteRequest.findMany({
+				orderBy: { createdAt: "desc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.quoteRequest.count({ where }),
+		]);
+		return { items: items as QuoteRequestRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as QuoteRequestRow[]);
+		return handleTableMissing(error, {
+			items: [] as QuoteRequestRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

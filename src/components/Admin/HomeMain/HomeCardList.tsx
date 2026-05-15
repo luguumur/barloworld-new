@@ -215,44 +215,44 @@ export default function HomeCardList({ cards }: { cards: HomeCardRow[] }) {
 			{items.length ? (
 				<div className='overflow-hidden rounded-10 bg-white shadow-1 dark:bg-gray-dark'>
 					<DndContext
-					id='home-card-list-dnd'
-					sensors={sensors}
-					collisionDetection={closestCenter}
-					onDragEnd={handleDragEnd}
-				>
-					<table className='w-full'>
-						<thead>
-							<tr className='border-b border-stroke dark:border-stroke-dark'>
-								<th className='w-8 p-3 sm:pl-6' />
-								<th className='p-3 text-left text-sm font-medium text-body dark:text-gray-5'>
-									Image
-								</th>
-								<th className='p-3 text-left text-sm font-medium text-body dark:text-gray-5'>
-									Title
-								</th>
-								<th className='hidden p-3 text-left text-sm font-medium text-body dark:text-gray-5 md:table-cell'>
-									URL
-								</th>
-								<th className='hidden p-3 text-center text-sm font-medium text-body dark:text-gray-5 sm:table-cell'>
-									Order
-								</th>
-								<th className='p-3 text-right text-sm font-medium text-body dark:text-gray-5 sm:pr-6'>
-									Action
-								</th>
-							</tr>
-						</thead>
-						<SortableContext
-							items={items.map((c) => c.id)}
-							strategy={verticalListSortingStrategy}
-						>
-							<tbody>
-								{items.map((c) => (
-									<SortableRow key={c.id} card={c} />
-								))}
-							</tbody>
-						</SortableContext>
-					</table>
-				</DndContext>
+						id='home-card-list-dnd'
+						sensors={sensors}
+						collisionDetection={closestCenter}
+						onDragEnd={handleDragEnd}
+					>
+						<table className='w-full'>
+							<thead>
+								<tr className='border-b border-stroke dark:border-stroke-dark'>
+									<th className='w-8 p-3 sm:pl-6' />
+									<th className='p-3 text-left text-sm font-medium text-body dark:text-gray-5'>
+										Image
+									</th>
+									<th className='p-3 text-left text-sm font-medium text-body dark:text-gray-5'>
+										Title
+									</th>
+									<th className='hidden p-3 text-left text-sm font-medium text-body dark:text-gray-5 md:table-cell'>
+										URL
+									</th>
+									<th className='hidden p-3 text-center text-sm font-medium text-body dark:text-gray-5 sm:table-cell'>
+										Order
+									</th>
+									<th className='p-3 text-right text-sm font-medium text-body dark:text-gray-5 sm:pr-6'>
+										Action
+									</th>
+								</tr>
+							</thead>
+							<SortableContext
+								items={items.map((c) => c.id)}
+								strategy={verticalListSortingStrategy}
+							>
+								<tbody>
+									{items.map((c) => (
+										<SortableRow key={c.id} card={c} />
+									))}
+								</tbody>
+							</SortableContext>
+						</table>
+					</DndContext>
 				</div>
 			) : (
 				<div className='rounded-10 bg-white py-12 text-center shadow-1 dark:bg-gray-dark'>

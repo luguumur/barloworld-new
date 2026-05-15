@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type DealRow = {
 	id: string;
@@ -48,24 +49,62 @@ export async function getDealByIdPublic(id: string) {
 	}
 }
 
-export async function getDeals(search?: string) {
+export async function getDeals(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						title: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						title_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						subtitle: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						subtitle_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.deal.findMany({
-			orderBy: { createdAt: "desc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ title: { contains: search.trim(), mode: "insensitive" } },
-							{ title_en: { contains: search.trim(), mode: "insensitive" } },
-							{ subtitle: { contains: search.trim(), mode: "insensitive" } },
-							{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as DealRow[];
+		const [items, total] = await Promise.all([
+			prisma.deal.findMany({
+				orderBy: { createdAt: "desc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.deal.count({ where }),
+		]);
+		return { items: items as DealRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as DealRow[]);
+		return handleTableMissing(error, {
+			items: [] as DealRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

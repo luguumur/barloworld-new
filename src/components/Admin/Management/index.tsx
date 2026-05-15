@@ -2,6 +2,7 @@
 import ManagementEmptyState from "./ManagementEmptyState";
 import ManagementListTable from "./ManagementListTable";
 import ManagementTopbar from "./ManagementTopbar";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type Management = {
 	id: string;
@@ -16,9 +17,15 @@ type Management = {
 export default function ManagementListContainer({
 	managements,
 	initialSearch = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	managements: Management[];
 	initialSearch?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
@@ -26,7 +33,15 @@ export default function ManagementListContainer({
 				<ManagementTopbar initialSearch={initialSearch} />
 			</div>
 			{managements?.length ? (
-				<ManagementListTable managements={managements} />
+				<>
+					<ManagementListTable managements={managements} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='managers'
+					/>
+				</>
 			) : (
 				<ManagementEmptyState />
 			)}

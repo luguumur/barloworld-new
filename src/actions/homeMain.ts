@@ -114,7 +114,9 @@ export async function updateHomeCard(id: string, data: Partial<HomeCardInput>) {
 export async function reorderHomeCards(orderedIds: string[]) {
 	await isAuthorized();
 	if (orderedIds.length === 0) return;
-	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const whenClauses = orderedIds.map(
+		(id, i) => Prisma.sql`WHEN ${id} THEN ${i}`
+	);
 	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
 	await prisma.$executeRaw`
 		UPDATE home_cards

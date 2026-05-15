@@ -16,7 +16,7 @@ export default async function EditNewsPage({
 	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
-	const [news, categories] = await Promise.all([
+	const [news, { items: categories }] = await Promise.all([
 		getNewsById(id),
 		getNewsCategories(),
 	]);

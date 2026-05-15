@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type ProductTypeRow = {
 	id: string;
@@ -18,22 +19,50 @@ export type ProductTypeInput = {
 	img_path?: string | null;
 };
 
-export async function getProductTypes(search?: string) {
+export async function getProductTypes(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						name: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						name_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.productType.findMany({
-			orderBy: { createdAt: "asc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ name: { contains: search.trim(), mode: "insensitive" } },
-							{ name_en: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as ProductTypeRow[];
+		const [items, total] = await Promise.all([
+			prisma.productType.findMany({
+				orderBy: { createdAt: "asc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.productType.count({ where }),
+		]);
+		return { items: items as ProductTypeRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as ProductTypeRow[]);
+		return handleTableMissing(error, {
+			items: [] as ProductTypeRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

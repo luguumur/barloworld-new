@@ -4,6 +4,13 @@ import { getNews } from "@/actions/news";
 import { getNewsCategories } from "@/actions/newsCategory";
 import { Metadata } from "next";
 import { Suspense } from "react";
+import { cookies } from "next/headers";
+import {
+	ADMIN_PAGE_SIZE_COOKIE,
+	DEFAULT_PAGE_SIZE,
+	PAGE_SIZE_OPTIONS,
+	type PageSizeOption,
+} from "@/lib/constants";
 
 export const metadata: Metadata = {
 	title: `News - ${process.env.SITE_NAME ?? "Admin"}`,
@@ -15,7 +22,7 @@ export const revalidate = 0;
 export default async function NewsPage({
 	searchParams,
 }: {
-	searchParams: { search?: string; category?: string };
+	searchParams: { search?: string; category?: string; page?: string };
 }) {
 	const search =
 		typeof searchParams.search === "string" ? searchParams.search : undefined;
@@ -23,11 +30,22 @@ export default async function NewsPage({
 		typeof searchParams.category === "string"
 			? searchParams.category
 			: undefined;
-	const [news, categories] = await Promise.all([
-		getNews(search, categoryId),
+	const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
+	const rawSize = parseInt(
+		(await cookies()).get(ADMIN_PAGE_SIZE_COOKIE)?.value ?? "",
+		10
+	);
+	const pageSize: PageSizeOption = (
+		PAGE_SIZE_OPTIONS as readonly number[]
+	).includes(rawSize)
+		? (rawSize as PageSizeOption)
+		: DEFAULT_PAGE_SIZE;
+	const [{ items: news, total }, categoriesResult] = await Promise.all([
+		getNews({ search, categoryId, page, pageSize }),
 		getNewsCategories(),
 	]);
-	const categoryOptions = categories.map((c) => ({
+	const totalPages = Math.ceil(total / pageSize);
+	const categoryOptions = categoriesResult.items.map((c) => ({
 		id: c.id,
 		name: c.name,
 		name_en: c.name_en,
@@ -48,6 +66,9 @@ export default async function NewsPage({
 					categories={categoryOptions}
 					initialSearch={search ?? ""}
 					initialCategoryId={categoryId ?? ""}
+					page={page}
+					totalPages={totalPages}
+					total={total}
 				/>
 			</Suspense>
 		</>

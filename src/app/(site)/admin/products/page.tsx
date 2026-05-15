@@ -1,6 +1,13 @@
 import ProductListContainer from "@/components/Admin/Product";
 import Breadcrumb from "@/components/Common/Dashboard/Breadcrumb";
+import { cookies } from "next/headers";
 import { getProducts } from "@/actions/product";
+import {
+	ADMIN_PAGE_SIZE_COOKIE,
+	DEFAULT_PAGE_SIZE,
+	PAGE_SIZE_OPTIONS,
+	type PageSizeOption,
+} from "@/lib/constants";
 import { getProductCategories } from "@/actions/productCategory";
 import { getProductTypes } from "@/actions/productType";
 import { Metadata } from "next";
@@ -16,7 +23,12 @@ export const revalidate = 0;
 export default async function ProductsPage({
 	searchParams,
 }: {
-	searchParams: { search?: string; category?: string; type?: string };
+	searchParams: {
+		search?: string;
+		category?: string;
+		type?: string;
+		page?: string;
+	};
 }) {
 	const search =
 		typeof searchParams.search === "string" ? searchParams.search : undefined;
@@ -26,11 +38,29 @@ export default async function ProductsPage({
 			: undefined;
 	const productTypes =
 		typeof searchParams.type === "string" ? searchParams.type : undefined;
-	const [products, categories, productTypesList] = await Promise.all([
-		getProducts({ search, categoryId, productTypes }),
+	const page = Math.max(1, parseInt(searchParams.page ?? "1", 10) || 1);
+	const rawSize = parseInt(
+		cookies().get(ADMIN_PAGE_SIZE_COOKIE)?.value ?? "",
+		10
+	);
+	const pageSize: PageSizeOption = (
+		PAGE_SIZE_OPTIONS as readonly number[]
+	).includes(rawSize)
+		? (rawSize as PageSizeOption)
+		: DEFAULT_PAGE_SIZE;
+
+	const [
+		{ products, total },
+		{ items: categories },
+		{ items: productTypesList },
+	] = await Promise.all([
+		getProducts({ search, categoryId, productTypes, page, pageSize }),
 		getProductCategories(),
 		getProductTypes(),
 	]);
+
+	const totalPages = Math.ceil(total / pageSize);
+
 	const categoryOptions = categories.map((c) => ({
 		id: c.id,
 		name: c.name,
@@ -60,6 +90,9 @@ export default async function ProductsPage({
 					initialSearch={search ?? ""}
 					initialCategoryId={categoryId ?? ""}
 					initialProductTypes={productTypes ?? ""}
+					page={page}
+					totalPages={totalPages}
+					total={total}
 				/>
 			</Suspense>
 		</>

@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type MagazineRow = {
 	id: string;
@@ -37,24 +38,62 @@ export async function getMagazineById(id: string) {
 	}
 }
 
-export async function getMagazines(search?: string) {
+export async function getMagazines(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						title: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						title_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						number: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						date: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.magazine.findMany({
-			orderBy: [{ order: "asc" }, { createdAt: "desc" }],
-			where: search?.trim()
-				? {
-						OR: [
-							{ title: { contains: search.trim(), mode: "insensitive" } },
-							{ title_en: { contains: search.trim(), mode: "insensitive" } },
-							{ number: { contains: search.trim(), mode: "insensitive" } },
-							{ date: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as MagazineRow[];
+		const [items, total] = await Promise.all([
+			prisma.magazine.findMany({
+				orderBy: [{ order: "asc" }, { createdAt: "desc" }],
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.magazine.count({ where }),
+		]);
+		return { items: items as MagazineRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as MagazineRow[]);
+		return handleTableMissing(error, {
+			items: [] as MagazineRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 
@@ -106,7 +145,9 @@ export async function getMagazinesPublic() {
 export async function reorderMagazines(orderedIds: string[]) {
 	await isAuthorized();
 	if (orderedIds.length === 0) return;
-	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const whenClauses = orderedIds.map(
+		(id, i) => Prisma.sql`WHEN ${id} THEN ${i}`
+	);
 	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
 	await prisma.$executeRaw`
 		UPDATE "Magazine"

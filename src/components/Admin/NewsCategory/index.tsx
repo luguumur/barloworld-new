@@ -4,6 +4,7 @@ import NewsCategoryEmptyState from "./NewsCategoryEmptyState";
 import NewsCategoryListTable from "./NewsCategoryListTable";
 import NewsCategoryTopbar from "./NewsCategoryTopbar";
 import NewsCategoryModal from "@/components/Common/Modals/NewsCategoryModal";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type Category = {
 	id: string;
@@ -16,9 +17,15 @@ type Category = {
 export default function NewsCategoryListContainer({
 	categories,
 	initialSearch = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	categories: Category[];
 	initialSearch?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	const [showModal, setShowModal] = useState(false);
 	const [editCategory, setEditCategory] = useState<Category | null>(null);
@@ -42,7 +49,15 @@ export default function NewsCategoryListContainer({
 				/>
 			</div>
 			{categories?.length ? (
-				<NewsCategoryListTable categories={categories} onEdit={handleEdit} />
+				<>
+					<NewsCategoryListTable categories={categories} onEdit={handleEdit} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='categories'
+					/>
+				</>
 			) : (
 				<NewsCategoryEmptyState />
 			)}

@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type NewsRow = {
 	id: string;
@@ -47,26 +48,62 @@ export async function getNewsById(id: string) {
 	}
 }
 
-export async function getNews(search?: string, categoryId?: string) {
+export async function getNews(opts?: {
+	search?: string;
+	categoryId?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = {
+		...(opts?.categoryId?.trim() && { categoryId: opts.categoryId.trim() }),
+		...(opts?.search?.trim() && {
+			OR: [
+				{
+					title: { contains: opts.search.trim(), mode: "insensitive" as const },
+				},
+				{
+					title_en: {
+						contains: opts.search.trim(),
+						mode: "insensitive" as const,
+					},
+				},
+				{
+					subtitle: {
+						contains: opts.search.trim(),
+						mode: "insensitive" as const,
+					},
+				},
+				{
+					subtitle_en: {
+						contains: opts.search.trim(),
+						mode: "insensitive" as const,
+					},
+				},
+			],
+		}),
+	};
 	try {
-		return (await prisma.news.findMany({
-			orderBy: { createdAt: "desc" },
-			include: { category: true },
-			where: {
-				...(categoryId?.trim() && { categoryId: categoryId.trim() }),
-				...(search?.trim() && {
-					OR: [
-						{ title: { contains: search.trim(), mode: "insensitive" } },
-						{ title_en: { contains: search.trim(), mode: "insensitive" } },
-						{ subtitle: { contains: search.trim(), mode: "insensitive" } },
-						{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
-					],
-				}),
-			},
-		})) as NewsRow[];
+		const [items, total] = await Promise.all([
+			prisma.news.findMany({
+				orderBy: { createdAt: "desc" },
+				include: { category: true },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.news.count({ where }),
+		]);
+		return { items: items as NewsRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as NewsRow[]);
+		return handleTableMissing(error, {
+			items: [] as NewsRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

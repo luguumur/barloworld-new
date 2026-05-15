@@ -2,6 +2,7 @@
 import MastheadEmptyState from "./MastheadEmptyState";
 import MastheadListTable from "./MastheadListTable";
 import MastheadTopbar from "./MastheadTopbar";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type Masthead = {
 	id: string;
@@ -20,9 +21,15 @@ type Masthead = {
 export default function MastheadListContainer({
 	mastheads,
 	initialSearch = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	mastheads: Masthead[];
 	initialSearch?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
@@ -30,7 +37,15 @@ export default function MastheadListContainer({
 				<MastheadTopbar initialSearch={initialSearch} />
 			</div>
 			{mastheads?.length ? (
-				<MastheadListTable mastheads={mastheads} />
+				<>
+					<MastheadListTable mastheads={mastheads} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='mastheads'
+					/>
+				</>
 			) : (
 				<MastheadEmptyState />
 			)}

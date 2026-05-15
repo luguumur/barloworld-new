@@ -1,6 +1,9 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
-import { getProductTypeByIdPublic } from "@/lib/productTypePublic";
+import {
+	getProductTypeByIdPublic,
+	getProductTypesPublic,
+} from "@/lib/productTypePublic";
 import { getProductCategoriesPublic } from "@/lib/productCategoryPublic";
 import GridCard from "@/components/Products/GridCard";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
@@ -20,9 +23,10 @@ export default async function ProductCategoriesPage({ params }: Props) {
 	const cookieStore = cookies();
 	const lang = cookieStore.get("lang")?.value === "mn" ? "mn" : "en";
 
-	const [type, categories] = await Promise.all([
+	const [type, categories, allTypes] = await Promise.all([
 		getProductTypeByIdPublic(params.typeId),
 		getProductCategoriesPublic(),
+		getProductTypesPublic(),
 	]);
 
 	if (!type) notFound();
@@ -43,6 +47,11 @@ export default async function ProductCategoriesPage({ params }: Props) {
 		title: lang === "mn" ? cat.name : cat.name_en,
 	}));
 
+	const typeMenuItems = allTypes.map((t) => ({
+		href: `/products/${t.id}`,
+		label: lang === "mn" ? t.name : t.name_en,
+	}));
+
 	return (
 		<>
 			<ProductPageHeader
@@ -56,7 +65,7 @@ export default async function ProductCategoriesPage({ params }: Props) {
 			/>
 			<article className='page-body container'>
 				<div className='row'>
-					<PageSidebar />
+					<PageSidebar productTypes={typeMenuItems} />
 					<main className='page-content col-md-9'>
 						<GridCard cards={imageCards} />
 					</main>

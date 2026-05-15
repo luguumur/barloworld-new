@@ -10,8 +10,14 @@ export function ContentSummaryCard({ items }: { items: Item[] }) {
 			</h3>
 			<ul className='divide-y divide-stroke dark:divide-dark-3'>
 				{items.map((item) => (
-					<li key={item.label} className='flex items-center justify-between py-3'>
-						<Link href={item.href} className='font-satoshi text-sm font-medium text-body hover:text-primary dark:text-gray-4 dark:hover:text-primary'>
+					<li
+						key={item.label}
+						className='flex items-center justify-between py-3'
+					>
+						<Link
+							href={item.href}
+							className='font-satoshi text-sm font-medium text-body hover:text-primary dark:text-gray-4 dark:hover:text-primary'
+						>
 							{item.label}
 						</Link>
 						<span className='font-satoshi text-sm font-bold text-dark dark:text-white'>

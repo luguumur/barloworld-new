@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 
 import toast from "react-hot-toast";
@@ -138,6 +138,10 @@ export default function ProductListTable({
 }) {
 	const [items, setItems] = useState(products);
 	const [saving, setSaving] = useState(false);
+
+	useEffect(() => {
+		setItems(products);
+	}, [products]);
 	const sensors = useSensors(useSensor(PointerSensor));
 
 	const handleDragEnd = async (event: DragEndEvent) => {
@@ -167,7 +171,7 @@ export default function ProductListTable({
 				</p>
 			)}
 			<DndContext
-				id="product-list-dnd"
+				id='product-list-dnd'
 				sensors={sensors}
 				collisionDetection={closestCenter}
 				onDragEnd={handleDragEnd}

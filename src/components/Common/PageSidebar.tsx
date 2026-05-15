@@ -1,11 +1,6 @@
 import ContactSidebarForm from "./ContactSidebarForm";
+import ProductBeside, { type SidebarMenuItem } from "./ProductBeside";
 import QuickLinks, { type QuickLink } from "./QuickLinks";
-
-type Props = {
-	primary: QuickLink[];
-	secondary?: QuickLink[];
-	phone?: string;
-};
 
 const quickLinksPrimary: QuickLink[] = [
 	{
@@ -43,9 +38,28 @@ const quickLinksSecondary: QuickLink[] = [
 	},
 ];
 
-export default function PageSidebar() {
+type Props = {
+	productTypes?: SidebarMenuItem[];
+	categories?: SidebarMenuItem[];
+	products?: SidebarMenuItem[];
+};
+
+export default function PageSidebar({
+	productTypes,
+	categories,
+	products,
+}: Props) {
 	return (
 		<aside className='page-sidebar page-rental-sidebar col-md-3'>
+			{productTypes && productTypes.length > 0 && (
+				<ProductBeside title='Equipment Types' menu={productTypes} />
+			)}
+			{categories && categories.length > 0 && (
+				<ProductBeside title='Categories' menu={categories} />
+			)}
+			{products && products.length > 0 && (
+				<ProductBeside title='Products' menu={products} />
+			)}
 			<QuickLinks primary={quickLinksPrimary} secondary={quickLinksSecondary} />
 			<ContactSidebarForm phone='+976 7018-7588' />
 		</aside>

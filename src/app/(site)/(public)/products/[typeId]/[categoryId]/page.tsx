@@ -1,7 +1,10 @@
 import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { getProductTypeByIdPublic } from "@/lib/productTypePublic";
-import { getProductCategoryByIdPublic } from "@/lib/productCategoryPublic";
+import {
+	getProductCategoryByIdPublic,
+	getProductCategoriesPublic,
+} from "@/lib/productCategoryPublic";
 import { getProductsPublic } from "@/lib/productPublic";
 import ProductCard from "@/components/Products/ProductCard";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
@@ -18,16 +21,24 @@ export default async function ProductsListPage({ params }: Props) {
 	const cookieStore = cookies();
 	const lang = cookieStore.get("lang")?.value === "mn" ? "mn" : "en";
 
-	const [type, category, products] = await Promise.all([
+	const [type, category, products, allCategories] = await Promise.all([
 		getProductTypeByIdPublic(params.typeId),
 		getProductCategoryByIdPublic(params.categoryId),
 		getProductsPublic({ categoryId: params.categoryId }),
+		getProductCategoriesPublic(),
 	]);
 
 	if (!type || !category) notFound();
 
 	const typeName = lang === "mn" ? type.name : type.name_en;
 	const catName = lang === "mn" ? category.name : category.name_en;
+
+	const categoryMenuItems = allCategories
+		.filter((c) => c.types === type.name)
+		.map((c) => ({
+			href: `/products/${params.typeId}/${c.id}`,
+			label: lang === "mn" ? c.name : c.name_en,
+		}));
 
 	return (
 		<>
@@ -46,7 +57,7 @@ export default async function ProductsListPage({ params }: Props) {
 			/>
 			<article className='page-body container'>
 				<div className='row'>
-					<PageSidebar />
+					<PageSidebar categories={categoryMenuItems} />
 					<main className='page-content col-md-9'>
 						{products.map((product) => (
 							<ProductCard

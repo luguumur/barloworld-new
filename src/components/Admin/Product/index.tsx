@@ -2,6 +2,7 @@
 import ProductEmptyState from "./ProductEmptyState";
 import ProductListTable from "./ProductListTable";
 import ProductTopbar from "./ProductTopbar";
+import Pagination from "./Pagination";
 
 type Product = {
 	id: string;
@@ -30,6 +31,9 @@ export default function ProductListContainer({
 	initialSearch = "",
 	initialCategoryId = "",
 	initialProductTypes = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	products: Product[];
 	categories: CategoryOption[];
@@ -37,6 +41,9 @@ export default function ProductListContainer({
 	initialSearch?: string;
 	initialCategoryId?: string;
 	initialProductTypes?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
@@ -50,7 +57,10 @@ export default function ProductListContainer({
 				/>
 			</div>
 			{products?.length ? (
-				<ProductListTable products={products} />
+				<>
+					<ProductListTable products={products} />
+					<Pagination page={page} totalPages={totalPages} total={total} />
+				</>
 			) : (
 				<ProductEmptyState />
 			)}

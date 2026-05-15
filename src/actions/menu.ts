@@ -201,7 +201,9 @@ export async function deleteMenuItem(id: string) {
 export async function reorderMenuItems(orderedIds: string[]) {
 	await isAuthorized();
 	if (orderedIds.length === 0) return;
-	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const whenClauses = orderedIds.map(
+		(id, i) => Prisma.sql`WHEN ${id} THEN ${i}`
+	);
 	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
 	await prisma.$executeRaw`
 		UPDATE menu_items

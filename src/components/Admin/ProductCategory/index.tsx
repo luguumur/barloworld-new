@@ -2,6 +2,7 @@
 import ProductCategoryEmptyState from "./ProductCategoryEmptyState";
 import ProductCategoryListTable from "./ProductCategoryListTable";
 import ProductCategoryTopbar from "./ProductCategoryTopbar";
+import AdminPagination from "@/components/Admin/Common/AdminPagination";
 
 type Item = {
 	id: string;
@@ -18,11 +19,17 @@ export default function ProductCategoryListContainer({
 	productTypes,
 	initialSearch = "",
 	initialType = "",
+	page = 1,
+	totalPages = 1,
+	total = 0,
 }: {
 	items: Item[];
 	productTypes: TypeOption[];
 	initialSearch?: string;
 	initialType?: string;
+	page?: number;
+	totalPages?: number;
+	total?: number;
 }) {
 	return (
 		<>
@@ -34,7 +41,15 @@ export default function ProductCategoryListContainer({
 				/>
 			</div>
 			{items?.length ? (
-				<ProductCategoryListTable items={items} />
+				<>
+					<ProductCategoryListTable items={items} />
+					<AdminPagination
+						page={page}
+						totalPages={totalPages}
+						total={total}
+						label='categories'
+					/>
+				</>
 			) : (
 				<ProductCategoryEmptyState />
 			)}

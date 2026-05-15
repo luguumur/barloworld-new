@@ -14,13 +14,17 @@ export const metadata: Metadata = {
 export const revalidate = 0;
 
 export default async function NewProductPage() {
-	const [categories, productTypes, attributeGroups, attributes] =
-		await Promise.all([
-			getProductCategories(),
-			getProductTypes(),
-			getAttributeValueGroups(),
-			getAttributes(),
-		]);
+	const [
+		{ items: categories },
+		{ items: productTypes },
+		{ items: attributeGroups },
+		{ items: attributes },
+	] = await Promise.all([
+		getProductCategories(),
+		getProductTypes(),
+		getAttributeValueGroups(),
+		getAttributes(),
+	]);
 	const categoryOptions = categories.map((c) => ({
 		id: c.id,
 		name: c.name,

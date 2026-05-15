@@ -16,7 +16,7 @@ export default async function EditProductCategoryPage({
 	params: Promise<{ id: string }>;
 }) {
 	const { id } = await params;
-	const [item, productTypes] = await Promise.all([
+	const [item, { items: productTypes }] = await Promise.all([
 		getProductCategoryById(id),
 		getProductTypes(),
 	]);

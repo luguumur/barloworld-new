@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type PageRow = {
 	id: string;
@@ -69,30 +70,68 @@ export async function getAllPageSlugs(): Promise<string[]> {
 	}
 }
 
-export async function getPages(search?: string) {
+export async function getPages(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						slug: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						title: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						title_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						description: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						description_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.page.findMany({
-			orderBy: { createdAt: "desc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ slug: { contains: search.trim(), mode: "insensitive" } },
-							{ title: { contains: search.trim(), mode: "insensitive" } },
-							{ title_en: { contains: search.trim(), mode: "insensitive" } },
-							{ description: { contains: search.trim(), mode: "insensitive" } },
-							{
-								description_en: {
-									contains: search.trim(),
-									mode: "insensitive",
-								},
-							},
-						],
-					}
-				: undefined,
-		})) as PageRow[];
+		const [items, total] = await Promise.all([
+			prisma.page.findMany({
+				orderBy: { createdAt: "desc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.page.count({ where }),
+		]);
+		return { items: items as PageRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as PageRow[]);
+		return handleTableMissing(error, {
+			items: [] as PageRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

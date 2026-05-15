@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type AttributeValueGroupRow = {
 	id: string;
@@ -11,22 +12,50 @@ export type AttributeValueGroupRow = {
 	updatedAt: Date;
 };
 
-export async function getAttributeValueGroups(search?: string) {
+export async function getAttributeValueGroups(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						name: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						name_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.attributeValueGroup.findMany({
-			orderBy: { createdAt: "asc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ name: { contains: search.trim(), mode: "insensitive" } },
-							{ name_en: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as AttributeValueGroupRow[];
+		const [items, total] = await Promise.all([
+			prisma.attributeValueGroup.findMany({
+				orderBy: { createdAt: "asc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.attributeValueGroup.count({ where }),
+		]);
+		return { items: items as AttributeValueGroupRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as AttributeValueGroupRow[]);
+		return handleTableMissing(error, {
+			items: [] as AttributeValueGroupRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

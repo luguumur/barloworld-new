@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type NotificationRow = {
 	id: string;
@@ -40,24 +41,62 @@ export async function createNotificationPublic(data: NotificationInput) {
 	}
 }
 
-export async function getNotifications(search?: string) {
+export async function getNotifications(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						title: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						message: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						senderName: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						senderEmail: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.notification.findMany({
-			orderBy: { createdAt: "desc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ title: { contains: search.trim(), mode: "insensitive" } },
-							{ message: { contains: search.trim(), mode: "insensitive" } },
-							{ senderName: { contains: search.trim(), mode: "insensitive" } },
-							{ senderEmail: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as NotificationRow[];
+		const [items, total] = await Promise.all([
+			prisma.notification.findMany({
+				orderBy: { createdAt: "desc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.notification.count({ where }),
+		]);
+		return { items: items as NotificationRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as NotificationRow[]);
+		return handleTableMissing(error, {
+			items: [] as NotificationRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

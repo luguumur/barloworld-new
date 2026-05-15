@@ -79,8 +79,8 @@ export default async function NewsPage({
 										fontSize: "13px",
 										fontWeight: 600,
 										border: "1px solid",
-										borderColor: !category ? "#FFBE00" : "#ddd",
-										background: !category ? "#FFBE00" : "#fff",
+										borderColor: !category ? "#FC0" : "#ddd",
+										background: !category ? "#FC0" : "#fff",
 										color: !category ? "#000" : "#555",
 										textDecoration: "none",
 									}}
@@ -96,8 +96,8 @@ export default async function NewsPage({
 											fontSize: "13px",
 											fontWeight: 600,
 											border: "1px solid",
-											borderColor: category === cat.id ? "#FFBE00" : "#ddd",
-											background: category === cat.id ? "#FFBE00" : "#fff",
+											borderColor: category === cat.id ? "#FC0" : "#ddd",
+											background: category === cat.id ? "#FC0" : "#fff",
 											color: category === cat.id ? "#000" : "#555",
 											textDecoration: "none",
 										}}
@@ -177,7 +177,7 @@ export default async function NewsPage({
 													>
 														<span
 															style={{
-																color: "#FFBE00",
+																color: "#FC0",
 																fontWeight: 900,
 																opacity: 0.4,
 															}}
@@ -209,7 +209,7 @@ export default async function NewsPage({
 															style={{
 																fontSize: "11px",
 																fontWeight: 700,
-																background: "#FFBE00",
+																background: "#FC0",
 																color: "#000",
 																padding: "2px 8px",
 																textTransform: "uppercase",
@@ -266,7 +266,7 @@ export default async function NewsPage({
 													style={{
 														fontSize: "13px",
 														fontWeight: 700,
-														color: "#FFBE00",
+														color: "#FC0",
 														textDecoration: "none",
 														marginTop: "auto",
 													}}

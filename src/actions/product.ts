@@ -4,6 +4,8 @@ import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
 
+const PRODUCT_PAGE_SIZE = 20;
+
 export type AttributeValueInput = {
 	attributeId: string;
 	groupId: string;
@@ -72,27 +74,45 @@ export async function getProducts(opts?: {
 	search?: string;
 	categoryId?: string;
 	productTypes?: string;
+	page?: number;
+	pageSize?: number;
 }) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? PRODUCT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+
+	const where: any = {
+		...(opts?.categoryId?.trim() && { categoryId: opts.categoryId.trim() }),
+		...(opts?.productTypes?.trim() && {
+			product_types: opts.productTypes.trim(),
+		}),
+		...(opts?.search?.trim() && {
+			OR: [
+				{ name: { contains: opts.search.trim(), mode: "insensitive" } },
+				{ name_en: { contains: opts.search.trim(), mode: "insensitive" } },
+			],
+		}),
+	};
+
 	try {
-		return (await prisma.product.findMany({
-			orderBy: [{ product_order: "asc" }, { createdAt: "desc" }],
-			include: { category: true },
-			where: {
-				...(opts?.categoryId?.trim() && { categoryId: opts.categoryId.trim() }),
-				...(opts?.productTypes?.trim() && {
-					product_types: opts.productTypes.trim(),
-				}),
-				...(opts?.search?.trim() && {
-					OR: [
-						{ name: { contains: opts.search.trim(), mode: "insensitive" } },
-						{ name_en: { contains: opts.search.trim(), mode: "insensitive" } },
-					],
-				}),
-			},
-		})) as unknown as ProductRow[];
+		const [products, total] = await Promise.all([
+			prisma.product.findMany({
+				orderBy: [{ product_order: "asc" }, { createdAt: "desc" }],
+				include: { category: true },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.product.count({ where }),
+		]);
+		return { products: products as unknown as ProductRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as ProductRow[]);
+		return handleTableMissing(error, {
+			products: [] as ProductRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 
@@ -217,12 +237,17 @@ export async function reorderProducts(orderedIds: string[]) {
 	await isAuthorized();
 	if (orderedIds.length === 0) return;
 
-	const whenClauses = orderedIds.map((id, i) => Prisma.sql`WHEN ${id} THEN ${i}`);
+	const whenClauses = orderedIds.map(
+		(id, i) => Prisma.sql`WHEN ${id} THEN ${i}`
+	);
 	const inList = orderedIds.map((id) => Prisma.sql`${id}`);
 
 	await prisma.$executeRaw`
 		UPDATE products
-		SET product_order = CASE id ${Prisma.join(whenClauses, " ")} ELSE product_order END
+		SET product_order = CASE id ${Prisma.join(
+			whenClauses,
+			" "
+		)} ELSE product_order END
 		WHERE id IN (${Prisma.join(inList)})
 	`;
 }

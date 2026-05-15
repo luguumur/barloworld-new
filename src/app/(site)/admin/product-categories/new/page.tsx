@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function NewProductCategoryPage() {
-	const productTypes = await getProductTypes();
+	const { items: productTypes } = await getProductTypes();
 	const typeOptions = productTypes.map((t) => ({
 		id: t.id,
 		name: t.name,

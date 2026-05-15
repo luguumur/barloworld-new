@@ -31,6 +31,25 @@ export default function ProductTopbar({
 		useState(initialProductTypes);
 	const router = useRouter();
 
+	const buildUrl = (type: string, cat: string, q: string) => {
+		const params = new URLSearchParams();
+		if (q.trim()) params.set("search", q.trim());
+		if (cat) params.set("category", cat);
+		if (type) params.set("type", type);
+		return `/admin/products${params.toString() ? `?${params}` : ""}`;
+	};
+
+	const handleTypeChange = (value: string) => {
+		setProductTypesFilter(value);
+		setCategoryId("");
+		router.push(buildUrl(value, "", search));
+	};
+
+	const handleCategoryChange = (value: string) => {
+		setCategoryId(value);
+		router.push(buildUrl(productTypesFilter, value, search));
+	};
+
 	const categoriesForType = productTypesFilter
 		? categories.filter((c) => c.types === productTypesFilter)
 		: categories;
@@ -48,7 +67,7 @@ export default function ProductTopbar({
 			<div className='flex items-center gap-3'>
 				<select
 					value={productTypesFilter}
-					onChange={(e) => setProductTypesFilter(e.target.value)}
+					onChange={(e) => handleTypeChange(e.target.value)}
 					className='h-11 w-36 rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 				>
 					<option value=''>All types</option>
@@ -58,9 +77,10 @@ export default function ProductTopbar({
 						</option>
 					))}
 				</select>
+
 				<select
 					value={categoryId}
-					onChange={(e) => setCategoryId(e.target.value)}
+					onChange={(e) => handleCategoryChange(e.target.value)}
 					className='h-11 w-44 rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 dark:border-stroke-dark dark:bg-transparent dark:text-white'
 				>
 					<option value=''>All categories</option>
@@ -70,26 +90,21 @@ export default function ProductTopbar({
 						</option>
 					))}
 				</select>
+
 				<form
 					className='flex items-center gap-2'
 					onSubmit={(e) => {
 						e.preventDefault();
-						const params = new URLSearchParams();
-						if (search) params.set("search", search);
-						if (categoryId) params.set("category", categoryId);
-						if (productTypesFilter) params.set("type", productTypesFilter);
-						router.push(`/admin/products?${params.toString()}`);
+						router.push(buildUrl(productTypesFilter, categoryId, search));
 					}}
 				>
-					<div className='relative'>
-						<input
-							type='search'
-							placeholder='Search products'
-							className='h-11 w-[200px] rounded-lg border border-stroke bg-gray-1 pl-11 pr-4.5 outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:focus:border-transparent'
-							value={search}
-							onChange={(e) => setSearch(e.target.value)}
-						/>
-					</div>
+					<input
+						type='search'
+						placeholder='Search products'
+						className='h-11 w-[200px] rounded-lg border border-stroke bg-gray-1 px-4 outline-none ring-offset-1 duration-300 focus:shadow-input focus:ring-2 focus:ring-primary/20 dark:border-stroke-dark dark:bg-transparent dark:focus:border-transparent'
+						value={search}
+						onChange={(e) => setSearch(e.target.value)}
+					/>
 					<button
 						type='submit'
 						className='h-11 rounded-lg bg-primary px-4 text-white hover:bg-primary-dark'

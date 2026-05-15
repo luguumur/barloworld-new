@@ -183,361 +183,352 @@ export default function ProductDetail({
 
 	return (
 		<article className='page-body container'>
-			<div className='row'>
-				<PageSidebar />
-				<main className='page-content col-md-9'>
-					<div className='row'>
-						<div className='col-xxs-12'>
-							<a
-								className='js-image-popup'
-								id='image-viewer'
-								href={mainImage}
-								style={{ display: mediaTab === "image" ? "block" : "none" }}
+			<main className='page-content'>
+				<div className='row'>
+					<div className='col-xxs-12'>
+						<a
+							className='js-image-popup'
+							id='image-viewer'
+							href={mainImage}
+							style={{ display: mediaTab === "image" ? "block" : "none" }}
+						>
+							<img
+								src={mainImage}
+								alt={name}
+								className='img-responsive entered lazyloaded'
+							/>
+						</a>
+						{spinUrl && (
+							<div
+								className='vpt-viewer'
+								id='vpt-viewer'
+								style={{ display: mediaTab === "vpt" ? "block" : "none" }}
 							>
-								<img
-									src={mainImage}
-									alt={name}
-									className='img-responsive entered lazyloaded'
-								/>
-							</a>
-							{spinUrl && (
-								<div
-									className='vpt-viewer'
-									id='vpt-viewer'
-									style={{ display: mediaTab === "vpt" ? "block" : "none" }}
-								>
-									<div id='spinset-exterior'>
-										<iframe
-											loading='lazy'
-											src={mediaTab === "vpt" ? spinUrl : "about:blank"}
-											width='100%'
-											height='450px'
-											style={{ width: "100%", border: "none" }}
-										/>
-									</div>
+								<div id='spinset-exterior'>
+									<iframe
+										loading='lazy'
+										src={mediaTab === "vpt" ? spinUrl : "about:blank"}
+										width='100%'
+										height='450px'
+										style={{ width: "100%", border: "none" }}
+									/>
 								</div>
-							)}
-						</div>
+							</div>
+						)}
 					</div>
-					<div className='tabs tabs--small media-tabs push-xxs--top flush-xs--top js-media-tabs'>
-						<ul className='tabs__nav js-tabs'>
+				</div>
+				<div className='tabs tabs--small media-tabs push-xxs--top flush-xs--top js-media-tabs'>
+					<ul className='tabs__nav js-tabs'>
+						<li
+							className={`tab-link-main${
+								mediaTab === "image" ? " active" : ""
+							}`}
+						>
+							<a
+								href='#product-photos'
+								title='Photos'
+								data-type='image'
+								onClick={(e) => {
+									e.preventDefault();
+									setMediaTab("image");
+								}}
+							>
+								<span className='icon-camera'></span>
+							</a>
+						</li>
+						{spinUrl && (
 							<li
 								className={`tab-link-main${
-									mediaTab === "image" ? " active" : ""
+									mediaTab === "vpt" ? " active" : ""
 								}`}
 							>
 								<a
-									href='#product-photos'
-									title='Photos'
-									data-type='image'
+									href='#product-360s'
+									title='360° Views'
+									data-type='vpt'
 									onClick={(e) => {
 										e.preventDefault();
-										setMediaTab("image");
+										setMediaTab("vpt");
 									}}
 								>
-									<span className='icon-camera'></span>
+									<span className='icon-360'></span>
 								</a>
 							</li>
-							{spinUrl && (
-								<li
-									className={`tab-link-main${
-										mediaTab === "vpt" ? " active" : ""
-									}`}
-								>
-									<a
-										href='#product-360s'
-										title='360° Views'
-										data-type='vpt'
-										onClick={(e) => {
-											e.preventDefault();
-											setMediaTab("vpt");
+						)}
+					</ul>
+					<div className='tabs__content'>
+						<div
+							id='product-photos'
+							className='tabs__tab'
+							style={{ display: mediaTab === "image" ? "block" : "none" }}
+						>
+							<ul
+								className='media-tabs-thumbnails js-media-thumbnail slick-initialized slick-slider'
+								id='image-media-thumbnails'
+							>
+								<div aria-live='polite' className='slick-list'>
+									<div
+										className='slick-track'
+										style={{
+											opacity: 1,
+											width: 25000,
+											transform: "translate3d(-5px, 0px, 0px)",
 										}}
+										role='listbox'
 									>
-										<span className='icon-360'></span>
-									</a>
-								</li>
-							)}
-						</ul>
-						<div className='tabs__content'>
-							<div
-								id='product-photos'
-								className='tabs__tab'
-								style={{ display: mediaTab === "image" ? "block" : "none" }}
-							>
-								<ul
-									className='media-tabs-thumbnails js-media-thumbnail slick-initialized slick-slider'
-									id='image-media-thumbnails'
-								>
-									<div aria-live='polite' className='slick-list'>
-										<div
-											className='slick-track'
-											style={{
-												opacity: 1,
-												width: 25000,
-												transform: "translate3d(-5px, 0px, 0px)",
-											}}
-											role='listbox'
-										>
-											{allImages.map((src, idx) => (
-												<li
-													key={idx}
-													className={`media-tabs-thumbnail product-detail__thumbnail slick-slide slick-active${
-														activeThumbIndex === idx ? " slick-current" : ""
-													}`}
-													tabIndex={0}
-													role='option'
-													aria-describedby={`slick-slide0${idx}`}
-													data-slick-index={String(idx)}
-													aria-hidden='false'
-													onClick={() => {
-														setActiveThumbIndex(idx);
-														setMainImage(src);
-													}}
-													style={{ cursor: "pointer" }}
-												>
-													<img
-														src={src}
-														alt=''
-														className='img-responsive entered lazyloaded'
-													/>
-												</li>
-											))}
-										</div>
-									</div>
-								</ul>
-							</div>
-							<div
-								id='product-360s'
-								className='tabs__tab tabs__content-panel'
-								style={{ display: mediaTab === "vpt" ? "block" : "none" }}
-							>
-								<ul
-									className='media-tabs-thumbnails js-media-thumbnail slick-initialized slick-slider'
-									id='vpt-media-thumbnails'
-								>
-									<div aria-live='polite' className='slick-list'>
-										<div
-											className='slick-track'
-											style={{
-												opacity: 1,
-												width: 20000,
-												transform: "translate3d(0px, 0px, 0px)",
-											}}
-											role='listbox'
-										>
+										{allImages.map((src, idx) => (
 											<li
-												className='media-tabs-thumbnail product-detail__vpt text--center slick-slide slick-current slick-active'
+												key={idx}
+												className={`media-tabs-thumbnail product-detail__thumbnail slick-slide slick-active${
+													activeThumbIndex === idx ? " slick-current" : ""
+												}`}
 												tabIndex={0}
 												role='option'
-												aria-describedby='slick-slide10'
-												data-slick-index='0'
+												aria-describedby={`slick-slide0${idx}`}
+												data-slick-index={String(idx)}
 												aria-hidden='false'
+												onClick={() => {
+													setActiveThumbIndex(idx);
+													setMainImage(src);
+												}}
+												style={{ cursor: "pointer" }}
 											>
 												<img
-													width='35'
-													height='35'
-													src='https://thompsonmachinery.com/content/themes/thompsonmachinery/assets/img/vpts-thumb.gif'
-													data-type='vpt'
-													data-target='spinset-exterior'
+													src={src}
 													alt=''
-													data-lazy-src='https://thompsonmachinery.com/content/themes/thompsonmachinery/assets/img/vpts-thumb.gif'
+													className='img-responsive entered lazyloaded'
 												/>
-												<small className='media-tabs-thumbnails__label pt-3 font-noto'>
-													Exterior View
-												</small>
 											</li>
-										</div>
-									</div>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div className='row'>
-						<div className='col-xs-6 col-md-7'>
-							<div className='product__overview'>&nbsp;</div>
-						</div>
-						<div className='col-xs-6 col-md-5'>
-							<a
-								href={`/quote?equipment=${encodeURIComponent(
-									lang === "mn" ? product.name : product.name_en
-								)}`}
-								className='btn btn-primary btn-block'
-							>
-								Request a Quote
-							</a>
-							<ul className='product__actions'>
-								<li>
-									{brochureUrl && (
-										<ul className='product__actions roboto'>
-											<li>
-												<a
-													href={`https://webapi.barloworld.mn/file/${brochureUrl}`}
-													target='_blank'
-													rel='nofollow noreferrer'
-												>
-													<span className='icon-pdf-01'></span>{" "}
-													{t("downloadbrochure")}
-												</a>
-											</li>
-										</ul>
-									)}
-								</li>
-								<li>
-									<a href='mailto:?subject=Thompson Cat: 725 Articulated Truck&amp;body=https://thompsonmachinery.com/new-equipment/machines/articulated-trucks/725-articulated-truck/'>
-										<span className='icon-share'></span> Share{" "}
-									</a>
-								</li>
-								<li className='hidden-xxs hidden-xs hidden-sm'>
-									<a href='#' onClick={() => window.print()}>
-										<span className='icon-print'></span> Print{" "}
-									</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-					<section className='product__details tabs'>
-						<div className='tabs__nav-wrapper clearfix'>
-							<ul className='tabs__nav cleafix js-tabs '>
-								<li
-									className={`tab-link${
-										detailTab === "specs" ? " active" : ""
-									}`}
-								>
-									<a
-										href='#specs'
-										onClick={(e) => {
-											e.preventDefault();
-											setDetailTab("specs");
-										}}
-									>
-										Specifications
-									</a>
-								</li>
-								<li
-									className={`tab-link${
-										detailTab === "features" ? " active" : ""
-									}`}
-								>
-									<a
-										href='#features'
-										onClick={(e) => {
-											e.preventDefault();
-											setDetailTab("features");
-										}}
-									>
-										Benefits and Features
-									</a>
-								</li>
-								<li
-									className={`tab-link${
-										detailTab === "compare" ? " active" : ""
-									}`}
-								>
-									<a
-										href='#compare'
-										onClick={(e) => {
-											e.preventDefault();
-											setDetailTab("compare");
-										}}
-									>
-										Compare Models
-									</a>
-								</li>
-							</ul>
-						</div>
-						<div className='tabs__content'>
-							{hasSpecs && (
-								<div
-									className={`product__specs tabs__tab${
-										detailTab === "specs" ? " active" : ""
-									}`}
-									id='specs'
-									style={{ display: detailTab === "specs" ? "block" : "none" }}
-								>
-									<div className='specs specs--list'>
-										{Object.values(grouped).map(
-											(group: any) =>
-												group.groupName !== "FILTERS" && (
-													<div key={group.groupName}>
-														<h4>{group.groupName}</h4>
-														{group.attrs.map((attr: any) => (
-															<dl key={attr.id} className='clearfix flush--top'>
-																<div className='specs__row clearfix'>
-																	<dt>{attr.attribute.name}</dt>
-																	<dd>{attr.string_value}</dd>
-																</div>
-															</dl>
-														))}
-													</div>
-												)
-										)}
+										))}
 									</div>
 								</div>
-							)}
-							<div
-								className={`product__features tabs__tab${
+							</ul>
+						</div>
+						<div
+							id='product-360s'
+							className='tabs__tab tabs__content-panel'
+							style={{ display: mediaTab === "vpt" ? "block" : "none" }}
+						>
+							<ul
+								className='media-tabs-thumbnails js-media-thumbnail slick-initialized slick-slider'
+								id='vpt-media-thumbnails'
+							>
+								<div aria-live='polite' className='slick-list'>
+									<div
+										className='slick-track'
+										style={{
+											opacity: 1,
+											width: 20000,
+											transform: "translate3d(0px, 0px, 0px)",
+										}}
+										role='listbox'
+									>
+										<li
+											className='media-tabs-thumbnail product-detail__vpt text--center slick-slide slick-current slick-active'
+											tabIndex={0}
+											role='option'
+											aria-describedby='slick-slide10'
+											data-slick-index='0'
+											aria-hidden='false'
+										>
+											<img
+												width='35'
+												height='35'
+												src='https://thompsonmachinery.com/content/themes/thompsonmachinery/assets/img/vpts-thumb.gif'
+												data-type='vpt'
+												data-target='spinset-exterior'
+												alt=''
+												data-lazy-src='https://thompsonmachinery.com/content/themes/thompsonmachinery/assets/img/vpts-thumb.gif'
+											/>
+											<small className='media-tabs-thumbnails__label pt-3 font-noto'>
+												Exterior View
+											</small>
+										</li>
+									</div>
+								</div>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div className='row'>
+					<div className='col-xs-6 col-md-7'>
+						<div className='product__overview'>&nbsp;</div>
+					</div>
+					<div className='col-xs-6 col-md-5'>
+						<a
+							href={`/quote?equipment=${encodeURIComponent(
+								lang === "mn" ? product.name : product.name_en
+							)}`}
+							className='btn btn-primary btn-block'
+						>
+							Request a Quote
+						</a>
+						<ul className='product__actions'>
+							<li>
+								{brochureUrl && (
+									<ul className='product__actions roboto'>
+										<li>
+											<a
+												href={`https://webapi.barloworld.mn/file/${brochureUrl}`}
+												target='_blank'
+												rel='nofollow noreferrer'
+											>
+												<span className='icon-pdf-01'></span>{" "}
+												{t("downloadbrochure")}
+											</a>
+										</li>
+									</ul>
+								)}
+							</li>
+							<li>
+								<a href='mailto:?subject=Thompson Cat: 725 Articulated Truck&amp;body=https://thompsonmachinery.com/new-equipment/machines/articulated-trucks/725-articulated-truck/'>
+									<span className='icon-share'></span> Share{" "}
+								</a>
+							</li>
+							<li className='hidden-xxs hidden-xs hidden-sm'>
+								<a href='#' onClick={() => window.print()}>
+									<span className='icon-print'></span> Print{" "}
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<section className='product__details tabs'>
+					<div className='tabs__nav-wrapper clearfix'>
+						<ul className='tabs__nav cleafix js-tabs '>
+							<li
+								className={`tab-link${detailTab === "specs" ? " active" : ""}`}
+							>
+								<a
+									href='#specs'
+									onClick={(e) => {
+										e.preventDefault();
+										setDetailTab("specs");
+									}}
+								>
+									Specifications
+								</a>
+							</li>
+							<li
+								className={`tab-link${
 									detailTab === "features" ? " active" : ""
 								}`}
-								id='features'
-								style={{ display: detailTab === "features" ? "block" : "none" }}
 							>
-								{description}
-							</div>
-							<div
-								className={`tabs__tab${
+								<a
+									href='#features'
+									onClick={(e) => {
+										e.preventDefault();
+										setDetailTab("features");
+									}}
+								>
+									Benefits and Features
+								</a>
+							</li>
+							<li
+								className={`tab-link${
 									detailTab === "compare" ? " active" : ""
 								}`}
-								id='compare'
-								style={{ display: detailTab === "compare" ? "block" : "none" }}
 							>
-								<div className='specCheckLite'>
-									<div className='scl-screen' id='sclMachineSelectionScreen'>
-										<button
-											className='scl-button scl-button-compare'
-											onClick={toggleVisibility}
-										>
-											{isVisible ? "Select" : "Compare"}
-										</button>
+								<a
+									href='#compare'
+									onClick={(e) => {
+										e.preventDefault();
+										setDetailTab("compare");
+									}}
+								>
+									Compare Models
+								</a>
+							</li>
+						</ul>
+					</div>
+					<div className='tabs__content'>
+						{hasSpecs && (
+							<div
+								className={`product__specs tabs__tab${
+									detailTab === "specs" ? " active" : ""
+								}`}
+								id='specs'
+								style={{ display: detailTab === "specs" ? "block" : "none" }}
+							>
+								<div className='specs specs--list'>
+									{Object.values(grouped).map(
+										(group: any) =>
+											group.groupName !== "FILTERS" && (
+												<div key={group.groupName}>
+													<h4>{group.groupName}</h4>
+													{group.attrs.map((attr: any) => (
+														<dl key={attr.id} className='clearfix flush--top'>
+															<div className='specs__row clearfix'>
+																<dt>{attr.attribute.name}</dt>
+																<dd>{attr.string_value}</dd>
+															</div>
+														</dl>
+													))}
+												</div>
+											)
+									)}
+								</div>
+							</div>
+						)}
+						<div
+							className={`product__features tabs__tab${
+								detailTab === "features" ? " active" : ""
+							}`}
+							id='features'
+							style={{ display: detailTab === "features" ? "block" : "none" }}
+						>
+							{description}
+						</div>
+						<div
+							className={`tabs__tab${detailTab === "compare" ? " active" : ""}`}
+							id='compare'
+							style={{ display: detailTab === "compare" ? "block" : "none" }}
+						>
+							<div className='specCheckLite'>
+								<div className='scl-screen' id='sclMachineSelectionScreen'>
+									<button
+										className='scl-button scl-button-compare'
+										onClick={toggleVisibility}
+									>
+										{isVisible ? "Select" : "Compare"}
+									</button>
+								</div>
+								{isVisible ? (
+									<div id='sclComparisonScreen' className='scl-screen'>
+										<AttributeComparisonTable products={getSelectedModels()} />
 									</div>
-									{isVisible ? (
-										<div id='sclComparisonScreen' className='scl-screen'>
-											<AttributeComparisonTable
-												products={getSelectedModels()}
-											/>
-										</div>
-									) : (
-										<div id='sclMachineSelectionScreen' className='scl-screen'>
-											<h1>Compare Models</h1>
-											<h2>Select Models to Compare (Maximum of 5)</h2>
-											<div id='sclMachineSelection'>
-												<div
-													id='sclInternalMachineSelectPane'
-													className='scl-machineSelectPane'
-												>
-													<div className='scl-paneHead'>
-														<ul>
-															{sortedSiblings.map((item) => (
-																<div key={item.id}>
-																	<MachineCheckbox
-																		machine={item}
-																		isSelected={!!selections[item.id]}
-																		isEnabled={item.id !== product.id}
-																		onCheckboxChange={handleCheckboxChange}
-																	/>
-																</div>
-															))}
-														</ul>
-													</div>
+								) : (
+									<div id='sclMachineSelectionScreen' className='scl-screen'>
+										<h1>Compare Models</h1>
+										<h2>Select Models to Compare (Maximum of 5)</h2>
+										<div id='sclMachineSelection'>
+											<div
+												id='sclInternalMachineSelectPane'
+												className='scl-machineSelectPane'
+											>
+												<div className='scl-paneHead'>
+													<ul>
+														{sortedSiblings.map((item) => (
+															<div key={item.id}>
+																<MachineCheckbox
+																	machine={item}
+																	isSelected={!!selections[item.id]}
+																	isEnabled={item.id !== product.id}
+																	onCheckboxChange={handleCheckboxChange}
+																/>
+															</div>
+														))}
+													</ul>
 												</div>
 											</div>
 										</div>
-									)}
-								</div>
+									</div>
+								)}
 							</div>
 						</div>
-					</section>
-				</main>
-			</div>
+					</div>
+				</section>
+			</main>
 		</article>
 	);
 }

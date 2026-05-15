@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type MastheadRow = {
 	id: string;
@@ -39,24 +40,62 @@ export async function getMastheadById(id: string) {
 	}
 }
 
-export async function getMastheads(search?: string) {
+export async function getMastheads(opts?: {
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = opts?.search?.trim()
+		? {
+				OR: [
+					{
+						title: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						title_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						subtitle: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+					{
+						subtitle_en: {
+							contains: opts.search.trim(),
+							mode: "insensitive" as const,
+						},
+					},
+				],
+			}
+		: undefined;
 	try {
-		return (await prisma.masthead.findMany({
-			orderBy: { createdAt: "desc" },
-			where: search?.trim()
-				? {
-						OR: [
-							{ title: { contains: search.trim(), mode: "insensitive" } },
-							{ title_en: { contains: search.trim(), mode: "insensitive" } },
-							{ subtitle: { contains: search.trim(), mode: "insensitive" } },
-							{ subtitle_en: { contains: search.trim(), mode: "insensitive" } },
-						],
-					}
-				: undefined,
-		})) as MastheadRow[];
+		const [items, total] = await Promise.all([
+			prisma.masthead.findMany({
+				orderBy: { createdAt: "desc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.masthead.count({ where }),
+		]);
+		return { items: items as MastheadRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as MastheadRow[]);
+		return handleTableMissing(error, {
+			items: [] as MastheadRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

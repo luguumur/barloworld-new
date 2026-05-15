@@ -2,6 +2,7 @@
 import { prisma } from "@/libs/prismaDb";
 import { isAuthorized } from "@/libs/isAuthorized";
 import { handleTableMissing } from "@/libs/prismaError";
+import { DEFAULT_PAGE_SIZE } from "@/lib/constants";
 
 export type ProductCategoryRow = {
 	id: string;
@@ -22,23 +23,49 @@ export type ProductCategoryInput = {
 	types: string;
 };
 
-export async function getProductCategories(types?: string, search?: string) {
+export async function getProductCategories(opts?: {
+	types?: string;
+	search?: string;
+	page?: number;
+	pageSize?: number;
+}) {
 	await isAuthorized();
+	const page = Math.max(1, opts?.page ?? 1);
+	const pageSize = opts?.pageSize ?? DEFAULT_PAGE_SIZE;
+	const skip = (page - 1) * pageSize;
+	const where = {
+		...(opts?.types?.trim() && { types: opts.types.trim() }),
+		...(opts?.search?.trim() && {
+			OR: [
+				{
+					name: { contains: opts.search.trim(), mode: "insensitive" as const },
+				},
+				{
+					name_en: {
+						contains: opts.search.trim(),
+						mode: "insensitive" as const,
+					},
+				},
+			],
+		}),
+	};
 	try {
-		return (await prisma.productCategory.findMany({
-			orderBy: { createdAt: "asc" },
-			where: {
-				...(types?.trim() && { types: types.trim() }),
-				...(search?.trim() && {
-					OR: [
-						{ name: { contains: search.trim(), mode: "insensitive" } },
-						{ name_en: { contains: search.trim(), mode: "insensitive" } },
-					],
-				}),
-			},
-		})) as ProductCategoryRow[];
+		const [items, total] = await Promise.all([
+			prisma.productCategory.findMany({
+				orderBy: { createdAt: "asc" },
+				where,
+				skip,
+				take: pageSize,
+			}),
+			prisma.productCategory.count({ where }),
+		]);
+		return { items: items as ProductCategoryRow[], total, page };
 	} catch (error) {
-		return handleTableMissing(error, [] as ProductCategoryRow[]);
+		return handleTableMissing(error, {
+			items: [] as ProductCategoryRow[],
+			total: 0,
+			page: 1,
+		});
 	}
 }
 

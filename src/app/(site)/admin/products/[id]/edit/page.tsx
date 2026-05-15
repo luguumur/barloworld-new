@@ -24,10 +24,10 @@ export default async function EditProductPage({
 	const { id } = await params;
 	const [
 		product,
-		categories,
-		productTypes,
-		attributeGroups,
-		attributes,
+		{ items: categories },
+		{ items: productTypes },
+		{ items: attributeGroups },
+		{ items: attributes },
 		images,
 	] = await Promise.all([
 		getProductById(id),
