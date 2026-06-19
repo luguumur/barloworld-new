@@ -1,8 +1,8 @@
-import { useTranslations } from "next-intl";
 import Image from "next/image";
+import { getDbT } from "@/libs/getDbT";
 
-export default function ContactCTA() {
-	const home = useTranslations("HomeData");
+export default async function ContactCTA() {
+	const t = await getDbT();
 	return (
 		<section className='cta'>
 			<div className='cta-banner'>
@@ -18,11 +18,16 @@ export default function ContactCTA() {
 			<div className='cta-overlay'>
 				<div className='container'>
 					<div className='text-white'>
-						<h2>{home("wearehere")}</h2>
-						<p>{home("do_you_need_equipment")}</p>
+						<h2>{t("ContactCTA.title", "We are here for you")}</h2>
+						<p>
+							{t(
+								"ContactCTA.description",
+								"Do you need equipment that delivers outstanding performance at your job site? Contact us today."
+							)}
+						</p>
 						<p>
 							<a className='btn btn-primary' href='/support/'>
-								{home("contact")}
+								{t("ContactCTA.contact_btn", "Contact Us")}
 							</a>
 						</p>
 					</div>

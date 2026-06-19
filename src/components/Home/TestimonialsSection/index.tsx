@@ -1,13 +1,20 @@
 "use client";
 import type { TestimonialRow } from "@/actions/testimonial";
-import { useLocale, useTranslations } from "next-intl";
+import { useLocale } from "next-intl";
 import Image from "next/legacy/image";
 import Link from "next/link";
 import Slider from "react-slick";
 import type { Settings } from "react-slick";
 
+type Labels = {
+	titleLine1: string;
+	titleLine2: string;
+	cta: string;
+};
+
 type Props = {
 	testi?: TestimonialRow[];
+	labels?: Labels;
 };
 
 function stripHtml(value: string | null | undefined): string {
@@ -30,8 +37,7 @@ function truncateText(value: string, maxLength: number): string {
 	return `${value.slice(0, maxLength).trimEnd()}...`;
 }
 
-const TestiCarousel = ({ testi = [] }: Props) => {
-	const home = useTranslations("HomeData");
+const TestiCarousel = ({ testi = [], labels }: Props) => {
 	const locale = useLocale();
 
 	const desktopSlides = testi.length >= 3 ? 2.35 : testi.length === 2 ? 2 : 1;
@@ -81,8 +87,9 @@ const TestiCarousel = ({ testi = [] }: Props) => {
 		],
 	} satisfies Settings;
 
-	const ctaLabel =
-		locale === "mn" ? "БҮХ СЭТГЭГДЛИЙГ ҮЗЭХ" : "READ ALL TESTIMONIALS";
+	const titleLine1 = labels?.titleLine1 ?? "Hear From";
+	const titleLine2 = labels?.titleLine2 ?? "Our Customers";
+	const ctaLabel = labels?.cta ?? "READ ALL TESTIMONIALS";
 
 	return (
 		<div className='home-testimonials clearfix'>
@@ -101,13 +108,13 @@ const TestiCarousel = ({ testi = [] }: Props) => {
 				<div className='home-testimonials-right-panel'>
 					<div className='home-testimonials-header'>
 						<h2>
-							{locale === "en" ? (
+							{titleLine1 ? (
 								<>
-									Hear From
-									<span>Our Customers</span>
+									{titleLine1}
+									<span>{titleLine2}</span>
 								</>
 							) : (
-								home("testimonials")
+								titleLine2
 							)}
 						</h2>
 					</div>

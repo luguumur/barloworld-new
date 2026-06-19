@@ -4,11 +4,24 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { createContactRequestPublic } from "@/actions/contactRequest";
 
-type Props = {
-	defaultProduct?: string;
+type Labels = {
+	name?: string;
+	email?: string;
+	phone?: string;
+	subject?: string;
+	message?: string;
+	submit?: string;
+	submitting?: string;
+	success?: string;
+	error?: string;
 };
 
-export default function ContactForm({ defaultProduct = "" }: Props) {
+type Props = {
+	defaultProduct?: string;
+	labels?: Labels;
+};
+
+export default function ContactForm({ defaultProduct = "", labels }: Props) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 	const [form, setForm] = useState({
@@ -19,6 +32,18 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 		productName: defaultProduct,
 		message: "",
 	});
+
+	const l = {
+		name: labels?.name ?? "Name",
+		email: labels?.email ?? "Email",
+		phone: labels?.phone ?? "Phone Number",
+		subject: labels?.subject ?? "Subject",
+		message: labels?.message ?? "Message",
+		submit: labels?.submit ?? "Submit Request",
+		submitting: labels?.submitting ?? "Submitting...",
+		success: labels?.success ?? "Your contact request has been submitted!",
+		error: labels?.error ?? "Failed to submit. Please try again.",
+	};
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -37,10 +62,10 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 				email: form.email,
 				message: form.message || null,
 			});
-			toast.success("Your contact request has been submitted!");
+			toast.success(l.success);
 			router.push("/thank-you");
 		} catch {
-			toast.error("Failed to submit. Please try again.");
+			toast.error(l.error);
 		} finally {
 			setLoading(false);
 		}
@@ -50,7 +75,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 		<form onSubmit={handleSubmit} noValidate>
 			<div className='row'>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='name'>Name *</label>
+					<label htmlFor='name'>{l.name} *</label>
 					<input
 						id='name'
 						name='name'
@@ -62,7 +87,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 					/>
 				</div>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='email'>Email *</label>
+					<label htmlFor='email'>{l.email} *</label>
 					<input
 						id='email'
 						name='email'
@@ -77,7 +102,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 
 			<div className='row'>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='phoneNumber'>Phone Number *</label>
+					<label htmlFor='phoneNumber'>{l.phone} *</label>
 					<input
 						id='phoneNumber'
 						name='phoneNumber'
@@ -89,7 +114,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 					/>
 				</div>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='subject'>Subject</label>
+					<label htmlFor='subject'>{l.subject}</label>
 					<input
 						id='subject'
 						name='subject'
@@ -104,7 +129,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 
 			<div className='row'>
 				<div className='col-md-12 form-row'>
-					<label htmlFor='message'>Message</label>
+					<label htmlFor='message'>{l.message}</label>
 					<textarea
 						id='message'
 						name='message'
@@ -123,7 +148,7 @@ export default function ContactForm({ defaultProduct = "" }: Props) {
 						disabled={loading}
 						className='btn btn-primary btn-block w-full disabled:opacity-60'
 					>
-						{loading ? "Submitting..." : "Submit Request"}
+						{loading ? l.submitting : l.submit}
 					</button>
 				</div>
 			</div>

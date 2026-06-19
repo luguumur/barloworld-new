@@ -4,11 +4,27 @@ import { useRouter } from "next/navigation";
 import { createQuoteRequestPublic } from "@/actions/quoteRequest";
 import toast from "react-hot-toast";
 
-type Props = {
-	defaultProduct?: string;
+type Labels = {
+	firstName?: string;
+	lastName?: string;
+	title?: string;
+	state?: string;
+	phone?: string;
+	email?: string;
+	product?: string;
+	message?: string;
+	submit?: string;
+	submitting?: string;
+	success?: string;
+	error?: string;
 };
 
-export default function QuoteForm({ defaultProduct = "" }: Props) {
+type Props = {
+	defaultProduct?: string;
+	labels?: Labels;
+};
+
+export default function QuoteForm({ defaultProduct = "", labels }: Props) {
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 	const [form, setForm] = useState({
@@ -21,6 +37,21 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 		productName: defaultProduct,
 		message: "",
 	});
+
+	const l = {
+		firstName: labels?.firstName ?? "First Name",
+		lastName: labels?.lastName ?? "Last Name",
+		title: labels?.title ?? "Title",
+		state: labels?.state ?? "State / Region",
+		phone: labels?.phone ?? "Phone Number",
+		email: labels?.email ?? "Email",
+		product: labels?.product ?? "Equipment / Product Name",
+		message: labels?.message ?? "Message",
+		submit: labels?.submit ?? "Submit Request",
+		submitting: labels?.submitting ?? "Submitting...",
+		success: labels?.success ?? "Your quote request has been submitted!",
+		error: labels?.error ?? "Failed to submit. Please try again.",
+	};
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,10 +73,10 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 				productName: form.productName,
 				message: form.message || null,
 			});
-			toast.success("Your quote request has been submitted!");
+			toast.success(l.success);
 			router.push("/thank-you");
 		} catch {
-			toast.error("Failed to submit. Please try again.");
+			toast.error(l.error);
 		} finally {
 			setLoading(false);
 		}
@@ -55,7 +86,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 		<form onSubmit={handleSubmit} noValidate>
 			<div className='row'>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='firstName'>First Name *</label>
+					<label htmlFor='firstName'>{l.firstName} *</label>
 					<input
 						id='firstName'
 						name='firstName'
@@ -67,7 +98,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 					/>
 				</div>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='lastName'>Last Name *</label>
+					<label htmlFor='lastName'>{l.lastName} *</label>
 					<input
 						id='lastName'
 						name='lastName'
@@ -82,7 +113,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 
 			<div className='row'>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='title'>Title</label>
+					<label htmlFor='title'>{l.title}</label>
 					<input
 						id='title'
 						name='title'
@@ -94,7 +125,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 					/>
 				</div>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='contactState'>State / Region</label>
+					<label htmlFor='contactState'>{l.state}</label>
 					<input
 						id='contactState'
 						name='contactState'
@@ -109,7 +140,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 
 			<div className='row'>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='phoneNumber'>Phone Number *</label>
+					<label htmlFor='phoneNumber'>{l.phone} *</label>
 					<input
 						id='phoneNumber'
 						name='phoneNumber'
@@ -121,7 +152,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 					/>
 				</div>
 				<div className='col-md-6 form-row'>
-					<label htmlFor='email'>Email *</label>
+					<label htmlFor='email'>{l.email} *</label>
 					<input
 						id='email'
 						name='email'
@@ -136,7 +167,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 
 			<div className='row'>
 				<div className='col-md-12 form-row'>
-					<label htmlFor='productName'>Equipment / Product Name *</label>
+					<label htmlFor='productName'>{l.product} *</label>
 					<input
 						id='productName'
 						name='productName'
@@ -151,7 +182,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 
 			<div className='row'>
 				<div className='col-md-12 form-row'>
-					<label htmlFor='message'>Message</label>
+					<label htmlFor='message'>{l.message}</label>
 					<textarea
 						id='message'
 						name='message'
@@ -170,7 +201,7 @@ export default function QuoteForm({ defaultProduct = "" }: Props) {
 						disabled={loading}
 						className='btn btn-primary btn-block w-full disabled:opacity-60'
 					>
-						{loading ? "Submitting..." : "Submit Request"}
+						{loading ? l.submitting : l.submit}
 					</button>
 				</div>
 			</div>

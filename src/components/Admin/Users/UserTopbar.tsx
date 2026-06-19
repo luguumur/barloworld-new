@@ -97,7 +97,12 @@ export default function UserTopbar({
 						onClick={() => setShowCreateModal(true)}
 						className='flex h-10 items-center justify-center gap-3 rounded-lg bg-primary p-3 text-white hover:bg-primary-dark'
 					>
-						<Image src='/images/icon/plus.svg' alt='plus' width={20} height={20} />
+						<Image
+							src='/images/icon/plus.svg'
+							alt='plus'
+							width={20}
+							height={20}
+						/>
 						Add user
 					</button>
 
@@ -129,4 +134,3 @@ export default function UserTopbar({
 		</>
 	);
 }
-

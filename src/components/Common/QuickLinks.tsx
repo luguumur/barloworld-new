@@ -7,12 +7,17 @@ export type QuickLink = {
 type Props = {
 	primary: QuickLink[];
 	secondary?: QuickLink[];
+	title?: string;
 };
 
-export default function QuickLinks({ primary, secondary = [] }: Props) {
+export default function QuickLinks({
+	primary,
+	secondary = [],
+	title = "Quick Links",
+}: Props) {
 	return (
 		<div className='quick-links quick-links__sidebar'>
-			<div className='quick-links__topper accent black'>Quick Links</div>
+			<div className='quick-links__topper accent black'>{title}</div>
 			<div className='quick-links__primary'>
 				{primary.map((link) => (
 					<a key={link.href} className='quick-link--primary' href={link.href}>

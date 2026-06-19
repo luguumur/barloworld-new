@@ -24,7 +24,7 @@ export default function AdminLayoutClient({
 				item.path === "/admin" ||
 				item.path === "/admin/account-settings" ||
 				allowedPaths.some(
-					(p) => item.path === p || item.path.startsWith(p + "/")
+					(p) => item.path === p || item.path?.startsWith(p + "/")
 				)
 		);
 	};
@@ -39,10 +39,7 @@ export default function AdminLayoutClient({
 					openSidebar ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
 				}`}
 			>
-				<Sidebar
-					sidebarData={visibleMain}
-					sidebarOthersData={visibleOthers}
-				/>
+				<Sidebar sidebarData={visibleMain} sidebarOthersData={visibleOthers} />
 			</aside>
 			<div
 				onClick={() => setOpenSidebar(false)}

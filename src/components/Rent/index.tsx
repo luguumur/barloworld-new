@@ -1,99 +1,22 @@
+import { cookies } from "next/headers";
 import ProductPageHeader from "@/components/Products/ProductPageHeader";
 import PageSidebar from "@/components/Common/PageSidebar";
+import { getDbT } from "@/libs/getDbT";
 
-const categories = [
-	{
-		title: "Earthmoving",
-		title_mn: "Газар хөдөлгөгч тоног төхөөрөмж",
-		image:
-			"https://d3leeb4r1qy96s.cloudfront.net/assets/img/leadership/cat-excavator.jpg",
-		items: ["Excavators", "Bulldozers", "Motor Graders", "Scrapers"],
-	},
-	{
-		title: "Material Handling",
-		title_mn: "Материал зөөх тоног төхөөрөмж",
-		image:
-			"https://d3leeb4r1qy96s.cloudfront.net/assets/img/leadership/cat-loader.jpg",
-		items: ["Wheel Loaders", "Skid Steer Loaders", "Telehandlers", "Forklifts"],
-	},
-	{
-		title: "Compaction",
-		title_mn: "Тамхилах тоног төхөөрөмж",
-		image:
-			"https://d3leeb4r1qy96s.cloudfront.net/assets/img/leadership/cat-compactor.jpg",
-		items: [
-			"Soil Compactors",
-			"Landfill Compactors",
-			"Vibratory Rollers",
-			"Pneumatic Rollers",
-		],
-	},
-	{
-		title: "Trucks",
-		title_mn: "Тээврийн хэрэгсэл",
-		image:
-			"https://d3leeb4r1qy96s.cloudfront.net/assets/img/leadership/Baasandorj.jpg",
-		items: [
-			"Articulated Trucks",
-			"Off-Highway Trucks",
-			"On-Highway Trucks",
-			"Water Trucks",
-		],
-	},
-];
+export default async function RentPage() {
+	const cookieStore = await cookies();
+	const lang = cookieStore.get("lang")?.value === "mn" ? "mn" : "en";
+	const t = await getDbT();
 
-const benefits = [
-	{
-		icon: "🔧",
-		title: "Fully Maintained Fleet",
-		title_mn: "Бүрэн засвар үйлчилгээтэй флот",
-		desc: "All rental equipment is regularly serviced and maintained by certified CAT technicians.",
-		desc_mn:
-			"Бүх түрээсийн тоног төхөөрөмжийг сертификаттай CAT мэргэжилтнүүд тогтмол засварлаж, үйлчилдэг.",
-	},
-	{
-		icon: "📞",
-		title: "24/7 Support",
-		title_mn: "24/7 Дэмжлэг",
-		desc: "Our team is available around the clock for any equipment issues or emergencies.",
-		desc_mn:
-			"Манай баг тоног төхөөрөмжийн асуудал эсвэл яаралтай тусламжийн хувьд цагийн турш ажилладаг.",
-	},
-	{
-		icon: "🚚",
-		title: "Delivery & Pickup",
-		title_mn: "Хүргэлт & Буцаалт",
-		desc: "We deliver and collect equipment directly to your job site anywhere in Mongolia.",
-		desc_mn:
-			"Монгол улсын хаана ч байсан тоног төхөөрөмжийг таны ажлын байранд хүргэж, буцааж авдаг.",
-	},
-	{
-		icon: "📋",
-		title: "Flexible Terms",
-		title_mn: "Уян хатан нөхцөл",
-		desc: "Daily, weekly, or monthly rental options tailored to your project timeline.",
-		desc_mn:
-			"Өдрийн, долоо хоногийн, сарын түрээсийн сонголтуудыг таны төслийн хугацаанд тохируулан боловсруулдаг.",
-	},
-];
+	const title = t("Rent.title", lang === "mn" ? "Түрээс" : "Rent");
 
-type Props = { lang?: "mn" | "en" };
-
-export default function RentPage({ lang = "en" }: Props) {
-	const isMn = lang === "mn";
-
-	const officeHours: any = {
-		weekdays: "Даваа-Баасан 09:00-18:00",
-		weekend: "Бямба 09:00-15:00",
-		holiday: "Ням - Амарна",
-	};
 	return (
 		<>
 			<ProductPageHeader
-				title={isMn ? "Түрээс" : "Rent"}
+				title={title}
 				breadcrumbs={[
-					{ label: "Home", href: "/" },
-					{ label: isMn ? "Түрээс" : "Rent" },
+					{ label: t("Common.home", "Home"), href: "/" },
+					{ label: title },
 				]}
 				backgroundImage='/images/bg/rent.jpg'
 			/>
@@ -105,14 +28,19 @@ export default function RentPage({ lang = "en" }: Props) {
 					<main className='page-content col-md-9'>
 						<div className='flex w-full flex-col items-center justify-center gap-4 overflow-auto'>
 							<h3 className='text-lg font-semibold'>
-								Түрээсийн салбарын байршил
+								{t("Rent.location_title", "Rental Branch Locations")}
 							</h3>
 							<span className='text-center text-xs md:text-sm'>
-								Барлоуорлд Монгол ХХК-ийн түрээсийн салбарууд
+								{t(
+									"Rent.company_subtitle",
+									"Barloworld Mongolia LLC rental branches"
+								)}
 								<br />
 								<span className='font-semibold'>
-									Ажлын цаг: {officeHours.weekdays} | {officeHours.weekend},{" "}
-									{officeHours.holiday}
+									{t("Rent.office_hours_label", "Office Hours")}:{" "}
+									{t("Rent.weekdays", "Mon-Fri 09:00-18:00")} |{" "}
+									{t("Rent.weekend", "Sat 09:00-15:00")},{" "}
+									{t("Rent.holiday", "Sun - Closed")}
 								</span>
 							</span>
 
@@ -137,16 +65,14 @@ export default function RentPage({ lang = "en" }: Props) {
 										className='h-full w-full object-cover'
 									/>
 									<a
-										className='focus-visible:outline-gray-1000 focus-visible:outline-gray-1000 absolute bottom-4 right-4 flex h-8 cursor-pointer appearance-none flex-row items-center justify-center rounded-full border border-transparent bg-yellow-400 px-4 py-2 text-sm font-semibold text-gray-800 no-underline outline-none transition-colors hover:bg-yellow-500 hover:!text-gray-900 focus-visible:outline-2 focus-visible:brightness-90 active:brightness-90 disabled:cursor-default focus-visible:dark:outline-gray-100'
+										className='absolute bottom-4 right-4 flex h-8 cursor-pointer appearance-none flex-row items-center justify-center rounded-full border border-transparent bg-yellow-400 px-4 py-2 text-sm font-semibold text-gray-800 no-underline outline-none transition-colors hover:bg-yellow-500 hover:!text-gray-900 focus-visible:outline-2 focus-visible:brightness-90 active:brightness-90 disabled:cursor-default'
 										href='https://www.google.com/maps/search/Barloworld+Mongolia+rental+offices'
 										target='_blank'
 										rel='noopener noreferrer'
 									>
 										<div className='flex flex-row items-center gap-2 md:gap-3'>
-											<div className='inline-flex h-4 w-4 leading-none text-current'>
-												<span className='text-sm'>📍</span>
-											</div>
-											Google map дээр харах
+											<span className='text-sm'>📍</span>
+											{t("Rent.view_on_map", "View on Google Maps")}
 										</div>
 									</a>
 								</div>
@@ -171,7 +97,7 @@ export default function RentPage({ lang = "en" }: Props) {
 									marginBottom: "12px",
 								}}
 							>
-								{isMn ? "Түрээсийн үнийн санал авах" : "Request a Rental Quote"}
+								{t("Rent.cta_title", "Request a Rental Quote")}
 							</h3>
 							<p
 								style={{
@@ -180,9 +106,10 @@ export default function RentPage({ lang = "en" }: Props) {
 									marginBottom: "24px",
 								}}
 							>
-								{isMn
-									? "Манай мэргэжилтнүүд таны шаардлагад тохирсон хамгийн тохиромжтой шийдлийг санал болгоно."
-									: "Our specialists will propose the most suitable solution for your requirements."}
+								{t(
+									"Rent.cta_desc",
+									"Our specialists will propose the most suitable solution for your requirements."
+								)}
 							</p>
 							<div
 								style={{
@@ -197,7 +124,7 @@ export default function RentPage({ lang = "en" }: Props) {
 									className='btn btn-primary'
 									style={{ minWidth: "160px" }}
 								>
-									{isMn ? "Холбоо барих" : "Contact Us"}
+									{t("Rent.contact_btn", "Contact Us")}
 								</a>
 							</div>
 						</section>

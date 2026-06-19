@@ -105,7 +105,9 @@ export default function UserAction({
 					>
 						{roles.map((r) => {
 							const custom = customRoles.find((cr) => cr.name === r);
-							const label = custom ? custom.label : r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
+							const label = custom
+								? custom.label
+								: r.charAt(0).toUpperCase() + r.slice(1).toLowerCase();
 							return (
 								<option key={r} value={r} className='cursor-pointer'>
 									{label}

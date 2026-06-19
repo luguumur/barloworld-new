@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { cookies } from "next/headers";
 import RentPage from "@/components/Rent";
 
 export const metadata: Metadata = {
@@ -9,8 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default async function RentRoute() {
-	const cookieStore = await cookies();
-	const lang = cookieStore.get("lang")?.value === "mn" ? "mn" : "en";
-
-	return <RentPage lang={lang} />;
+	return <RentPage />;
 }

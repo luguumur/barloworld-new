@@ -3,7 +3,11 @@ import { authOptions } from "@/libs/auth";
 import { getAdminRoleByName } from "@/actions/adminRole";
 import AdminLayoutClient from "./AdminLayoutClient";
 
-export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({
+	children,
+}: {
+	children: React.ReactNode;
+}) {
 	const session = await getServerSession(authOptions);
 	const role = (session?.user as any)?.role as string | undefined;
 

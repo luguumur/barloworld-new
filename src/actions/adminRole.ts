@@ -24,9 +24,13 @@ export async function getAdminRoles(): Promise<AdminRoleRow[]> {
 	}
 }
 
-export async function getAdminRoleByName(name: string): Promise<AdminRoleRow | null> {
+export async function getAdminRoleByName(
+	name: string
+): Promise<AdminRoleRow | null> {
 	try {
-		return (await prisma.adminRole.findUnique({ where: { name } })) as AdminRoleRow | null;
+		return (await prisma.adminRole.findUnique({
+			where: { name },
+		})) as AdminRoleRow | null;
 	} catch (e) {
 		return handleTableMissing(e, null);
 	}

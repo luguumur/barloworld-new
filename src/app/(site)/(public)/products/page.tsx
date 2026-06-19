@@ -4,6 +4,7 @@ import PageSidebar from "@/components/Common/PageSidebar";
 import ImageCards from "@/components/Common/ImageCards";
 import { getProductTypesPublic } from "@/lib/productTypePublic";
 import { resolveImageUrl } from "@/libs/resolveImageUrl";
+import { getDbT } from "@/libs/getDbT";
 
 export const revalidate = 0;
 
@@ -15,7 +16,7 @@ export default async function ProductTypesPage() {
 	const cookieStore = cookies();
 	const lang = cookieStore.get("lang")?.value === "mn" ? "mn" : "en";
 
-	const types = await getProductTypesPublic();
+	const [types, t] = await Promise.all([getProductTypesPublic(), getDbT()]);
 
 	const imageCards = types.map((type) => ({
 		href: `/products/${type.id}`,
@@ -27,8 +28,11 @@ export default async function ProductTypesPage() {
 	return (
 		<>
 			<ProductPageHeader
-				title='Cat Equipment'
-				breadcrumbs={[{ label: "Home", href: "/" }, { label: "Products" }]}
+				title={t("Products.title", "Cat Equipment")}
+				breadcrumbs={[
+					{ label: t("Products.breadcrumb_home", "Home"), href: "/" },
+					{ label: t("Products.breadcrumb_products", "Products") },
+				]}
 			/>
 			<article className='page-body container'>
 				<div className='row'>

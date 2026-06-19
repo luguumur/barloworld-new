@@ -34,7 +34,10 @@ export default async function UsersListContainer({ filter, search }: any) {
 			{users?.length ? (
 				<UserListTable
 					users={users}
-					customRoles={customRoles.map((r) => ({ name: r.name, label: r.label }))}
+					customRoles={customRoles.map((r) => ({
+						name: r.name,
+						label: r.label,
+					}))}
 				/>
 			) : (
 				<UserEmptyState />

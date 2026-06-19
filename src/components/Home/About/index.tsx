@@ -1,23 +1,11 @@
-import { useTranslations } from "next-intl";
 import Image from "next/legacy/image";
+import { getDbT } from "@/libs/getDbT";
 
-const About = () => {
-	const homet = useTranslations("HomeData");
+const About = async () => {
+	const t = await getDbT();
 	return (
 		<section className='home-about image-button'>
 			<div className='image-button-graphics-right hidden-xs-down'>
-				{/* <Image
-					priority
-					src={
-						"https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics2-585x272.webp"
-					}
-					className='img-responsive entered'
-					loading={"eager"}
-					width={585}
-					height={272}
-					layout='intrinsic'
-					alt='graphics2'
-				/> */}
 				<img
 					width='585'
 					height='283'
@@ -27,18 +15,6 @@ const About = () => {
 				/>
 			</div>
 			<div className='image-button-graphics-left hidden-sm-down'>
-				{/* <Image
-					priority
-					src={
-						"https://d3leeb4r1qy96s.cloudfront.net/assets/img/graphics1-497x283.webp"
-					}
-					className='img-responsive entered'
-					loading={"eager"}
-					width={497}
-					height={283}
-					layout='intrinsic'
-					alt='graphics1'
-				/> */}
 				<img
 					width='455'
 					height='220'
@@ -82,24 +58,15 @@ const About = () => {
 								<div className='home-about-short-content-flex-box'>
 									<div className='home-about-short-content-heading'>
 										<div className='text-[20px] font-extrabold uppercase text-[#FC0]'>
-											Vision
-										</div>
-									</div>
-									<div className='home-about-short-content-info'>
-										<p>To be the best Cat dealer, period.</p>
-									</div>
-								</div>
-
-								<div className='home-about-short-content-flex-box'>
-									<div className='home-about-short-content-heading'>
-										<div className='text-[20px] font-extrabold uppercase text-[#FC0]'>
-											Mission
+											{t("About.vision_label", "Vision")}
 										</div>
 									</div>
 									<div className='home-about-short-content-info'>
 										<p>
-											Superior Services. Lasting Relationships. Stronger
-											Communities.
+											{t(
+												"About.vision_text",
+												"To be the best Cat dealer, period."
+											)}
 										</p>
 									</div>
 								</div>
@@ -107,13 +74,31 @@ const About = () => {
 								<div className='home-about-short-content-flex-box'>
 									<div className='home-about-short-content-heading'>
 										<div className='text-[20px] font-extrabold uppercase text-[#FC0]'>
-											Values
+											{t("About.mission_label", "Mission")}
 										</div>
 									</div>
 									<div className='home-about-short-content-info'>
 										<p>
-											Barloworld Mongolia is committed to honesty, integrity,
-											respect, safety, high quality, and positive attitude.
+											{t(
+												"About.mission_text",
+												"Superior Services. Lasting Relationships. Stronger Communities."
+											)}
+										</p>
+									</div>
+								</div>
+
+								<div className='home-about-short-content-flex-box'>
+									<div className='home-about-short-content-heading'>
+										<div className='text-[20px] font-extrabold uppercase text-[#FC0]'>
+											{t("About.values_label", "Values")}
+										</div>
+									</div>
+									<div className='home-about-short-content-info'>
+										<p>
+											{t(
+												"About.values_text",
+												"Barloworld Mongolia is committed to honesty, integrity, respect, safety, high quality, and positive attitude."
+											)}
 										</p>
 									</div>
 								</div>
@@ -122,14 +107,14 @@ const About = () => {
 					</div>
 					<div className='w-full md:w-1/2'>
 						<div className='home-about-right-panel'>
-							<h2>{homet("welcome")}</h2>
-							<p>{homet("description")}</p>
+							<h2>{t("About.welcome", "WELCOME TO BARLOWORLD MONGOLIA")}</h2>
+							<p>{t("About.description", "")}</p>
 							<p>
 								<a
 									className='btn btn-primary mb-4 inline-block min-w-[120px]'
 									href='/about/'
 								>
-									{homet("more")}
+									{t("About.more_btn", "Learn More")}
 								</a>
 							</p>
 						</div>

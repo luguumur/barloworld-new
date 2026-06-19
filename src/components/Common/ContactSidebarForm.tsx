@@ -3,11 +3,29 @@ import { useState } from "react";
 import { createNotificationPublic } from "@/actions/notification";
 import toast from "react-hot-toast";
 
-type Props = {
+type Labels = {
+	title?: string;
+	titleAccent?: string;
+	name?: string;
+	email?: string;
 	phone?: string;
+	message?: string;
+	submit?: string;
+	submitting?: string;
+	success?: string;
+	error?: string;
+	requiredError?: string;
 };
 
-export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
+type Props = {
+	phone?: string;
+	labels?: Labels;
+};
+
+export default function ContactSidebarForm({
+	phone = "+97670187588",
+	labels,
+}: Props) {
 	const [loading, setLoading] = useState(false);
 	const [form, setForm] = useState({
 		name: "",
@@ -15,6 +33,20 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 		phone: "",
 		message: "",
 	});
+
+	const l = {
+		title: labels?.title ?? "Contact us Today",
+		titleAccent: labels?.titleAccent ?? "to Get a Quote",
+		name: labels?.name ?? "Your Name",
+		email: labels?.email ?? "Email",
+		phone: labels?.phone ?? "Phone",
+		message: labels?.message ?? "Message",
+		submit: labels?.submit ?? "Submit",
+		submitting: labels?.submitting ?? "Sending...",
+		success: labels?.success ?? "Your request has been sent!",
+		error: labels?.error ?? "Failed to send. Please try again.",
+		requiredError: labels?.requiredError ?? "Name and phone are required",
+	};
 
 	const handleChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -25,7 +57,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 		if (!form.name.trim() || !form.phone.trim()) {
-			toast.error("Name and phone are required");
+			toast.error(l.requiredError);
 			return;
 		}
 		setLoading(true);
@@ -37,10 +69,10 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 				senderEmail: form.email.trim() || null,
 				senderPhone: form.phone.trim(),
 			});
-			toast.success("Your request has been sent!");
+			toast.success(l.success);
 			setForm({ name: "", email: "", phone: "", message: "" });
 		} catch {
-			toast.error("Failed to send. Please try again.");
+			toast.error(l.error);
 		} finally {
 			setLoading(false);
 		}
@@ -49,7 +81,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 	return (
 		<div className='widget widget_black_studio_tinymce'>
 			<h6 className='heading-title accent'>
-				<b>Contact us Today</b> <span>to Get a Quote</span>
+				<b>{l.title}</b> <span>{l.titleAccent}</span>
 			</h6>
 			<div className='textwidget'>
 				<a
@@ -66,7 +98,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 				>
 					<div className='row'>
 						<div className='col-xs-6 col-md-12 form-row'>
-							<label htmlFor='your-name'>Your Name*</label>
+							<label htmlFor='your-name'>{l.name}*</label>
 							<input
 								id='your-name'
 								name='name'
@@ -81,7 +113,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 							/>
 						</div>
 						<div className='col-xs-6 col-md-12 form-row'>
-							<label htmlFor='email'>Email</label>
+							<label htmlFor='email'>{l.email}</label>
 							<input
 								id='email'
 								name='email'
@@ -94,7 +126,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 							/>
 						</div>
 						<div className='col-xs-6 col-md-12 form-row'>
-							<label htmlFor='phone'>Phone*</label>
+							<label htmlFor='phone'>{l.phone}*</label>
 							<input
 								id='phone'
 								name='phone'
@@ -111,7 +143,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 					</div>
 					<div className='row'>
 						<div className='col-md-12 form-row'>
-							<label htmlFor='message'>Message</label>
+							<label htmlFor='message'>{l.message}</label>
 							<textarea
 								id='message'
 								name='message'
@@ -131,7 +163,7 @@ export default function ContactSidebarForm({ phone = "+97670187588" }: Props) {
 								type='submit'
 								disabled={loading}
 							>
-								{loading ? "Sending..." : "Submit"}
+								{loading ? l.submitting : l.submit}
 							</button>
 						</div>
 					</div>

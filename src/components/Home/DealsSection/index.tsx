@@ -1,15 +1,18 @@
 import { getDealsPublic } from "@/actions/deal";
-
 import HomeDealsSlider from "./HomeDealsSlider";
+import { getDbT } from "@/libs/getDbT";
 
 export default async function DealsSection({
 	lang = "en",
 }: {
 	lang?: "mn" | "en";
 }) {
-	const deals = await getDealsPublic(6);
+	const [deals, t] = await Promise.all([getDealsPublic(6), getDbT()]);
 
 	if (!deals.length) return null;
+
+	const title = t("DealsSection.title", "DEALS & SPECIALS");
+	const viewAll = t("DealsSection.view_all", "VIEW ALL DEALS & SPECIALS");
 
 	return (
 		<section className='home-deals'>
@@ -28,14 +31,13 @@ export default async function DealsSection({
 			<div className='home-deals-content-wrapper'>
 				<div className='container'>
 					<div className='home-deals-header'>
-						<h2>DEALS &amp; SPECIALS</h2>
+						<h2>{title}</h2>
 						<a
 							href='/deals-specials/'
 							target='_self'
 							className='home-deals-header__link hidden-xs-down font-bold text-black dark:text-gray-200'
 						>
-							VIEW ALL DEALS &amp; SPECIALS{" "}
-							<span className='icon-chevron-right'></span>
+							{viewAll} <span className='icon-chevron-right'></span>
 						</a>
 					</div>
 
@@ -47,7 +49,7 @@ export default async function DealsSection({
 							target='_self'
 							className='btn btn-secondary'
 						>
-							VIEW ALL DEALS &amp; SPECIALS
+							{viewAll}
 						</a>
 					</div>
 				</div>
