@@ -16,18 +16,16 @@ export default async function DealsSection({
 
 	return (
 		<section className='home-deals'>
-			<div className='home-deals-graphics'>
-				<img
-					width='1920'
-					height='938'
-					src='https://thompsonmachinery.com/content/uploads/2021/11/home-deals-graphics-image.png'
-					alt=''
-					className='img-responsive'
-					loading='lazy'
-					decoding='async'
-					fetchPriority='low'
-				/>
-			</div>
+			<div
+				className='home-deals-graphics'
+				style={{
+					backgroundImage:
+						"url('https://thompsonmachinery.com/content/uploads/2021/11/home-deals-graphics-image.png')",
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+				}}
+				aria-hidden='true'
+			/>
 			<div className='home-deals-content-wrapper'>
 				<div className='container'>
 					<div className='home-deals-header'>

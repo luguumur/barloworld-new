@@ -68,7 +68,6 @@ function DealCard({
 							objectFit: "cover",
 							objectPosition: "center",
 						}}
-						unoptimized
 					/>
 				) : (
 					<div

@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import Image from "next/image";
 import { getHomeContent, getHomeCards } from "@/actions/homeMain";
 import { DEFAULT_CONTENT } from "@/actions/homeMainDefaults";
 
@@ -75,12 +76,16 @@ export default async function Main() {
 										>
 											<div className='image-button-item'>
 												<a href={card.url} target='_self'>
-													<img
-														src={resolveImg(card.image) || undefined}
-														className='img-responsive entered lazyloaded'
-														alt={title}
-														loading='lazy'
-													/>
+													{resolveImg(card.image) ? (
+														<Image
+															src={resolveImg(card.image)!}
+															className='img-responsive'
+															alt={title ?? ''}
+															width={600}
+															height={400}
+															sizes='(max-width: 768px) 100vw, (max-width: 992px) 50vw, 300px'
+														/>
+													) : null}
 													<div className='image-button-overlay'>
 														<div className='image-button-overlay-content'>
 															<div className='image-button-title'>
