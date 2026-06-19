@@ -34,7 +34,15 @@ function truncateText(value: string, maxLength: number): string {
 	return `${value.slice(0, maxLength).trimEnd()}...`;
 }
 
-function DealCard({ deal, lang }: { deal: DealRow; lang: "mn" | "en" }) {
+function DealCard({
+	deal,
+	lang,
+	active,
+}: {
+	deal: DealRow;
+	lang: "mn" | "en";
+	active: boolean;
+}) {
 	const title = lang === "mn" ? deal.title : deal.title_en;
 	const subtitle = lang === "mn" ? deal.subtitle : deal.subtitle_en;
 	const description = lang === "mn" ? deal.description : deal.description_en;
@@ -90,7 +98,11 @@ function DealCard({ deal, lang }: { deal: DealRow; lang: "mn" | "en" }) {
 						{descriptionText}
 					</p>
 				) : null} */}
-				<Link href='/deals-specials/' className='btn btn-primary'>
+				<Link
+					href='/deals-specials/'
+					className='btn btn-primary'
+					tabIndex={active ? 0 : -1}
+				>
 					{cta}
 				</Link>
 			</div>
@@ -171,7 +183,7 @@ export default function HomeDealsSlider({
 								tabIndex={active ? 0 : -1}
 								aria-selected={active}
 							>
-								<DealCard deal={deal} lang={lang} />
+								<DealCard deal={deal} lang={lang} active={active} />
 							</div>
 						);
 					})}

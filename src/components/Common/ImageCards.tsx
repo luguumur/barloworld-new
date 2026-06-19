@@ -20,7 +20,7 @@ export default function ImageCards({ cards }: Props) {
 					{cards.map((card) => (
 						<div key={card.href} className='col-sm-6'>
 							<div className='image-cards-box'>
-								<a href={card.href}>
+								<a href={card.href} aria-label={card.title}>
 									<div className='card-image relative h-[500px] w-full'>
 										{card.image ? (
 											/* eslint-disable-next-line @next/next/no-img-element */
