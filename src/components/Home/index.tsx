@@ -3,6 +3,7 @@ import { getMastheadsPublic } from "@/actions/masthead";
 import { getTestimonialsPublic } from "@/actions/testimonial";
 import { getNewsPublic } from "@/actions/news";
 import { getDbT } from "@/libs/getDbT";
+import { resolveMastheadImageUrl } from "@/libs/resolveMastheadImageUrl";
 import Masthead from "./Masthead";
 import DealsSection from "./DealsSection";
 import Main from "./Main";
@@ -22,8 +23,18 @@ const Home = async () => {
 		getDbT(),
 	]);
 
+	const lcpImageUrl = mastheads?.[0]?.imageurl
+		? resolveMastheadImageUrl(mastheads[0].imageurl)
+		: null;
+	const lcpPreloadHref = lcpImageUrl
+		? `/_next/image?url=${encodeURIComponent(lcpImageUrl)}&w=1200&q=75`
+		: null;
+
 	return (
 		<>
+			{lcpPreloadHref && (
+				<link rel='preload' as='image' href={lcpPreloadHref} />
+			)}
 			<Masthead mastheads={mastheads} language={language} />
 			<DealsSection lang={language} />
 			<Main />

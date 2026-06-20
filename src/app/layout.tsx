@@ -20,7 +20,7 @@ const robotoCondensed = Roboto_Condensed({
 	subsets: ["latin"],
 	variable: "--font-roboto-condensed",
 	display: "swap",
-	weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+	weight: ["400", "700"],
 });
 
 const layout = ({ children }: { children: React.ReactNode }) => {
@@ -30,7 +30,16 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 			suppressHydrationWarning={true}
 			className={`${inter.variable} ${notoSans.variable} ${robotoCondensed.variable}`}
 		>
-			<head />
+			<head>
+				{/* Preload icon font to break CSS→font chain */}
+				<link
+					rel='preload'
+					as='font'
+					type='font/ttf'
+					href='/fonts/icons/icomoon.ttf'
+					crossOrigin='anonymous'
+				/>
+			</head>
 			<body
 				className={`${inter.className} flex min-h-screen flex-col dark:bg-[#151F34]`}
 			>
