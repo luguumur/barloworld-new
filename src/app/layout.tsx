@@ -41,7 +41,7 @@ const layout = ({ children }: { children: React.ReactNode }) => {
 				/>
 			</head>
 			<body
-				className={`${inter.className} flex min-h-screen flex-col dark:bg-[#151F34]`}
+				className="flex min-h-screen flex-col dark:bg-[#151F34]"
 			>
 				<NextIntlClientProvider>{children}</NextIntlClientProvider>
 			</body>

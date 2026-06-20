@@ -12,10 +12,10 @@ const config: Config = {
 	darkMode: "class",
 	theme: {
 		fontFamily: {
-			satoshi: ["Roboto Condensed", "sans-serif"],
-			inter: ["Inter", "sans-serif"],
-			noto: ["Noto Sans", "sans-serif"],
-			sans: ["Noto Sans", "sans-serif"],
+			satoshi: ["var(--font-roboto-condensed)", "sans-serif"],
+			inter: ["var(--font-inter)", "sans-serif"],
+			noto: ["var(--font-noto-sans)", "sans-serif"],
+			sans: ["var(--font-noto-sans)", "sans-serif"],
 		},
 		container: {
 			center: true,

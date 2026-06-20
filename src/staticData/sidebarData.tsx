@@ -12,11 +12,9 @@ import {
 	GiftIcon,
 	PhotoIcon,
 	BookOpenIcon,
-	BriefcaseIcon,
 	DocumentTextIcon,
 	Bars3Icon,
 	SparklesIcon,
-	CommandLineIcon,
 	LanguageIcon,
 	UserGroupIcon,
 } from "@heroicons/react/24/outline";

@@ -1,13 +1,8 @@
 "use client";
 
 import type { MastheadRow } from "@/actions/masthead";
-import {
-	ArrowRightIcon,
-	ChevronLeftIcon,
-	ChevronRightIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
-import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { mastheadRowsToSlides } from "./mapMastheads";
 import { mastheadSlides } from "./slides";

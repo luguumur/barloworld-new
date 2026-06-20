@@ -1,13 +1,10 @@
 "use client";
 import { useState } from "react";
-import Link from "next/link";
 import type { ProductRow } from "@/actions/product";
-import PageSidebar from "../Common/PageSidebar";
 import { resolveImageUrl } from "@/libs/resolveImageUrl";
 import { AttributeValue } from "@prisma/client";
 import { useTranslations } from "next-intl";
 
-type Tab = "overview" | "specs";
 type MediaTab = "image" | "vpt";
 type DetailTab = "specs" | "features" | "compare";
 

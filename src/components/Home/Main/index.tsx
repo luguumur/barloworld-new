@@ -80,7 +80,7 @@ export default async function Main() {
 														<Image
 															src={resolveImg(card.image)!}
 															className='img-responsive'
-															alt={title ?? ''}
+															alt={title ?? ""}
 															width={600}
 															height={400}
 															sizes='(max-width: 768px) 100vw, (max-width: 992px) 50vw, 300px'
