@@ -1,5 +1,4 @@
 import "../styles/globals.css";
-import "../styles/satoshi.css";
 import { Inter, Noto_Sans, Roboto_Condensed } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 

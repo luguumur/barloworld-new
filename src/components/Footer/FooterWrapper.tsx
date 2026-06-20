@@ -1,5 +1,4 @@
 "use client";
-import "../../styles/main.css";
 import { usePathname } from "next/navigation";
 import Footer from ".";
 
