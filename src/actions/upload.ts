@@ -48,7 +48,6 @@ export async function getSignedURL(
 		Key: key,
 		ContentType: type,
 		ContentLength: size,
-		ACL: "public-read",
 		Metadata: {
 			userId: user.id,
 		},
