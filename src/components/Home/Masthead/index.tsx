@@ -69,9 +69,9 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 					onMouseEnter={() => setPaused(true)}
 					onMouseLeave={() => setPaused(false)}
 				>
-					<div className='relative min-h-[min(200svh,320px)] w-full lg:min-h-[560px]'>
+					<div className='relative min-h-[260px] w-full sm:min-h-[340px] md:min-h-[420px] lg:min-h-[560px]'>
 						<div className='absolute inset-0 flex flex-col lg:grid lg:grid-cols-12'>
-							<div className='relative order-1 min-h-[220px] lg:order-none lg:col-span-12 lg:min-h-0'>
+							<div className='relative order-1 min-h-[260px] sm:min-h-[340px] md:min-h-[420px] lg:order-none lg:col-span-12 lg:min-h-0'>
 								{slides.map((slide, i) => (
 									<div
 										key={slide.id}
@@ -83,7 +83,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 										aria-hidden
 									>
 										<div
-											className={`background-image-wrapper relative h-full min-h-[220px] lg:min-h-full ${slide.mediaClassName}`}
+											className={`background-image-wrapper relative h-full min-h-[260px] sm:min-h-[340px] md:min-h-[420px] lg:min-h-full ${slide.mediaClassName}`}
 										>
 											{slide.imageUrl ? (
 												<Image
@@ -91,7 +91,7 @@ const Masthead = ({ mastheads, language = "en" }: MastheadProps) => {
 													alt={slide.title}
 													fill
 													className='object-cover'
-													sizes='(max-width: 1024px) 100vw, 58vw'
+													sizes='100vw'
 													priority={i === 0}
 												/>
 											) : null}
