@@ -74,12 +74,12 @@ export default function Sidebar({
 											href={`${item?.path}`}
 											className={`flex w-full items-center gap-3 rounded-lg py-1 pr-3 font-satoshi text-sm duration-300 ${
 												pathname === `${item.path}`
-													? "bg-primary-2 font-semibold text-black dark:bg-white dark:text-white"
-													: "font-medium text-dark-5 hover:text-black dark:text-gray-5 dark:hover:bg-white dark:hover:text-white"
+													? "bg-primary-2 font-semibold text-black dark:bg-primary dark:text-black"
+													: "font-medium text-dark-5 hover:text-black dark:text-gray-5 dark:hover:bg-white/10 dark:hover:text-white"
 											}`}
 										>
 											<span className='h-5 w-5 shrink-0'>{item?.icon}</span>
-											<span className='text-foreground-light group-hover:text-foreground min-w-0 flex-1 truncate text-sm transition'>
+											<span className='min-w-0 flex-1 truncate text-sm transition'>
 												{item?.title}
 											</span>
 										</Link>

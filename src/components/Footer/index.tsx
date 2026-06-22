@@ -15,22 +15,22 @@ const Footer = () => {
 								<nav className='nav--footer font-satoshi'>
 									<ul className='menu text-center md:text-left'>
 										<li className='!pl-0 !pr-3'>
-											<Link href='/equipment'>{menut("equipment")}</Link>
+											<Link href='/products'>{menut("equipment")}</Link>
 										</li>
 										<li className='!pl-0 !pr-3'>
-											<Link href='/parts'>{menut("parts")}</Link>
+											<Link href='/support'>{menut("parts")}</Link>
 										</li>
 										<li className='!pl-0 !pr-3'>
-											<Link href='/service'>{menut("service")}</Link>
+											<Link href='/support'>{menut("service")}</Link>
 										</li>
 										<li className='!pl-0 !pr-3'>
-											<Link href='/technology'>{menut("technology")}</Link>
+											<Link href='/support'>{menut("technology")}</Link>
 										</li>
 										<li className='!pl-0 !pr-3'>
 											<Link href='/deals-specials'>{menut("specials")}</Link>
 										</li>
 										<li className='!pl-0 !pr-3'>
-											<Link href='/contact-us'>{menut("contact")}</Link>
+											<Link href='/support'>{menut("contact")}</Link>
 										</li>
 									</ul>
 								</nav>
@@ -105,10 +105,10 @@ const Footer = () => {
 											<Link href='/blog'>{homet("social")}</Link>
 										</li>
 										<li className='menu-item'>
-											<Link href='/blog'>{homet("news")}</Link>
+											<Link href='/news'>{homet("news")}</Link>
 										</li>
 										<li className='menu-item'>
-											<Link href='/magazine'>{homet("magazine")}</Link>
+											<Link href='/magazines'>{homet("magazine")}</Link>
 										</li>
 									</ul>
 								</nav>
